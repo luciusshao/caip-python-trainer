@@ -1,0 +1,859 @@
+{
+  "modules": [
+    {
+      "id": "m1",
+      "title": "Python Basics",
+      "description": "Python Fundamentals — Syntax, Variables, Data Types & Operators",
+      "icon": "🐍",
+      "weight": "25%",
+      "lessons": [
+        {
+          "id": "m1-l1",
+          "title": "Introduction & Syntax",
+          "theory_en": "## What is Python?\n\nPython is a popular, high-level programming language created by **Guido van Rossum** in 1991. It is known for its **simple syntax** that resembles the English language.\n\n### Why Python?\n- Easy to learn and read\n- Widely used in AI, Machine Learning, Web Development\n- Huge community and library support\n- Works on all platforms (Windows, Mac, Linux)\n\n### Python Syntax Basics\n\n#### The `print()` Function\n```python\nprint(\"Hello, World!\")\nprint(\"Line 1\")\nprint(\"Line 2\")\n```\n\n#### Indentation\nPython uses **indentation** (whitespace) to define code blocks. Most languages use curly braces `{}`, but Python uses 4 spaces:\n```python\nif 5 > 2:\n    print(\"Five is greater\")  # indented = inside the if block\n```\n\n#### Multiple Statements\nYou can write multiple values in one `print()`:\n```python\nprint(\"Hello\", \"World\")   # separated by space\nprint(\"A\", \"B\", \"C\")       # prints: A B C\n```\n\n#### Case Sensitivity\nPython is case-sensitive: `name` and `Name` are different variables.",
+          "theory_zh": "## 什么是 Python？\n\nPython 是由 **Guido van Rossum** 于 1991 年创建的一种流行的高级编程语言。它以**简洁的语法**著称，类似英语。\n\n### 为什么学 Python？\n- 容易学习和阅读\n- 广泛用于 AI、机器学习、Web 开发\n- 庞大的社区和库支持\n- 可在所有平台运行（Windows、Mac、Linux）\n\n### Python 语法基础\n\n#### `print()` 函数\n```python\nprint(\"Hello, World!\")\nprint(\"Line 1\")\nprint(\"Line 2\")\n```\n\n#### 缩进\nPython 使用**缩进**（空格）来定义代码块。大多数语言使用花括号 `{}`，但 Python 使用 4 个空格：\n```python\nif 5 > 2:\n    print(\"Five is greater\")  # 缩进 = 在 if 块内部\n```\n\n#### 多个语句\n可以在一个 `print()` 中写多个值：\n```python\nprint(\"Hello\", \"World\")   # 用空格分隔\nprint(\"A\", \"B\", \"C\")       # 输出: A B C\n```\n\n#### 大小写敏感\nPython 区分大小写：`name` 和 `Name` 是不同的变量。",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Print \"Hello, CAIP!\"\n\n# Step 2: Print two values in one print: \"Python\" and \"is fun\"\n\n# Step 3: Use an if statement to check if 10 > 5, print \"Yes!\"\n",
+            "expectedOutput": "Hello, CAIP!\nPython is fun\nYes!",
+            "hint": "Step 1: print(\"Hello, CAIP!\"). Step 2: print(\"Python\", \"is fun\"). Step 3: if 10 > 5: (newline, 4 spaces) print(\"Yes!\")"
+          },
+          "quizzes": [
+            {
+              "id": "m1-l1-q1",
+              "question": "Who created the Python programming language?",
+              "options": ["James Gosling", "Guido van Rossum", "Dennis Ritchie", "Bjarne Stroustrup"],
+              "correctAnswer": 1,
+              "explanation": "Python was created by Guido van Rossum and first released in 1991."
+            },
+            {
+              "id": "m1-l1-q2",
+              "question": "How does Python define code blocks?",
+              "options": ["Curly braces {}", "Indentation (spaces)", "Parentheses ()", "Square brackets []"],
+              "correctAnswer": 1,
+              "explanation": "Python uses indentation (typically 4 spaces) to define code blocks, unlike most languages that use curly braces."
+            }
+          ]
+        },
+        {
+          "id": "m1-l2",
+          "title": "Variables & Casting",
+          "theory_en": "## Variables\n\nA variable is a **container** for storing data values. In Python, you create a variable by assigning a value:\n\n```python\nx = 5\nname = \"Alice\"\npi = 3.14\n```\n\n### Variable Naming Rules\n- Must start with a letter or underscore `_`\n- Cannot start with a number\n- Case-sensitive (`age` and `Age` are different)\n- Cannot use Python keywords (`if`, `for`, `class`, etc.)\n\n### Multiple Assignment\n```python\na, b, c = 1, 2, 3        # assign multiple values\nx = y = z = 0             # same value to multiple variables\n```\n\n### Checking Type\nUse `type()` to check a variable's data type:\n```python\nx = 10\nprint(type(x))   # <class 'int'>\n```\n\n## Type Casting\n\nConvert between types using `int()`, `float()`, `str()`:\n```python\n# str to int\nage = int(\"25\")        # 25\n\n# int to float\nprice = float(10)      # 10.0\n\n# int to str\ntext = str(100)        # \"100\"\n\n# float to int (truncates)\nwhole = int(3.9)       # 3\n```",
+          "theory_zh": "## 变量\n\n变量是用来**存储数据值的容器**。在 Python 中，通过赋值创建变量：\n\n```python\nx = 5\nname = \"Alice\"\npi = 3.14\n```\n\n### 变量命名规则\n- 必须以字母或下划线 `_` 开头\n- 不能以数字开头\n- 区分大小写（`age` 和 `Age` 是不同变量）\n- 不能使用 Python 关键字（`if`、`for`、`class` 等）\n\n### 多重赋值\n```python\na, b, c = 1, 2, 3        # 同时赋多个值\nx = y = z = 0             # 多个变量赋相同值\n```\n\n### 检查类型\n使用 `type()` 检查变量的数据类型：\n```python\nx = 10\nprint(type(x))   # <class 'int'>\n```\n\n## 类型转换（Casting）\n\n使用 `int()`、`float()`、`str()` 在类型间转换：\n```python\n# str 转 int\nage = int(\"25\")        # 25\n\n# int 转 float\nprice = float(10)      # 10.0\n\n# int 转 str\ntext = str(100)        # \"100\"\n\n# float 转 int（截断小数）\nwhole = int(3.9)       # 3\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create variables using multiple assignment: a, b, c = 10, 3.14, \"hello\"\n\n# Step 2: Print the type of each variable\n\n# Step 3: Cast the string \"42\" to an integer and print it\n\n# Step 4: Cast the float 9.7 to an integer and print it\n\n# Step 5: Cast the integer 100 to a string, and print its type\n",
+            "expectedOutput": "<class 'int'>\n<class 'float'>\n<class 'str'>\n42\n9\n<class 'str'>",
+            "hint": "Step 1: a, b, c = 10, 3.14, \"hello\". Step 2: print(type(a)), print(type(b)), print(type(c)). Step 3: print(int(\"42\")). Step 4: print(int(9.7)). Step 5: print(type(str(100)))."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l2-q1",
+              "question": "What is the result of int(3.9) in Python?",
+              "options": ["4", "3", "3.9", "Error"],
+              "correctAnswer": 1,
+              "explanation": "int() truncates the decimal part, so int(3.9) returns 3 (it does NOT round up)."
+            },
+            {
+              "id": "m1-l2-q2",
+              "question": "Which of the following is NOT a valid variable name?",
+              "options": ["_count", "my_var", "2name", "Name"],
+              "correctAnswer": 2,
+              "explanation": "Variable names cannot start with a number. '2name' is invalid."
+            }
+          ]
+        },
+        {
+          "id": "m1-l3",
+          "title": "Numbers & Math",
+          "theory_en": "## Number Types\n\nPython has three numeric types:\n\n| Type | Example | Description |\n|------|---------|-------------|\n| `int` | `42` | Whole numbers |\n| `float` | `3.14` | Decimal numbers |\n| `complex` | `2+3j` | Complex numbers (rarely used) |\n\n## Arithmetic Operators\n\n| Operator | Name | Example | Result |\n|----------|------|---------|--------|\n| `+` | Addition | `5 + 3` | `8` |\n| `-` | Subtraction | `10 - 4` | `6` |\n| `*` | Multiplication | `3 * 7` | `21` |\n| `/` | Division | `10 / 3` | `3.333...` |\n| `//` | Floor Division | `10 // 3` | `3` |\n| `%` | Modulus | `10 % 3` | `1` |\n| `**` | Exponentiation | `2 ** 3` | `8` |\n\n## Useful Math Functions\n\n```python\nabs(-5)       # 5 (absolute value)\nround(3.7)    # 4 (round to nearest)\nround(3.14159, 2)  # 3.14 (round to 2 decimals)\nmin(3, 1, 4)  # 1\nmax(3, 1, 4)  # 4\npow(2, 3)     # 8 (same as 2**3)\n```",
+          "theory_zh": "## 数字类型\n\nPython 有三种数字类型：\n\n| 类型 | 示例 | 说明 |\n|------|---------|-------------|\n| `int` | `42` | 整数 |\n| `float` | `3.14` | 浮点数（小数） |\n| `complex` | `2+3j` | 复数（很少用） |\n\n## 算术运算符\n\n| 运算符 | 名称 | 示例 | 结果 |\n|----------|------|---------|--------|\n| `+` | 加法 | `5 + 3` | `8` |\n| `-` | 减法 | `10 - 4` | `6` |\n| `*` | 乘法 | `3 * 7` | `21` |\n| `/` | 除法 | `10 / 3` | `3.333...` |\n| `//` | 整除 | `10 // 3` | `3` |\n| `%` | 取模 | `10 % 3` | `1` |\n| `**` | 幂运算 | `2 ** 3` | `8` |\n\n## 常用数学函数\n\n```python\nabs(-5)       # 5（绝对值）\nround(3.7)    # 4（四舍五入）\nround(3.14159, 2)  # 3.14（保留2位小数）\nmin(3, 1, 4)  # 1\nmax(3, 1, 4)  # 4\npow(2, 3)     # 8（等同于 2**3）\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Print the results of floor division and modulus of 17 divided by 5\n\n# Step 2: Print 2 to the power of 10\n\n# Step 3: Print the absolute value of -42\n\n# Step 4: Round 3.14159 to 2 decimal places and print\n\n# Step 5: Print the min and max of 8, 2, 5, 9, 1\n",
+            "expectedOutput": "3\n2\n1024\n42\n3.14\n1\n9",
+            "hint": "Step 1: print(17 // 5) then print(17 % 5). Step 2: print(2 ** 10). Step 3: print(abs(-42)). Step 4: print(round(3.14159, 2)). Step 5: print(min(8,2,5,9,1)) and print(max(8,2,5,9,1))."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l3-q1",
+              "question": "What is the result of 10 // 3 in Python?",
+              "options": ["3.33", "3", "4", "1"],
+              "correctAnswer": 1,
+              "explanation": "The // operator performs floor division, which returns the integer part: 10 // 3 = 3."
+            },
+            {
+              "id": "m1-l3-q2",
+              "question": "What does the % operator return?",
+              "options": ["The quotient", "The remainder", "The percentage", "The float division"],
+              "correctAnswer": 1,
+              "explanation": "The modulus operator % returns the remainder of a division. For example, 10 % 3 = 1."
+            }
+          ]
+        },
+        {
+          "id": "m1-l4",
+          "title": "Strings",
+          "theory_en": "## Strings in Python\n\nStrings are sequences of characters, enclosed in single or double quotes:\n```python\nname = \"Alice\"\ngreeting = 'Hello'\n```\n\n### Indexing & Slicing\n```python\ntext = \"Python\"\nprint(text[0])    # P (first character)\nprint(text[-1])   # n (last character)\nprint(text[0:3])  # Pyt (index 0,1,2)\nprint(text[2:])   # thon (from index 2 to end)\nprint(text[:4])   # Pyth (from start to index 3)\n```\n\n### String Length\n```python\nprint(len(\"Hello\"))  # 5\n```\n\n### Common String Methods\n```python\ntext = \"  Hello, World!  \"\ntext.upper()      # \"  HELLO, WORLD!  \"\ntext.lower()      # \"  hello, world!  \"\ntext.strip()      # \"Hello, World!\" (remove whitespace)\ntext.replace(\"World\", \"Python\")  # \"  Hello, Python!  \"\ntext.find(\"World\")  # 9 (index where found)\ntext.split(\",\")   # ['  Hello', ' World!  ']\n```\n\n### String Concatenation & f-strings\n```python\nfirst = \"John\"\nlast = \"Doe\"\n# f-string (recommended)\nprint(f\"Name: {first} {last}\")\n# concatenation\nprint(first + \" \" + last)\n```\n\n### The `in` Operator\n```python\nprint(\"world\" in \"Hello world\")  # True\n```",
+          "theory_zh": "## Python 中的字符串\n\n字符串是字符序列，用单引号或双引号括起来：\n```python\nname = \"Alice\"\ngreeting = 'Hello'\n```\n\n### 索引与切片\n```python\ntext = \"Python\"\nprint(text[0])    # P（第一个字符）\nprint(text[-1])   # n（最后一个字符）\nprint(text[0:3])  # Pyt（索引 0,1,2）\nprint(text[2:])   # thon（从索引 2 到末尾）\nprint(text[:4])   # Pyth（从开头到索引 3）\n```\n\n### 字符串长度\n```python\nprint(len(\"Hello\"))  # 5\n```\n\n### 常用字符串方法\n```python\ntext = \"  Hello, World!  \"\ntext.upper()      # \"  HELLO, WORLD!  \"\ntext.lower()      # \"  hello, world!  \"\ntext.strip()      # \"Hello, World!\"（去除空白）\ntext.replace(\"World\", \"Python\")  # \"  Hello, Python!  \"\ntext.find(\"World\")  # 9（找到的索引位置）\ntext.split(\",\")   # ['  Hello', ' World!  ']\n```\n\n### 字符串拼接与 f-string\n```python\nfirst = \"John\"\nlast = \"Doe\"\n# f-string（推荐方式）\nprint(f\"Name: {first} {last}\")\n# 拼接\nprint(first + \" \" + last)\n```\n\n### `in` 运算符\n```python\nprint(\"world\" in \"Hello world\")  # True\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create text = \"Hello, Python!\" and print its length\n\n# Step 2: Print the first character and last character\n\n# Step 3: Print the slice from index 7 to 13 (should get \"Python\")\n\n# Step 4: Print text in uppercase\n\n# Step 5: Replace \"Python\" with \"CAIP\" and print\n\n# Step 6: Use an f-string: create name = \"Alice\" and print \"Welcome, Alice!\"\n",
+            "expectedOutput": "14\nH\n!\nPython\nHELLO, PYTHON!\nHello, CAIP!\nWelcome, Alice!",
+            "hint": "Step 1: print(len(text)). Step 2: print(text[0]) and print(text[-1]). Step 3: print(text[7:13]). Step 4: print(text.upper()). Step 5: print(text.replace(\"Python\", \"CAIP\")). Step 6: name = \"Alice\", print(f\"Welcome, {name}!\")."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l4-q1",
+              "question": "What does \"Hello\"[1:4] return?",
+              "options": ["Hel", "ell", "ello", "Hell"],
+              "correctAnswer": 1,
+              "explanation": "Slicing [1:4] returns characters at index 1, 2, 3: 'e', 'l', 'l' = 'ell'."
+            },
+            {
+              "id": "m1-l4-q2",
+              "question": "Which method removes whitespace from both ends of a string?",
+              "options": ["trim()", "strip()", "clean()", "remove()"],
+              "correctAnswer": 1,
+              "explanation": "The strip() method removes leading and trailing whitespace from a string."
+            }
+          ]
+        },
+        {
+          "id": "m1-l5",
+          "title": "String Formatting",
+          "theory_en": "## f-Strings (Formatted String Literals)\n\nThe most modern and recommended way to format strings in Python 3.6+:\n```python\nname = \"Alice\"\nage = 15\nprint(f\"My name is {name} and I am {age} years old.\")\n```\n\nYou can put **expressions** inside the curly braces:\n```python\nprint(f\"2 + 3 = {2 + 3}\")        # 2 + 3 = 5\nprint(f\"{'hello'.upper()}\")       # HELLO\nprint(f\"{3.14159:.2f}\")           # 3.14 (2 decimal places)\n```\n\n## The `.format()` Method\n\nAn older but still common approach:\n```python\nprint(\"Hello, {}!\".format(\"World\"))          # Hello, World!\nprint(\"{0} is {1}\".format(\"Python\", \"fun\"))  # Python is fun\nprint(\"{name} is {age}\".format(name=\"Bob\", age=20))\n```\n\n## Escape Characters\n\n| Escape | Meaning |\n|--------|---------|\n| `\\n` | New line |\n| `\\t` | Tab |\n| `\\\\` | Backslash |\n| `\\'` | Single quote |\n| `\\\"` | Double quote |\n\n## Multiline Strings\n\nUse triple quotes for multiline strings:\n```python\nmsg = \"\"\"Line 1\nLine 2\nLine 3\"\"\"\n```",
+          "theory_zh": "## f-String（格式化字符串字面量）\n\nPython 3.6+ 中最现代、推荐的字符串格式化方式：\n```python\nname = \"Alice\"\nage = 15\nprint(f\"My name is {name} and I am {age} years old.\")\n```\n\n可以在花括号内放**表达式**：\n```python\nprint(f\"2 + 3 = {2 + 3}\")        # 2 + 3 = 5\nprint(f\"{'hello'.upper()}\")       # HELLO\nprint(f\"{3.14159:.2f}\")           # 3.14（保留2位小数）\n```\n\n## `.format()` 方法\n\n较旧但仍常用的方式：\n```python\nprint(\"Hello, {}!\".format(\"World\"))          # Hello, World!\nprint(\"{0} is {1}\".format(\"Python\", \"fun\"))  # Python is fun\nprint(\"{name} is {age}\".format(name=\"Bob\", age=20))\n```\n\n## 转义字符\n\n| 转义符 | 含义 |\n|--------|---------|\n| `\\n` | 换行 |\n| `\\t` | 制表符 |\n| `\\\\` | 反斜杠 |\n| `\\'` | 单引号 |\n| `\\\"` | 双引号 |\n\n## 多行字符串\n\n使用三引号：\n```python\nmsg = \"\"\"Line 1\nLine 2\nLine 3\"\"\"\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Use f-string to print \"Alice is 15 years old\" (use variables)\nname = \"Alice\"\nage = 15\n\n# Step 2: Use f-string with expression to print \"5 x 6 = 30\"\n\n# Step 3: Use f-string to format 3.14159 to 2 decimal places, print \"Pi = 3.14\"\n\n# Step 4: Use .format() to print \"Hello, World!\"\n\n# Step 5: Use escape characters to print two lines:\n# Line1: Hello\n# Line2: World\n# (use \\n in a single print statement)\n",
+            "expectedOutput": "Alice is 15 years old\n5 x 6 = 30\nPi = 3.14\nHello, World!\nHello\nWorld",
+            "hint": "Step 1: print(f\"{name} is {age} years old\"). Step 2: print(f\"5 x 6 = {5*6}\"). Step 3: print(f\"Pi = {3.14159:.2f}\"). Step 4: print(\"Hello, {}!\".format(\"World\")). Step 5: print(\"Hello\\nWorld\")."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l5-q1",
+              "question": "What does f\"{3.14159:.2f}\" evaluate to?",
+              "options": ["3.14159", "3.14", "3.1", "3"],
+              "correctAnswer": 1,
+              "explanation": "The :.2f format specifier rounds the float to 2 decimal places: 3.14."
+            },
+            {
+              "id": "m1-l5-q2",
+              "question": "Which escape character represents a new line?",
+              "options": ["\\t", "\\n", "\\r", "\\s"],
+              "correctAnswer": 1,
+              "explanation": "\\n is the escape character for a new line in Python strings."
+            }
+          ]
+        },
+        {
+          "id": "m1-l6",
+          "title": "Booleans & None",
+          "theory_en": "## Booleans\n\nBooleans represent one of two values: `True` or `False`.\n\n```python\nis_student = True\nis_adult = False\nprint(type(True))   # <class 'bool'>\n```\n\n### The `bool()` Function\n\nAlmost any value can be evaluated as a Boolean:\n\n**Truthy** (evaluate to `True`):\n- Any non-zero number: `bool(1)` → True\n- Any non-empty string: `bool(\"hello\")` → True\n- Any non-empty collection: `bool([1,2])` → True\n\n**Falsy** (evaluate to `False`):\n- `0`, `0.0`\n- `\"\"` (empty string)\n- `[]`, `()`, `{}` (empty collections)\n- `None`\n\n### Comparison Results\n```python\nprint(5 > 3)    # True\nprint(5 == 3)   # False\nprint(5 != 3)   # True\n```\n\n## None\n\n`None` represents the **absence of a value**. It is NOT the same as `0` or `\"\"`.\n\n```python\nx = None\nprint(x is None)      # True\nprint(x is not None)   # False\nprint(type(None))      # <class 'NoneType'>\n```\n\nUse `is` (not `==`) to check for `None`.",
+          "theory_zh": "## 布尔值\n\n布尔值表示两个值之一：`True` 或 `False`。\n\n```python\nis_student = True\nis_adult = False\nprint(type(True))   # <class 'bool'>\n```\n\n### `bool()` 函数\n\n几乎任何值都可以被评估为布尔值：\n\n**真值**（Truthy，评估为 `True`）：\n- 任何非零数字：`bool(1)` → True\n- 任何非空字符串：`bool(\"hello\")` → True\n- 任何非空集合：`bool([1,2])` → True\n\n**假值**（Falsy，评估为 `False`）：\n- `0`、`0.0`\n- `\"\"`（空字符串）\n- `[]`、`()`、`{}`（空集合）\n- `None`\n\n### 比较结果\n```python\nprint(5 > 3)    # True\nprint(5 == 3)   # False\nprint(5 != 3)   # True\n```\n\n## None\n\n`None` 表示**没有值**。它不等同于 `0` 或 `\"\"`。\n\n```python\nx = None\nprint(x is None)      # True\nprint(x is not None)   # False\nprint(type(None))      # <class 'NoneType'>\n```\n\n用 `is`（不是 `==`）来检查 `None`。",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Print bool(0), bool(\"\"), and bool([]) - all should be False\n\n# Step 2: Print bool(1), bool(\"hello\"), and bool([1,2,3]) - all should be True\n\n# Step 3: Print the result of 10 > 5 and 10 == 5\n\n# Step 4: Create x = None, print whether x is None\n\n# Step 5: Print the type of None\n",
+            "expectedOutput": "False\nFalse\nFalse\nTrue\nTrue\nTrue\nTrue\nFalse\nTrue\n<class 'NoneType'>",
+            "hint": "Step 1: print(bool(0)), print(bool(\"\")), print(bool([])). Step 2: print(bool(1)), print(bool(\"hello\")), print(bool([1,2,3])). Step 3: print(10 > 5), print(10 == 5). Step 4: x = None; print(x is None). Step 5: print(type(None))."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l6-q1",
+              "question": "What does bool(\"\") return?",
+              "options": ["True", "False", "None", "Error"],
+              "correctAnswer": 1,
+              "explanation": "An empty string is falsy in Python, so bool(\"\") returns False."
+            },
+            {
+              "id": "m1-l6-q2",
+              "question": "How should you check if a variable is None?",
+              "options": ["x == None", "x is None", "x = None", "type(x) == None"],
+              "correctAnswer": 1,
+              "explanation": "The Pythonic way to check for None is using 'is': x is None."
+            }
+          ]
+        },
+        {
+          "id": "m1-l7",
+          "title": "Operators",
+          "theory_en": "## Comparison Operators\n\n| Operator | Meaning | Example |\n|----------|---------|--------|\n| `==` | Equal | `5 == 5` → True |\n| `!=` | Not equal | `5 != 3` → True |\n| `>` | Greater than | `5 > 3` → True |\n| `<` | Less than | `3 < 5` → True |\n| `>=` | Greater or equal | `5 >= 5` → True |\n| `<=` | Less or equal | `3 <= 5` → True |\n\n## Logical Operators\n\n| Operator | Description | Example |\n|----------|-------------|--------|\n| `and` | Both True | `True and False` → False |\n| `or` | At least one True | `True or False` → True |\n| `not` | Reverse | `not True` → False |\n\n## Assignment Operators\n\n```python\nx = 10\nx += 5   # x = x + 5 → 15\nx -= 3   # x = x - 3 → 12\nx *= 2   # x = x * 2 → 24\nx //= 5  # x = x // 5 → 4\n```\n\n## Membership Operators\n\n```python\nfruits = [\"apple\", \"banana\"]\nprint(\"apple\" in fruits)      # True\nprint(\"cherry\" not in fruits)  # True\n```\n\n## Identity Operators\n\n```python\na = [1, 2]\nb = [1, 2]\nc = a\nprint(a == b)   # True (same value)\nprint(a is b)   # False (different objects)\nprint(a is c)   # True (same object)\n```",
+          "theory_zh": "## 比较运算符\n\n| 运算符 | 含义 | 示例 |\n|----------|---------|--------|\n| `==` | 等于 | `5 == 5` → True |\n| `!=` | 不等于 | `5 != 3` → True |\n| `>` | 大于 | `5 > 3` → True |\n| `<` | 小于 | `3 < 5` → True |\n| `>=` | 大于等于 | `5 >= 5` → True |\n| `<=` | 小于等于 | `3 <= 5` → True |\n\n## 逻辑运算符\n\n| 运算符 | 说明 | 示例 |\n|----------|-------------|--------|\n| `and` | 两者都为 True | `True and False` → False |\n| `or` | 至少一个 True | `True or False` → True |\n| `not` | 取反 | `not True` → False |\n\n## 赋值运算符\n\n```python\nx = 10\nx += 5   # x = x + 5 → 15\nx -= 3   # x = x - 3 → 12\nx *= 2   # x = x * 2 → 24\nx //= 5  # x = x // 5 → 4\n```\n\n## 成员运算符\n\n```python\nfruits = [\"apple\", \"banana\"]\nprint(\"apple\" in fruits)      # True\nprint(\"cherry\" not in fruits)  # True\n```\n\n## 身份运算符\n\n```python\na = [1, 2]\nb = [1, 2]\nc = a\nprint(a == b)   # True（值相同）\nprint(a is b)   # False（不同对象）\nprint(a is c)   # True（同一对象）\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Print the results of: 10 >= 10, 10 > 10, 10 != 5\n\n# Step 2: Print results of logical operators:\n# True and False\n# True or False\n# not False\n\n# Step 3: Use assignment operators: start with x = 20, do x += 5, print x, then x *= 2, print x\n\n# Step 4: Check membership: print whether \"cat\" is in [\"dog\", \"cat\", \"bird\"]\n\n# Step 5: Identity: a = [1,2], b = a, print(a is b)\n",
+            "expectedOutput": "True\nFalse\nTrue\nFalse\nTrue\nTrue\n25\n50\nTrue\nTrue",
+            "hint": "Step 1: print(10 >= 10), print(10 > 10), print(10 != 5). Step 2: print(True and False), print(True or False), print(not False). Step 3: x = 20, x += 5, print(x), x *= 2, print(x). Step 4: print(\"cat\" in [\"dog\", \"cat\", \"bird\"]). Step 5: a = [1,2], b = a, print(a is b)."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l7-q1",
+              "question": "What is the result of True and False?",
+              "options": ["True", "False", "None", "Error"],
+              "correctAnswer": 1,
+              "explanation": "The 'and' operator returns True only if BOTH sides are True. Since one side is False, the result is False."
+            },
+            {
+              "id": "m1-l7-q2",
+              "question": "What is the difference between == and is?",
+              "options": ["No difference", "== checks value, is checks identity (same object)", "== checks identity, is checks value", "is only works with None"],
+              "correctAnswer": 1,
+              "explanation": "== compares values (equality), while 'is' checks if two variables point to the exact same object in memory."
+            }
+          ]
+        },
+        {
+          "id": "m1-l8",
+          "title": "User Input & Print Formatting",
+          "theory_en": "## The `input()` Function\n\n`input()` reads a line of text from the user:\n```python\nname = input(\"Enter your name: \")\nprint(\"Hello, \" + name)\n```\n\n**Important:** `input()` always returns a **string**. To get a number:\n```python\nage = int(input(\"Enter your age: \"))\n```\n\n> Note: In this online environment, `input()` has limited support. We'll focus on `print()` formatting.\n\n## Advanced `print()` Parameters\n\n### `sep` Parameter\nChanges the separator between multiple values (default is space):\n```python\nprint(\"A\", \"B\", \"C\")              # A B C\nprint(\"A\", \"B\", \"C\", sep=\"-\")     # A-B-C\nprint(\"A\", \"B\", \"C\", sep=\"\")      # ABC\nprint(2025, 4, 17, sep=\"/\")       # 2025/4/17\n```\n\n### `end` Parameter\nChanges what's printed at the end (default is newline `\\n`):\n```python\nprint(\"Hello\", end=\" \")\nprint(\"World\")               # Hello World (on same line)\n\nprint(\"A\", end=\"->\")\nprint(\"B\", end=\"->\")\nprint(\"C\")                   # A->B->C\n```\n\n## Comments & Docstrings\n\n```python\n# This is a single-line comment\n\n\"\"\"\nThis is a\nmulti-line comment (docstring)\n\"\"\"\n```",
+          "theory_zh": "## `input()` 函数\n\n`input()` 从用户读取一行文本：\n```python\nname = input(\"Enter your name: \")\nprint(\"Hello, \" + name)\n```\n\n**重要：** `input()` 总是返回**字符串**。要获取数字：\n```python\nage = int(input(\"Enter your age: \"))\n```\n\n> 注意：在此在线环境中，`input()` 支持有限。我们将专注于 `print()` 格式化。\n\n## `print()` 高级参数\n\n### `sep` 参数\n改变多个值之间的分隔符（默认是空格）：\n```python\nprint(\"A\", \"B\", \"C\")              # A B C\nprint(\"A\", \"B\", \"C\", sep=\"-\")     # A-B-C\nprint(\"A\", \"B\", \"C\", sep=\"\")      # ABC\nprint(2025, 4, 17, sep=\"/\")       # 2025/4/17\n```\n\n### `end` 参数\n改变打印末尾的内容（默认是换行 `\\n`）：\n```python\nprint(\"Hello\", end=\" \")\nprint(\"World\")               # Hello World（在同一行）\n\nprint(\"A\", end=\"->\")\nprint(\"B\", end=\"->\")\nprint(\"C\")                   # A->B->C\n```\n\n## 注释与文档字符串\n\n```python\n# 这是单行注释\n\n\"\"\"\n这是\n多行注释（文档字符串）\n\"\"\"\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Print \"A\", \"B\", \"C\" separated by \" - \" (use sep parameter)\n\n# Step 2: Print a date: 2025, 4, 17 separated by \"/\" (use sep parameter)\n\n# Step 3: Use end parameter to print \"Hello \" and \"World!\" on the same line\n\n# Step 4: Print a chain: \"Start\", then \"Middle\", then \"End\" connected by \" -> \"\n# (use end=\"  -> \" for first two prints, normal print for last)\n",
+            "expectedOutput": "A - B - C\n2025/4/17\nHello World!\nStart -> Middle -> End",
+            "hint": "Step 1: print(\"A\", \"B\", \"C\", sep=\" - \"). Step 2: print(2025, 4, 17, sep=\"/\"). Step 3: print(\"Hello\", end=\" \") then print(\"World!\"). Step 4: print(\"Start\", end=\" -> \"), print(\"Middle\", end=\" -> \"), print(\"End\")."
+          },
+          "quizzes": [
+            {
+              "id": "m1-l8-q1",
+              "question": "What does print(\"A\", \"B\", sep=\"-\") output?",
+              "options": ["A B", "A-B", "A - B", "AB"],
+              "correctAnswer": 1,
+              "explanation": "The sep parameter replaces the default space separator. So print(\"A\", \"B\", sep=\"-\") outputs A-B."
+            },
+            {
+              "id": "m1-l8-q2",
+              "question": "What type does input() always return?",
+              "options": ["int", "float", "str", "Depends on the input"],
+              "correctAnswer": 2,
+              "explanation": "input() always returns a string (str). You need to explicitly cast it to int or float if needed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "title": "Data Structures",
+      "description": "Lists, Tuples, Sets, Dictionaries & Iterators",
+      "icon": "📦",
+      "weight": "20%",
+      "lessons": [
+        {
+          "id": "m2-l1",
+          "title": "Lists",
+          "theory_en": "## Lists\n\nA list is an **ordered, mutable** collection. Created with square brackets:\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\nnumbers = [1, 2, 3, 4, 5]\nmixed = [1, \"hello\", True, 3.14]\n```\n\n### Indexing & Slicing\n```python\nfruits = [\"apple\", \"banana\", \"cherry\", \"date\"]\nprint(fruits[0])     # apple\nprint(fruits[-1])    # date\nprint(fruits[1:3])   # ['banana', 'cherry']\n```\n\n### Common List Methods\n```python\nfruits.append(\"elderberry\")  # add to end\nfruits.insert(1, \"blueberry\") # insert at index\nfruits.remove(\"banana\")       # remove by value\nfruits.pop()                   # remove last\nfruits.pop(0)                  # remove at index\n```\n\n### Sorting & Reversing\n```python\nnums = [3, 1, 4, 1, 5]\nnums.sort()          # [1, 1, 3, 4, 5] (in-place)\nnums.reverse()       # [5, 4, 3, 1, 1]\nsorted_nums = sorted([3,1,2])  # returns new list [1,2,3]\n```\n\n### List Comprehension\nA concise way to create lists:\n```python\nsquares = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]\nevens = [x for x in range(10) if x % 2 == 0]  # [0, 2, 4, 6, 8]\n```\n\n### `len()`, `in`, `copy()`\n```python\nprint(len(fruits))          # length\nprint(\"apple\" in fruits)    # membership check\ncopy = fruits.copy()        # shallow copy\n```",
+          "theory_zh": "## 列表（Lists）\n\n列表是**有序、可变**的集合。使用方括号创建：\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\nnumbers = [1, 2, 3, 4, 5]\nmixed = [1, \"hello\", True, 3.14]\n```\n\n### 索引与切片\n```python\nfruits = [\"apple\", \"banana\", \"cherry\", \"date\"]\nprint(fruits[0])     # apple\nprint(fruits[-1])    # date\nprint(fruits[1:3])   # ['banana', 'cherry']\n```\n\n### 常用列表方法\n```python\nfruits.append(\"elderberry\")  # 添加到末尾\nfruits.insert(1, \"blueberry\") # 在索引处插入\nfruits.remove(\"banana\")       # 按值删除\nfruits.pop()                   # 删除最后一个\nfruits.pop(0)                  # 删除指定索引\n```\n\n### 排序与反转\n```python\nnums = [3, 1, 4, 1, 5]\nnums.sort()          # [1, 1, 3, 4, 5]（原地排序）\nnums.reverse()       # [5, 4, 3, 1, 1]\nsorted_nums = sorted([3,1,2])  # 返回新列表 [1,2,3]\n```\n\n### 列表推导式（List Comprehension）\n简洁创建列表的方式：\n```python\nsquares = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]\nevens = [x for x in range(10) if x % 2 == 0]  # [0, 2, 4, 6, 8]\n```\n\n### `len()`、`in`、`copy()`\n```python\nprint(len(fruits))          # 长度\nprint(\"apple\" in fruits)    # 成员检查\ncopy = fruits.copy()        # 浅拷贝\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create a list nums = [5, 2, 8, 1, 9] and print it\n\n# Step 2: Print the first element and last element\n\n# Step 3: Append 6 to the list and print the list\n\n# Step 4: Remove the element 2 from the list and print\n\n# Step 5: Sort the list and print it\n\n# Step 6: Create a list of squares [0,1,4,9,16] using list comprehension and print\n\n# Step 7: Print the length of nums\n",
+            "expectedOutput": "[5, 2, 8, 1, 9]\n5\n9\n[5, 2, 8, 1, 9, 6]\n[5, 8, 1, 9, 6]\n[1, 5, 6, 8, 9]\n[0, 1, 4, 9, 16]\n5",
+            "hint": "Step 1: print(nums). Step 2: print(nums[0]), print(nums[-1]). Step 3: nums.append(6), print(nums). Step 4: nums.remove(2), print(nums). Step 5: nums.sort(), print(nums). Step 6: squares = [x**2 for x in range(5)], print(squares). Step 7: print(len(nums))."
+          },
+          "quizzes": [
+            {
+              "id": "m2-l1-q1",
+              "question": "What does [1, 2, 3].pop() return?",
+              "options": ["1", "3", "[1, 2]", "None"],
+              "correctAnswer": 1,
+              "explanation": "pop() without an argument removes and returns the LAST element. So [1,2,3].pop() returns 3."
+            },
+            {
+              "id": "m2-l1-q2",
+              "question": "What is the result of [x*2 for x in range(3)]?",
+              "options": ["[0, 1, 2]", "[2, 4, 6]", "[0, 2, 4]", "[1, 2, 3]"],
+              "correctAnswer": 2,
+              "explanation": "range(3) gives 0, 1, 2. Multiplied by 2: [0*2, 1*2, 2*2] = [0, 2, 4]."
+            }
+          ]
+        },
+        {
+          "id": "m2-l2",
+          "title": "Tuples",
+          "theory_en": "## Tuples\n\nA tuple is an **ordered, immutable** collection. Created with parentheses:\n```python\ncolors = (\"red\", \"green\", \"blue\")\npoint = (3, 4)\nsingle = (42,)  # note the comma for single-element tuple\n```\n\n### Why Tuples?\n- **Immutable**: Can't be changed after creation (safer)\n- **Faster** than lists\n- Can be used as dictionary keys (lists cannot)\n\n### Indexing & Slicing\n```python\ncolors = (\"red\", \"green\", \"blue\", \"yellow\")\nprint(colors[0])      # red\nprint(colors[-1])     # yellow\nprint(colors[1:3])    # ('green', 'blue')\n```\n\n### Tuple Unpacking\n```python\npoint = (10, 20, 30)\nx, y, z = point\nprint(x)  # 10\nprint(y)  # 20\nprint(z)  # 30\n```\n\n### Tuple Methods\n```python\nnums = (1, 2, 3, 2, 2, 4)\nprint(nums.count(2))    # 3 (how many 2s)\nprint(nums.index(3))    # 2 (index of first 3)\n```\n\n### Tuple vs List\n| Feature | Tuple | List |\n|---------|-------|------|\n| Syntax | `()` | `[]` |\n| Mutable | No | Yes |\n| Speed | Faster | Slower |\n| Dict key | Yes | No |",
+          "theory_zh": "## 元组（Tuples）\n\n元组是**有序、不可变**的集合。使用圆括号创建：\n```python\ncolors = (\"red\", \"green\", \"blue\")\npoint = (3, 4)\nsingle = (42,)  # 注意单元素元组的逗号\n```\n\n### 为什么用元组？\n- **不可变**：创建后不能修改（更安全）\n- 比列表**更快**\n- 可以作为字典的键（列表不行）\n\n### 索引与切片\n```python\ncolors = (\"red\", \"green\", \"blue\", \"yellow\")\nprint(colors[0])      # red\nprint(colors[-1])     # yellow\nprint(colors[1:3])    # ('green', 'blue')\n```\n\n### 元组解包\n```python\npoint = (10, 20, 30)\nx, y, z = point\nprint(x)  # 10\nprint(y)  # 20\nprint(z)  # 30\n```\n\n### 元组方法\n```python\nnums = (1, 2, 3, 2, 2, 4)\nprint(nums.count(2))    # 3（有几个 2）\nprint(nums.index(3))    # 2（第一个 3 的索引）\n```\n\n### 元组 vs 列表\n| 特性 | 元组 | 列表 |\n|---------|-------|------|\n| 语法 | `()` | `[]` |\n| 可变 | 否 | 是 |\n| 速度 | 更快 | 较慢 |\n| 字典键 | 可以 | 不可以 |",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create a tuple fruits = (\"apple\", \"banana\", \"cherry\", \"date\") and print it\n\n# Step 2: Print the second element and last element\n\n# Step 3: Unpack the tuple (10, 20, 30) into x, y, z and print each\n\n# Step 4: Create nums = (1, 3, 5, 3, 3, 7) and print how many times 3 appears\n\n# Step 5: Print the index of 5 in nums\n",
+            "expectedOutput": "('apple', 'banana', 'cherry', 'date')\nbanana\ndate\n10\n20\n30\n3\n2",
+            "hint": "Step 1: print(fruits). Step 2: print(fruits[1]), print(fruits[-1]). Step 3: x, y, z = (10, 20, 30); print(x); print(y); print(z). Step 4: print(nums.count(3)). Step 5: print(nums.index(5))."
+          },
+          "quizzes": [
+            {
+              "id": "m2-l2-q1",
+              "question": "What happens if you try to modify a tuple element?",
+              "options": ["It works fine", "TypeError is raised", "The tuple becomes a list", "None is returned"],
+              "correctAnswer": 1,
+              "explanation": "Tuples are immutable. Trying to assign to a tuple index raises a TypeError."
+            },
+            {
+              "id": "m2-l2-q2",
+              "question": "How do you create a tuple with a single element?",
+              "options": ["(42)", "(42,)", "[42]", "tuple(42)"],
+              "correctAnswer": 1,
+              "explanation": "A single-element tuple requires a trailing comma: (42,). Without the comma, (42) is just an integer in parentheses."
+            }
+          ]
+        },
+        {
+          "id": "m2-l3",
+          "title": "Sets",
+          "theory_en": "## Sets\n\nA set is an **unordered collection of unique elements**. Created with curly braces:\n```python\nfruits = {\"apple\", \"banana\", \"cherry\"}\nnums = {1, 2, 3, 2, 1}  # duplicates removed → {1, 2, 3}\n```\n\n### Set Properties\n- **No duplicates**: Automatically removes duplicate values\n- **Unordered**: No indexing (`fruits[0]` won't work)\n- **Mutable**: Can add/remove elements\n\n### Common Methods\n```python\nfruits = {\"apple\", \"banana\"}\nfruits.add(\"cherry\")       # add an element\nfruits.remove(\"banana\")    # remove (error if not found)\nfruits.discard(\"xyz\")      # remove (no error if not found)\nprint(len(fruits))          # size\nprint(\"apple\" in fruits)    # membership\n```\n\n### Set Operations\n```python\na = {1, 2, 3, 4}\nb = {3, 4, 5, 6}\n\nprint(a | b)   # Union: {1, 2, 3, 4, 5, 6}\nprint(a & b)   # Intersection: {3, 4}\nprint(a - b)   # Difference: {1, 2}\nprint(a ^ b)   # Symmetric difference: {1, 2, 5, 6}\n```\n\n### Converting to Set (Remove Duplicates)\n```python\nnums = [1, 2, 2, 3, 3, 3]\nunique = list(set(nums))  # [1, 2, 3]\n```",
+          "theory_zh": "## 集合（Sets）\n\n集合是**无序的唯一元素集合**。使用花括号创建：\n```python\nfruits = {\"apple\", \"banana\", \"cherry\"}\nnums = {1, 2, 3, 2, 1}  # 重复被移除 → {1, 2, 3}\n```\n\n### 集合特性\n- **无重复**：自动删除重复值\n- **无序**：不能索引（`fruits[0]` 不行）\n- **可变**：可以添加/删除元素\n\n### 常用方法\n```python\nfruits = {\"apple\", \"banana\"}\nfruits.add(\"cherry\")       # 添加元素\nfruits.remove(\"banana\")    # 删除（不存在会报错）\nfruits.discard(\"xyz\")      # 删除（不存在不报错）\nprint(len(fruits))          # 大小\nprint(\"apple\" in fruits)    # 成员检查\n```\n\n### 集合运算\n```python\na = {1, 2, 3, 4}\nb = {3, 4, 5, 6}\n\nprint(a | b)   # 并集: {1, 2, 3, 4, 5, 6}\nprint(a & b)   # 交集: {3, 4}\nprint(a - b)   # 差集: {1, 2}\nprint(a ^ b)   # 对称差集: {1, 2, 5, 6}\n```\n\n### 转换为集合（去重）\n```python\nnums = [1, 2, 2, 3, 3, 3]\nunique = list(set(nums))  # [1, 2, 3]\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create a set with duplicates: nums = {3, 1, 4, 1, 5, 9, 2, 6, 5} and print sorted version\n\n# Step 2: Add 10 to the set and print sorted version\n\n# Step 3: Check if 4 is in the set, print the result\n\n# Step 4: Create two sets a = {1,2,3,4}, b = {3,4,5,6}\n# Print their union (sorted), intersection (sorted), and difference a-b (sorted)\n\n# Step 5: Remove duplicates from the list [5,3,5,1,3,1] using set, print sorted result\n",
+            "expectedOutput": "[1, 2, 3, 4, 5, 6, 9]\n[1, 2, 3, 4, 5, 6, 9, 10]\nTrue\n[1, 2, 3, 4, 5, 6]\n[3, 4]\n[1, 2]\n[1, 3, 5]",
+            "hint": "Step 1: print(sorted(nums)). Step 2: nums.add(10); print(sorted(nums)). Step 3: print(4 in nums). Step 4: print(sorted(a | b)), print(sorted(a & b)), print(sorted(a - b)). Step 5: print(sorted(list(set([5,3,5,1,3,1]))))."
+          },
+          "quizzes": [
+            {
+              "id": "m2-l3-q1",
+              "question": "What is the result of {1, 2, 3} & {2, 3, 4}?",
+              "options": ["{1, 2, 3, 4}", "{2, 3}", "{1, 4}", "{1}"],
+              "correctAnswer": 1,
+              "explanation": "The & operator returns the intersection — elements present in BOTH sets: {2, 3}."
+            },
+            {
+              "id": "m2-l3-q2",
+              "question": "Can you access a set element by index like my_set[0]?",
+              "options": ["Yes", "No, sets are unordered", "Only if sorted first", "Only with integers"],
+              "correctAnswer": 1,
+              "explanation": "Sets are unordered collections, so they do not support indexing. Use 'in' to check membership instead."
+            }
+          ]
+        },
+        {
+          "id": "m2-l4",
+          "title": "Dictionaries",
+          "theory_en": "## Dictionaries\n\nA dictionary stores **key-value pairs**. Created with curly braces:\n```python\nstudent = {\n    \"name\": \"Alice\",\n    \"age\": 15,\n    \"grade\": \"A\"\n}\n```\n\n### Accessing Values\n```python\nprint(student[\"name\"])        # Alice\nprint(student.get(\"age\"))     # 15\nprint(student.get(\"phone\", \"N/A\"))  # N/A (default if missing)\n```\n\n### Adding & Updating\n```python\nstudent[\"email\"] = \"alice@mail.com\"   # add new key\nstudent[\"age\"] = 16                    # update existing key\n```\n\n### Removing\n```python\ndel student[\"grade\"]           # remove by key\nstudent.pop(\"email\")           # remove and return value\n```\n\n### Looping Through Dictionaries\n```python\nfor key in student:\n    print(key)                  # prints keys\n\nfor key, value in student.items():\n    print(f\"{key}: {value}\")    # prints key-value pairs\n```\n\n### keys(), values(), items()\n```python\nprint(student.keys())     # dict_keys(['name', 'age'])\nprint(student.values())   # dict_values(['Alice', 16])\nprint(student.items())    # dict_items([('name', 'Alice'), ...])\n```\n\n### Dictionary Comprehension\n```python\nsquares = {x: x**2 for x in range(5)}\n# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}\n```\n\n### Nested Dictionaries\n```python\nschool = {\n    \"student1\": {\"name\": \"Alice\", \"grade\": \"A\"},\n    \"student2\": {\"name\": \"Bob\", \"grade\": \"B\"}\n}\nprint(school[\"student1\"][\"name\"])  # Alice\n```",
+          "theory_zh": "## 字典（Dictionaries）\n\n字典存储**键值对**。使用花括号创建：\n```python\nstudent = {\n    \"name\": \"Alice\",\n    \"age\": 15,\n    \"grade\": \"A\"\n}\n```\n\n### 访问值\n```python\nprint(student[\"name\"])        # Alice\nprint(student.get(\"age\"))     # 15\nprint(student.get(\"phone\", \"N/A\"))  # N/A（缺失时的默认值）\n```\n\n### 添加与更新\n```python\nstudent[\"email\"] = \"alice@mail.com\"   # 添加新键\nstudent[\"age\"] = 16                    # 更新已有键\n```\n\n### 删除\n```python\ndel student[\"grade\"]           # 按键删除\nstudent.pop(\"email\")           # 删除并返回值\n```\n\n### 遍历字典\n```python\nfor key in student:\n    print(key)                  # 打印键\n\nfor key, value in student.items():\n    print(f\"{key}: {value}\")    # 打印键值对\n```\n\n### keys(), values(), items()\n```python\nprint(student.keys())     # dict_keys(['name', 'age'])\nprint(student.values())   # dict_values(['Alice', 16])\nprint(student.items())    # dict_items([('name', 'Alice'), ...])\n```\n\n### 字典推导式\n```python\nsquares = {x: x**2 for x in range(5)}\n# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}\n```\n\n### 嵌套字典\n```python\nschool = {\n    \"student1\": {\"name\": \"Alice\", \"grade\": \"A\"},\n    \"student2\": {\"name\": \"Bob\", \"grade\": \"B\"}\n}\nprint(school[\"student1\"][\"name\"])  # Alice\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create a dict: person = {\"name\": \"Alice\", \"age\": 15, \"city\": \"NYC\"}\n# Print person[\"name\"]\n\n# Step 2: Use .get() with a default: print person's \"phone\" with default \"N/A\"\n\n# Step 3: Add \"grade\": \"A\" to person, then print the dict\n\n# Step 4: Loop through person.items() and print each key: value\n\n# Step 5: Create a dict comprehension: {x: x**2 for x in range(4)} and print it\n",
+            "expectedOutput": "Alice\nN/A\n{'name': 'Alice', 'age': 15, 'city': 'NYC', 'grade': 'A'}\nname: Alice\nage: 15\ncity: NYC\ngrade: A\n{0: 0, 1: 1, 2: 4, 3: 9}",
+            "hint": "Step 1: print(person[\"name\"]). Step 2: print(person.get(\"phone\", \"N/A\")). Step 3: person[\"grade\"] = \"A\"; print(person). Step 4: for k, v in person.items(): print(f\"{k}: {v}\"). Step 5: print({x: x**2 for x in range(4)})."
+          },
+          "quizzes": [
+            {
+              "id": "m2-l4-q1",
+              "question": "What happens when you access a non-existent key with dict[\"key\"]?",
+              "options": ["Returns None", "Returns 0", "Raises KeyError", "Returns empty string"],
+              "correctAnswer": 2,
+              "explanation": "Accessing a non-existent key with [] raises a KeyError. Use .get() to safely access with a default value."
+            },
+            {
+              "id": "m2-l4-q2",
+              "question": "What does {x: x*2 for x in range(3)} produce?",
+              "options": ["{0, 2, 4}", "{0: 0, 1: 2, 2: 4}", "[0, 2, 4]", "Error"],
+              "correctAnswer": 1,
+              "explanation": "This is a dictionary comprehension creating key-value pairs: {0: 0, 1: 2, 2: 4}."
+            }
+          ]
+        },
+        {
+          "id": "m2-l5",
+          "title": "Range, Enumerate & Zip",
+          "theory_en": "## The `range()` Function\n\nGenerates a sequence of numbers:\n```python\nrange(5)          # 0, 1, 2, 3, 4\nrange(2, 8)       # 2, 3, 4, 5, 6, 7\nrange(0, 10, 2)   # 0, 2, 4, 6, 8 (step of 2)\nrange(10, 0, -1)  # 10, 9, 8, ..., 1 (countdown)\n```\n\nConvert to list:\n```python\nprint(list(range(5)))  # [0, 1, 2, 3, 4]\n```\n\n## `enumerate()`\n\nGet both **index and value** when looping:\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\nfor i, fruit in enumerate(fruits):\n    print(f\"{i}: {fruit}\")\n# 0: apple\n# 1: banana\n# 2: cherry\n```\n\nYou can set a custom start index:\n```python\nfor i, fruit in enumerate(fruits, start=1):\n    print(f\"{i}. {fruit}\")\n```\n\n## `zip()`\n\nCombine two or more iterables element-wise:\n```python\nnames = [\"Alice\", \"Bob\", \"Charlie\"]\nscores = [95, 87, 92]\n\nfor name, score in zip(names, scores):\n    print(f\"{name}: {score}\")\n# Alice: 95\n# Bob: 87\n# Charlie: 92\n```\n\nConvert to list of tuples:\n```python\npairs = list(zip(names, scores))\n# [('Alice', 95), ('Bob', 87), ('Charlie', 92)]\n```",
+          "theory_zh": "## `range()` 函数\n\n生成数字序列：\n```python\nrange(5)          # 0, 1, 2, 3, 4\nrange(2, 8)       # 2, 3, 4, 5, 6, 7\nrange(0, 10, 2)   # 0, 2, 4, 6, 8（步长为 2）\nrange(10, 0, -1)  # 10, 9, 8, ..., 1（倒数）\n```\n\n转换为列表：\n```python\nprint(list(range(5)))  # [0, 1, 2, 3, 4]\n```\n\n## `enumerate()`\n\n循环时同时获取**索引和值**：\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\nfor i, fruit in enumerate(fruits):\n    print(f\"{i}: {fruit}\")\n# 0: apple\n# 1: banana\n# 2: cherry\n```\n\n可以设置自定义起始索引：\n```python\nfor i, fruit in enumerate(fruits, start=1):\n    print(f\"{i}. {fruit}\")\n```\n\n## `zip()`\n\n逐元素组合两个或多个可迭代对象：\n```python\nnames = [\"Alice\", \"Bob\", \"Charlie\"]\nscores = [95, 87, 92]\n\nfor name, score in zip(names, scores):\n    print(f\"{name}: {score}\")\n# Alice: 95\n# Bob: 87\n# Charlie: 92\n```\n\n转换为元组列表：\n```python\npairs = list(zip(names, scores))\n# [('Alice', 95), ('Bob', 87), ('Charlie', 92)]\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Print list(range(1, 6))\n\n# Step 2: Print list of even numbers from 0 to 10 using range with step\n\n# Step 3: Use enumerate on [\"a\", \"b\", \"c\"] and print each index: value\n\n# Step 4: Zip names = [\"Alice\", \"Bob\"] and scores = [95, 87]\n# Print each pair as \"name: score\"\n\n# Step 5: Print the list of zip(names, scores)\n",
+            "expectedOutput": "[1, 2, 3, 4, 5]\n[0, 2, 4, 6, 8, 10]\n0: a\n1: b\n2: c\nAlice: 95\nBob: 87\n[('Alice', 95), ('Bob', 87)]",
+            "hint": "Step 1: print(list(range(1, 6))). Step 2: print(list(range(0, 11, 2))). Step 3: for i, v in enumerate([\"a\",\"b\",\"c\"]): print(f\"{i}: {v}\"). Step 4: for n, s in zip(names, scores): print(f\"{n}: {s}\"). Step 5: print(list(zip(names, scores)))."
+          },
+          "quizzes": [
+            {
+              "id": "m2-l5-q1",
+              "question": "What does list(range(2, 8, 2)) return?",
+              "options": ["[2, 4, 6, 8]", "[2, 4, 6]", "[2, 3, 4, 5, 6, 7]", "[0, 2, 4, 6]"],
+              "correctAnswer": 1,
+              "explanation": "range(2, 8, 2) starts at 2, goes up to (not including) 8, with step 2: [2, 4, 6]."
+            },
+            {
+              "id": "m2-l5-q2",
+              "question": "What does enumerate() provide that a regular for loop doesn't?",
+              "options": ["Faster iteration", "Both index and value", "Reverse iteration", "Parallel iteration"],
+              "correctAnswer": 1,
+              "explanation": "enumerate() returns both the index and the value of each element during iteration."
+            }
+          ]
+        },
+        {
+          "id": "m2-l6",
+          "title": "Iterators & Generators",
+          "theory_en": "## Iterators\n\nAn **iterator** is an object that contains a countable number of values and can be iterated upon.\n\n### How Iteration Works\nEvery iterable (list, tuple, string, etc.) can produce an iterator:\n```python\nnums = [10, 20, 30]\nit = iter(nums)       # create iterator\nprint(next(it))       # 10\nprint(next(it))       # 20\nprint(next(it))       # 30\n# next(it) would raise StopIteration\n```\n\n### The `for` Loop Behind the Scenes\nA `for` loop automatically creates an iterator and calls `next()` until `StopIteration`:\n```python\n# These are equivalent:\nfor x in [1, 2, 3]:\n    print(x)\n\n# Behind the scenes:\nit = iter([1, 2, 3])\nwhile True:\n    try:\n        x = next(it)\n        print(x)\n    except StopIteration:\n        break\n```\n\n## Generators\n\nA generator is a simple way to create an iterator using `yield`:\n```python\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor num in countdown(3):\n    print(num)   # 3, 2, 1\n```\n\n### Generator Expression\n```python\nsquares = (x**2 for x in range(5))  # generator (not a tuple!)\nprint(list(squares))  # [0, 1, 4, 9, 16]\n```\n\n**Key difference**: Generators produce values **lazily** (one at a time), saving memory.",
+          "theory_zh": "## 迭代器（Iterators）\n\n**迭代器**是包含可数值并可以逐个遍历的对象。\n\n### 迭代的工作原理\n每个可迭代对象（list、tuple、string 等）都可以产生一个迭代器：\n```python\nnums = [10, 20, 30]\nit = iter(nums)       # 创建迭代器\nprint(next(it))       # 10\nprint(next(it))       # 20\nprint(next(it))       # 30\n# next(it) 会触发 StopIteration\n```\n\n### `for` 循环的底层原理\n`for` 循环自动创建迭代器并调用 `next()` 直到 `StopIteration`：\n```python\n# 以下两种写法等价：\nfor x in [1, 2, 3]:\n    print(x)\n\n# 底层实现：\nit = iter([1, 2, 3])\nwhile True:\n    try:\n        x = next(it)\n        print(x)\n    except StopIteration:\n        break\n```\n\n## 生成器（Generators）\n\n生成器是使用 `yield` 创建迭代器的简单方式：\n```python\ndef countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor num in countdown(3):\n    print(num)   # 3, 2, 1\n```\n\n### 生成器表达式\n```python\nsquares = (x**2 for x in range(5))  # 生成器（不是元组！）\nprint(list(squares))  # [0, 1, 4, 9, 16]\n```\n\n**关键区别**：生成器**惰性**产生值（一次一个），节省内存。",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create an iterator from [100, 200, 300]\n# Use next() three times and print each value\n\n# Step 2: Create a generator function that yields squares of 1 to 4\ndef square_gen(n):\n    for i in range(1, n + 1):\n        yield i ** 2\n\n# Step 3: Use the generator to print all values\n\n# Step 4: Create a generator expression for cubes of 1 to 3 and print as list\n",
+            "expectedOutput": "100\n200\n300\n1\n4\n9\n16\n[1, 8, 27]",
+            "hint": "Step 1: it = iter([100,200,300]); print(next(it)); print(next(it)); print(next(it)). Step 3: for val in square_gen(4): print(val). Step 4: cubes = (x**3 for x in range(1,4)); print(list(cubes))."
+          },
+          "quizzes": [
+            {
+              "id": "m2-l6-q1",
+              "question": "What does the `yield` keyword do in a function?",
+              "options": ["Terminates the function", "Returns a value and pauses execution", "Creates an infinite loop", "Raises an exception"],
+              "correctAnswer": 1,
+              "explanation": "yield returns a value to the caller and pauses the function. The function can be resumed to produce more values."
+            },
+            {
+              "id": "m2-l6-q2",
+              "question": "What exception is raised when next() is called on an exhausted iterator?",
+              "options": ["ValueError", "IndexError", "StopIteration", "RuntimeError"],
+              "correctAnswer": 2,
+              "explanation": "When there are no more items, next() raises a StopIteration exception."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "title": "Control Flow",
+      "description": "Conditionals, Loops, Comprehensions & Error Handling",
+      "icon": "🔀",
+      "weight": "20%",
+      "lessons": [
+        {
+          "id": "m3-l1",
+          "title": "If / Elif / Else",
+          "theory_en": "## Conditional Statements\n\nConditional statements let your program make decisions.\n\n### `if` Statement\n```python\nage = 18\nif age >= 18:\n    print(\"You are an adult\")\n```\n\n### `if...else`\n```python\ntemp = 30\nif temp > 25:\n    print(\"It's hot\")\nelse:\n    print(\"It's cool\")\n```\n\n### `if...elif...else`\n```python\nscore = 85\nif score >= 90:\n    grade = \"A\"\nelif score >= 80:\n    grade = \"B\"\nelif score >= 70:\n    grade = \"C\"\nelse:\n    grade = \"F\"\nprint(grade)  # B\n```\n\n### Nested `if`\n```python\nage = 20\nhas_id = True\nif age >= 18:\n    if has_id:\n        print(\"Entry allowed\")\n    else:\n        print(\"Show your ID\")\n```\n\n### Logical Operators in Conditions\n```python\nage = 20\nif age >= 18 and age <= 65:\n    print(\"Working age\")\n\nif age < 13 or age > 65:\n    print(\"Special pricing\")\n```\n\n### Ternary Expression\nShort form of if/else in one line:\n```python\nage = 20\nstatus = \"adult\" if age >= 18 else \"minor\"\nprint(status)  # adult\n```",
+          "theory_zh": "## 条件语句\n\n条件语句让程序做出决策。\n\n### `if` 语句\n```python\nage = 18\nif age >= 18:\n    print(\"You are an adult\")\n```\n\n### `if...else`\n```python\ntemp = 30\nif temp > 25:\n    print(\"It's hot\")\nelse:\n    print(\"It's cool\")\n```\n\n### `if...elif...else`\n```python\nscore = 85\nif score >= 90:\n    grade = \"A\"\nelif score >= 80:\n    grade = \"B\"\nelif score >= 70:\n    grade = \"C\"\nelse:\n    grade = \"F\"\nprint(grade)  # B\n```\n\n### 嵌套 `if`\n```python\nage = 20\nhas_id = True\nif age >= 18:\n    if has_id:\n        print(\"Entry allowed\")\n    else:\n        print(\"Show your ID\")\n```\n\n### 条件中的逻辑运算符\n```python\nage = 20\nif age >= 18 and age <= 65:\n    print(\"Working age\")\n\nif age < 13 or age > 65:\n    print(\"Special pricing\")\n```\n\n### 三元表达式\nif/else 的单行简写：\n```python\nage = 20\nstatus = \"adult\" if age >= 18 else \"minor\"\nprint(status)  # adult\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Use if/elif/else to grade a score of 75\n# A: >=90, B: >=80, C: >=70, F: <70\nscore = 75\n\n# Step 2: Use nested if: age=20, has_ticket=True\n# If age >= 18 and has_ticket, print \"Welcome!\"\nage = 20\nhas_ticket = True\n\n# Step 3: Use logical operators: check if 15 is between 10 and 20 (inclusive)\nnum = 15\n\n# Step 4: Use ternary expression to set result to \"even\" if 8 is even, else \"odd\"\n\n# Step 5: Check if a string is empty: s = \"\", print \"empty\" or \"not empty\"\ns = \"\"\n",
+            "expectedOutput": "C\nWelcome!\nIn range\neven\nempty",
+            "hint": "Step 1: if score>=90: 'A', elif score>=80: 'B', elif score>=70: 'C', else: 'F'. Step 2: if age>=18: if has_ticket: print('Welcome!'). Step 3: if num>=10 and num<=20: print('In range'). Step 4: result = 'even' if 8%2==0 else 'odd'; print(result). Step 5: print('empty' if not s else 'not empty')."
+          },
+          "quizzes": [
+            {
+              "id": "m3-l1-q1",
+              "question": "What is the output of: print(\"yes\") if 5 > 3 else print(\"no\")?",
+              "options": ["yes", "no", "True", "Error"],
+              "correctAnswer": 0,
+              "explanation": "Since 5 > 3 is True, the ternary expression executes print(\"yes\"), outputting 'yes'."
+            },
+            {
+              "id": "m3-l1-q2",
+              "question": "In an if/elif/else chain, how many blocks can execute?",
+              "options": ["All of them", "Exactly one", "At least one", "Zero or one"],
+              "correctAnswer": 1,
+              "explanation": "In an if/elif/else chain, exactly one block executes — the first condition that is True (or else if none match)."
+            }
+          ]
+        },
+        {
+          "id": "m3-l2",
+          "title": "While Loops",
+          "theory_en": "## While Loop\n\nExecutes a block of code as long as a condition is True:\n```python\ncount = 0\nwhile count < 5:\n    print(count)\n    count += 1\n# Prints: 0, 1, 2, 3, 4\n```\n\n### `break` Statement\nExit the loop immediately:\n```python\ni = 0\nwhile True:  # infinite loop\n    if i >= 3:\n        break\n    print(i)\n    i += 1\n# Prints: 0, 1, 2\n```\n\n### `continue` Statement\nSkip the current iteration and continue with the next:\n```python\ni = 0\nwhile i < 5:\n    i += 1\n    if i == 3:\n        continue\n    print(i)\n# Prints: 1, 2, 4, 5 (skips 3)\n```\n\n### `while...else`\nThe `else` block runs when the condition becomes False (NOT on `break`):\n```python\ni = 0\nwhile i < 3:\n    print(i)\n    i += 1\nelse:\n    print(\"Loop completed!\")\n# Prints: 0, 1, 2, Loop completed!\n```\n\n### Common Pattern: Accumulator\n```python\ntotal = 0\nn = 1\nwhile n <= 10:\n    total += n\n    n += 1\nprint(total)  # 55 (sum of 1 to 10)\n```",
+          "theory_zh": "## While 循环\n\n只要条件为 True 就执行代码块：\n```python\ncount = 0\nwhile count < 5:\n    print(count)\n    count += 1\n# 输出: 0, 1, 2, 3, 4\n```\n\n### `break` 语句\n立即退出循环：\n```python\ni = 0\nwhile True:  # 无限循环\n    if i >= 3:\n        break\n    print(i)\n    i += 1\n# 输出: 0, 1, 2\n```\n\n### `continue` 语句\n跳过当前迭代，继续下一次：\n```python\ni = 0\nwhile i < 5:\n    i += 1\n    if i == 3:\n        continue\n    print(i)\n# 输出: 1, 2, 4, 5（跳过 3）\n```\n\n### `while...else`\n`else` 块在条件变为 False 时执行（不是 `break` 退出时）：\n```python\ni = 0\nwhile i < 3:\n    print(i)\n    i += 1\nelse:\n    print(\"Loop completed!\")\n# 输出: 0, 1, 2, Loop completed!\n```\n\n### 常见模式：累加器\n```python\ntotal = 0\nn = 1\nwhile n <= 10:\n    total += n\n    n += 1\nprint(total)  # 55（1 到 10 的和）\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Use a while loop to print numbers 1 to 5\n\n# Step 2: Use while + break to print numbers starting from 1,\n# but stop (break) when reaching 4\n\n# Step 3: Use while + continue to print 1-5 but skip 3\n\n# Step 4: Use while...else: count from 0 to 2, then print \"Done!\"\n\n# Step 5: Calculate the sum of 1 to 100 using while and print the result\n",
+            "expectedOutput": "1\n2\n3\n4\n5\n1\n2\n3\n1\n2\n4\n5\n0\n1\n2\nDone!\n5050",
+            "hint": "Step 1: i=1, while i<=5: print(i), i+=1. Step 2: i=1, while True: if i>=4: break, print(i), i+=1. Step 3: i=0, while i<5: i+=1, if i==3: continue, print(i). Step 4: i=0, while i<3: print(i), i+=1, else: print('Done!'). Step 5: total=0, n=1, while n<=100: total+=n, n+=1, print(total)."
+          },
+          "quizzes": [
+            {
+              "id": "m3-l2-q1",
+              "question": "What happens when `break` is used inside a while...else loop?",
+              "options": ["The else block still runs", "The else block is skipped", "An error occurs", "The loop restarts"],
+              "correctAnswer": 1,
+              "explanation": "When break exits a while loop, the else block is skipped. The else only runs when the while condition becomes False naturally."
+            },
+            {
+              "id": "m3-l2-q2",
+              "question": "What does `continue` do in a loop?",
+              "options": ["Exits the loop", "Skips to the next iteration", "Restarts the loop from the beginning", "Pauses the loop"],
+              "correctAnswer": 1,
+              "explanation": "continue skips the rest of the current iteration and jumps to the next iteration of the loop."
+            }
+          ]
+        },
+        {
+          "id": "m3-l3",
+          "title": "For Loops",
+          "theory_en": "## For Loop\n\nIterates over a sequence (list, tuple, string, range, etc.):\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\nfor fruit in fruits:\n    print(fruit)\n```\n\n### Looping with `range()`\n```python\nfor i in range(5):\n    print(i)      # 0, 1, 2, 3, 4\n\nfor i in range(2, 6):\n    print(i)      # 2, 3, 4, 5\n```\n\n### Looping Through Strings\n```python\nfor char in \"Hello\":\n    print(char)    # H, e, l, l, o\n```\n\n### Nested For Loops\n```python\nfor i in range(1, 4):\n    for j in range(1, 4):\n        print(f\"{i}x{j}={i*j}\", end=\"  \")\n    print()  # new line\n```\n\n### `break` and `continue` in For Loops\n```python\nfor i in range(10):\n    if i == 5:\n        break\n    print(i)    # 0, 1, 2, 3, 4\n\nfor i in range(5):\n    if i == 2:\n        continue\n    print(i)    # 0, 1, 3, 4\n```\n\n### `for...else`\n```python\nfor i in range(3):\n    print(i)\nelse:\n    print(\"Loop done!\")\n# 0, 1, 2, Loop done!\n```\n\n### Using `enumerate()` in For Loops\n```python\ncolors = [\"red\", \"green\", \"blue\"]\nfor i, color in enumerate(colors):\n    print(f\"{i}: {color}\")\n```",
+          "theory_zh": "## For 循环\n\n遍历一个序列（列表、元组、字符串、range 等）：\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\nfor fruit in fruits:\n    print(fruit)\n```\n\n### 使用 `range()` 循环\n```python\nfor i in range(5):\n    print(i)      # 0, 1, 2, 3, 4\n\nfor i in range(2, 6):\n    print(i)      # 2, 3, 4, 5\n```\n\n### 遍历字符串\n```python\nfor char in \"Hello\":\n    print(char)    # H, e, l, l, o\n```\n\n### 嵌套 For 循环\n```python\nfor i in range(1, 4):\n    for j in range(1, 4):\n        print(f\"{i}x{j}={i*j}\", end=\"  \")\n    print()  # 换行\n```\n\n### For 循环中的 `break` 和 `continue`\n```python\nfor i in range(10):\n    if i == 5:\n        break\n    print(i)    # 0, 1, 2, 3, 4\n\nfor i in range(5):\n    if i == 2:\n        continue\n    print(i)    # 0, 1, 3, 4\n```\n\n### `for...else`\n```python\nfor i in range(3):\n    print(i)\nelse:\n    print(\"Loop done!\")\n# 0, 1, 2, Loop done!\n```\n\n### For 循环中使用 `enumerate()`\n```python\ncolors = [\"red\", \"green\", \"blue\"]\nfor i, color in enumerate(colors):\n    print(f\"{i}: {color}\")\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Use a for loop to print each character of \"CAIP\" on separate lines\n\n# Step 2: Use for + range to print numbers 1 to 5\n\n# Step 3: Nested loop: print a 3x3 multiplication table (1-3)\n# Format: \"1x1=1  1x2=2  1x3=3\" etc.\n\n# Step 4: Use for + break: loop through [10,20,30,40,50], break when you find 30, print \"Found!\"\n\n# Step 5: Use enumerate on [\"a\",\"b\",\"c\"] with start=1, print \"1. a\" format\n",
+            "expectedOutput": "C\nA\nI\nP\n1\n2\n3\n4\n5\n1x1=1  1x2=2  1x3=3  \n2x1=2  2x2=4  2x3=6  \n3x1=3  3x2=6  3x3=9  \nFound!\n1. a\n2. b\n3. c",
+            "hint": "Step 1: for ch in \"CAIP\": print(ch). Step 2: for i in range(1,6): print(i). Step 3: for i in range(1,4): for j in range(1,4): print(f\"{i}x{j}={i*j}\", end=\"  \"); print(). Step 4: for n in [10,20,30,40,50]: if n==30: print(\"Found!\"); break. Step 5: for i,v in enumerate([\"a\",\"b\",\"c\"],start=1): print(f\"{i}. {v}\")."
+          },
+          "quizzes": [
+            {
+              "id": "m3-l3-q1",
+              "question": "How many times does `for i in range(3):` execute the loop body?",
+              "options": ["2 times", "3 times", "4 times", "Infinite times"],
+              "correctAnswer": 1,
+              "explanation": "range(3) generates 0, 1, 2 — so the loop body executes exactly 3 times."
+            },
+            {
+              "id": "m3-l3-q2",
+              "question": "In a nested loop with range(3) and range(4), how many total iterations occur?",
+              "options": ["7", "12", "3", "4"],
+              "correctAnswer": 1,
+              "explanation": "Nested loops multiply: 3 × 4 = 12 total iterations."
+            }
+          ]
+        },
+        {
+          "id": "m3-l4",
+          "title": "Comprehensions",
+          "theory_en": "## List Comprehension\n\nA concise way to create lists:\n```python\n# Basic syntax\n[expression for item in iterable]\n\n# With condition\n[expression for item in iterable if condition]\n```\n\n### Examples\n```python\n# Squares\nsquares = [x**2 for x in range(6)]\n# [0, 1, 4, 9, 16, 25]\n\n# Even numbers only\nevens = [x for x in range(10) if x % 2 == 0]\n# [0, 2, 4, 6, 8]\n\n# Transform strings\nwords = [\"hello\", \"world\"]\nupper = [w.upper() for w in words]\n# ['HELLO', 'WORLD']\n\n# With if-else\nlabels = [\"even\" if x % 2 == 0 else \"odd\" for x in range(5)]\n# ['even', 'odd', 'even', 'odd', 'even']\n```\n\n## Dictionary Comprehension\n```python\nsquare_dict = {x: x**2 for x in range(5)}\n# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}\n\n# Filter\nadults = {name: age for name, age in [(\"Alice\", 20), (\"Bob\", 15)] if age >= 18}\n# {'Alice': 20}\n```\n\n## Set Comprehension\n```python\nunique_lengths = {len(w) for w in [\"hi\", \"hey\", \"hello\", \"ho\"]}\n# {2, 3, 5}\n```\n\n## Nested Comprehension\n```python\nmatrix = [[i*j for j in range(1,4)] for i in range(1,4)]\n# [[1,2,3], [2,4,6], [3,6,9]]\n```",
+          "theory_zh": "## 列表推导式（List Comprehension）\n\n简洁创建列表的方式：\n```python\n# 基本语法\n[expression for item in iterable]\n\n# 带条件\n[expression for item in iterable if condition]\n```\n\n### 示例\n```python\n# 平方数\nsquares = [x**2 for x in range(6)]\n# [0, 1, 4, 9, 16, 25]\n\n# 只保留偶数\nevens = [x for x in range(10) if x % 2 == 0]\n# [0, 2, 4, 6, 8]\n\n# 转换字符串\nwords = [\"hello\", \"world\"]\nupper = [w.upper() for w in words]\n# ['HELLO', 'WORLD']\n\n# 带 if-else\nlabels = [\"even\" if x % 2 == 0 else \"odd\" for x in range(5)]\n# ['even', 'odd', 'even', 'odd', 'even']\n```\n\n## 字典推导式\n```python\nsquare_dict = {x: x**2 for x in range(5)}\n# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}\n\n# 过滤\nadults = {name: age for name, age in [(\"Alice\", 20), (\"Bob\", 15)] if age >= 18}\n# {'Alice': 20}\n```\n\n## 集合推导式\n```python\nunique_lengths = {len(w) for w in [\"hi\", \"hey\", \"hello\", \"ho\"]}\n# {2, 3, 5}\n```\n\n## 嵌套推导式\n```python\nmatrix = [[i*j for j in range(1,4)] for i in range(1,4)]\n# [[1,2,3], [2,4,6], [3,6,9]]\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Create a list of cubes [0, 1, 8, 27, 64] using list comprehension and print\n\n# Step 2: Filter: create list of numbers divisible by 3 from 1-20 and print\n\n# Step 3: Transform: uppercase [\"hello\", \"world\", \"python\"] using list comp and print\n\n# Step 4: Dict comprehension: {1: 1, 2: 4, 3: 9, 4: 16, 5: 25} and print\n\n# Step 5: Set comprehension: get unique word lengths from [\"cat\", \"dog\", \"fish\", \"ant\"]\n# Print sorted result\n",
+            "expectedOutput": "[0, 1, 8, 27, 64]\n[3, 6, 9, 12, 15, 18]\n['HELLO', 'WORLD', 'PYTHON']\n{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}\n[3, 4]",
+            "hint": "Step 1: print([x**3 for x in range(5)]). Step 2: print([x for x in range(1,21) if x%3==0]). Step 3: print([w.upper() for w in ['hello','world','python']]). Step 4: print({x: x**2 for x in range(1,6)}). Step 5: print(sorted({len(w) for w in ['cat','dog','fish','ant']}))."
+          },
+          "quizzes": [
+            {
+              "id": "m3-l4-q1",
+              "question": "What does [x for x in range(10) if x % 3 == 0] produce?",
+              "options": ["[3, 6, 9]", "[0, 3, 6, 9]", "[1, 3, 6, 9]", "[0, 3, 6, 9, 12]"],
+              "correctAnswer": 1,
+              "explanation": "range(10) is 0-9. Numbers divisible by 3: 0, 3, 6, 9. So [0, 3, 6, 9]."
+            },
+            {
+              "id": "m3-l4-q2",
+              "question": "Which creates a set comprehension?",
+              "options": ["[x for x in items]", "{x for x in items}", "(x for x in items)", "<x for x in items>"],
+              "correctAnswer": 1,
+              "explanation": "{x for x in items} uses curly braces without key:value, creating a set comprehension. (x for x in items) creates a generator."
+            }
+          ]
+        },
+        {
+          "id": "m3-l5",
+          "title": "Error Handling",
+          "theory_en": "## Try / Except\n\nHandle errors gracefully without crashing your program:\n```python\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print(\"Cannot divide by zero!\")\n```\n\n### Catching Specific Exceptions\n```python\ntry:\n    num = int(\"abc\")\nexcept ValueError:\n    print(\"Invalid number format\")\n\ntry:\n    my_list = [1, 2, 3]\n    print(my_list[10])\nexcept IndexError:\n    print(\"Index out of range\")\n```\n\n### Using `as` to Get Error Message\n```python\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError as e:\n    print(f\"Error: {e}\")  # Error: division by zero\n```\n\n### `try...except...else...finally`\n```python\ntry:\n    num = int(\"42\")\nexcept ValueError:\n    print(\"Conversion failed\")\nelse:\n    print(f\"Success: {num}\")    # runs if NO error\nfinally:\n    print(\"Always runs\")        # runs no matter what\n```\n\n### The `raise` Statement\nRaise your own exceptions:\n```python\ndef set_age(age):\n    if age < 0:\n        raise ValueError(\"Age cannot be negative\")\n    return age\n```\n\n### Common Exceptions\n| Exception | Cause |\n|-----------|-------|\n| `ValueError` | Wrong value type |\n| `TypeError` | Wrong data type |\n| `IndexError` | Index out of range |\n| `KeyError` | Dict key not found |\n| `ZeroDivisionError` | Division by zero |\n| `FileNotFoundError` | File not found |",
+          "theory_zh": "## Try / Except\n\n优雅地处理错误，防止程序崩溃：\n```python\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print(\"Cannot divide by zero!\")\n```\n\n### 捕获特定异常\n```python\ntry:\n    num = int(\"abc\")\nexcept ValueError:\n    print(\"Invalid number format\")\n\ntry:\n    my_list = [1, 2, 3]\n    print(my_list[10])\nexcept IndexError:\n    print(\"Index out of range\")\n```\n\n### 使用 `as` 获取错误信息\n```python\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError as e:\n    print(f\"Error: {e}\")  # Error: division by zero\n```\n\n### `try...except...else...finally`\n```python\ntry:\n    num = int(\"42\")\nexcept ValueError:\n    print(\"Conversion failed\")\nelse:\n    print(f\"Success: {num}\")    # 没有错误时运行\nfinally:\n    print(\"Always runs\")        # 无论如何都运行\n```\n\n### `raise` 语句\n主动抛出异常：\n```python\ndef set_age(age):\n    if age < 0:\n        raise ValueError(\"Age cannot be negative\")\n    return age\n```\n\n### 常见异常\n| 异常 | 原因 |\n|-----------|-------|\n| `ValueError` | 值类型错误 |\n| `TypeError` | 数据类型错误 |\n| `IndexError` | 索引越界 |\n| `KeyError` | 字典键不存在 |\n| `ZeroDivisionError` | 除以零 |\n| `FileNotFoundError` | 文件未找到 |",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Handle ZeroDivisionError: try 10/0, print \"Cannot divide by zero!\"\n\n# Step 2: Handle ValueError: try int(\"hello\"), print \"Invalid number!\"\n\n# Step 3: Use try/except/else/finally:\n# Try to convert \"42\" to int\n# except: print error\n# else: print the number\n# finally: print \"Done\"\n\n# Step 4: Use raise: write a function check_positive(n) that raises ValueError\n# if n < 0, then call it with -1 inside a try/except and print the error\n",
+            "expectedOutput": "Cannot divide by zero!\nInvalid number!\n42\nDone\nAge cannot be negative",
+            "hint": "Step 1: try: 10/0, except ZeroDivisionError: print(...). Step 2: try: int('hello'), except ValueError: print(...). Step 3: try: num=int('42'), except ValueError: print('error'), else: print(num), finally: print('Done'). Step 4: def check_positive(n): if n<0: raise ValueError('Age cannot be negative'). try: check_positive(-1), except ValueError as e: print(e)."
+          },
+          "quizzes": [
+            {
+              "id": "m3-l5-q1",
+              "question": "When does the `else` block in try/except/else execute?",
+              "options": ["Always", "When an exception occurs", "When NO exception occurs", "Before the try block"],
+              "correctAnswer": 2,
+              "explanation": "The else block runs only when the try block completes WITHOUT any exception."
+            },
+            {
+              "id": "m3-l5-q2",
+              "question": "What does the `finally` block do?",
+              "options": ["Runs only on error", "Runs only on success", "Always runs regardless of errors", "Catches all exceptions"],
+              "correctAnswer": 2,
+              "explanation": "The finally block always executes, whether an exception occurred or not. It's commonly used for cleanup."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4",
+      "title": "Functions & OOP",
+      "description": "Functions, Lambda, Scope, Classes, Inheritance & File Handling",
+      "icon": "⚙️",
+      "weight": "25%",
+      "lessons": [
+        {
+          "id": "m4-l1",
+          "title": "Functions Basics",
+          "theory_en": "## Defining Functions\n\nFunctions are reusable blocks of code:\n```python\ndef greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Alice\"))  # Hello, Alice!\n```\n\n### Parameters & Arguments\n```python\ndef add(a, b):\n    return a + b\n\nresult = add(3, 5)  # 8\n```\n\n### Default Parameters\n```python\ndef greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\n\nprint(greet(\"Alice\"))           # Hello, Alice!\nprint(greet(\"Bob\", \"Hi\"))      # Hi, Bob!\n```\n\n### Multiple Return Values\n```python\ndef min_max(numbers):\n    return min(numbers), max(numbers)\n\nlo, hi = min_max([3, 1, 4, 1, 5])\nprint(lo, hi)  # 1 5\n```\n\n### Docstrings\n```python\ndef area(radius):\n    \"\"\"Calculate the area of a circle.\"\"\"\n    return 3.14159 * radius ** 2\n\nprint(area.__doc__)  # Calculate the area of a circle.\n```\n\n### Functions as First-Class Objects\nFunctions can be passed as arguments:\n```python\ndef apply(func, value):\n    return func(value)\n\nresult = apply(abs, -5)  # 5\n```",
+          "theory_zh": "## 定义函数\n\n函数是可重用的代码块：\n```python\ndef greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Alice\"))  # Hello, Alice!\n```\n\n### 参数与实参\n```python\ndef add(a, b):\n    return a + b\n\nresult = add(3, 5)  # 8\n```\n\n### 默认参数\n```python\ndef greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\n\nprint(greet(\"Alice\"))           # Hello, Alice!\nprint(greet(\"Bob\", \"Hi\"))      # Hi, Bob!\n```\n\n### 多返回值\n```python\ndef min_max(numbers):\n    return min(numbers), max(numbers)\n\nlo, hi = min_max([3, 1, 4, 1, 5])\nprint(lo, hi)  # 1 5\n```\n\n### 文档字符串\n```python\ndef area(radius):\n    \"\"\"Calculate the area of a circle.\"\"\"\n    return 3.14159 * radius ** 2\n\nprint(area.__doc__)  # Calculate the area of a circle.\n```\n\n### 函数作为一等公民\n函数可以作为参数传递：\n```python\ndef apply(func, value):\n    return func(value)\n\nresult = apply(abs, -5)  # 5\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Define a function add(a, b) that returns a + b. Test with 3, 5.\n\n# Step 2: Define greet(name, greeting=\"Hello\") with default param.\n# Call with one arg and with two args.\n\n# Step 3: Define min_max(nums) that returns (min, max).\n# Unpack the result and print both values.\n\n# Step 4: Define a function is_even(n) that returns True if n is even.\n# Test with 4 and 7.\n",
+            "expectedOutput": "8\nHello, Alice!\nHi, Bob!\n1 9\nTrue\nFalse",
+            "hint": "Step 1: def add(a,b): return a+b; print(add(3,5)). Step 2: def greet(name, greeting='Hello'): return f'{greeting}, {name}!'; print(greet('Alice')); print(greet('Bob', 'Hi')). Step 3: def min_max(nums): return min(nums), max(nums); lo,hi = min_max([3,1,9,2]); print(lo, hi). Step 4: def is_even(n): return n%2==0; print(is_even(4)); print(is_even(7))."
+          },
+          "quizzes": [
+            {
+              "id": "m4-l1-q1",
+              "question": "What is returned by a function that doesn't have a return statement?",
+              "options": ["0", "\"\"", "None", "Error"],
+              "correctAnswer": 2,
+              "explanation": "A function without a return statement (or with just 'return') returns None by default."
+            },
+            {
+              "id": "m4-l1-q2",
+              "question": "In `def func(a, b=10):`, what is b called?",
+              "options": ["A positional argument", "A default parameter", "A keyword argument", "A global variable"],
+              "correctAnswer": 1,
+              "explanation": "b=10 is a default parameter — it takes the value 10 if no argument is provided for b."
+            }
+          ]
+        },
+        {
+          "id": "m4-l2",
+          "title": "Advanced Functions",
+          "theory_en": "## `*args` — Variable Positional Arguments\n\nAccept any number of positional arguments:\n```python\ndef sum_all(*args):\n    return sum(args)\n\nprint(sum_all(1, 2, 3))      # 6\nprint(sum_all(10, 20, 30, 40))  # 100\n```\n\n## `**kwargs` — Variable Keyword Arguments\n\nAccept any number of keyword arguments:\n```python\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f\"{key}: {value}\")\n\nprint_info(name=\"Alice\", age=15)\n# name: Alice\n# age: 15\n```\n\n## Lambda Functions\n\nAnonymous (one-line) functions:\n```python\nsquare = lambda x: x ** 2\nprint(square(5))   # 25\n\nadd = lambda a, b: a + b\nprint(add(3, 4))   # 7\n```\n\n## `map()` and `filter()`\n\n### `map(function, iterable)`\nApply a function to every element:\n```python\nnums = [1, 2, 3, 4]\nsquared = list(map(lambda x: x**2, nums))\nprint(squared)  # [1, 4, 9, 16]\n```\n\n### `filter(function, iterable)`\nKeep elements where function returns True:\n```python\nnums = [1, 2, 3, 4, 5, 6]\nevens = list(filter(lambda x: x % 2 == 0, nums))\nprint(evens)  # [2, 4, 6]\n```\n\n## `sorted()` with `key`\n```python\nwords = [\"banana\", \"apple\", \"cherry\"]\nresult = sorted(words, key=lambda w: len(w))\nprint(result)  # ['apple', 'banana', 'cherry']\n```",
+          "theory_zh": "## `*args` — 可变位置参数\n\n接受任意数量的位置参数：\n```python\ndef sum_all(*args):\n    return sum(args)\n\nprint(sum_all(1, 2, 3))      # 6\nprint(sum_all(10, 20, 30, 40))  # 100\n```\n\n## `**kwargs` — 可变关键字参数\n\n接受任意数量的关键字参数：\n```python\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f\"{key}: {value}\")\n\nprint_info(name=\"Alice\", age=15)\n# name: Alice\n# age: 15\n```\n\n## Lambda 函数\n\n匿名（单行）函数：\n```python\nsquare = lambda x: x ** 2\nprint(square(5))   # 25\n\nadd = lambda a, b: a + b\nprint(add(3, 4))   # 7\n```\n\n## `map()` 和 `filter()`\n\n### `map(function, iterable)`\n对每个元素应用函数：\n```python\nnums = [1, 2, 3, 4]\nsquared = list(map(lambda x: x**2, nums))\nprint(squared)  # [1, 4, 9, 16]\n```\n\n### `filter(function, iterable)`\n保留函数返回 True 的元素：\n```python\nnums = [1, 2, 3, 4, 5, 6]\nevens = list(filter(lambda x: x % 2 == 0, nums))\nprint(evens)  # [2, 4, 6]\n```\n\n## 带 `key` 的 `sorted()`\n```python\nwords = [\"banana\", \"apple\", \"cherry\"]\nresult = sorted(words, key=lambda w: len(w))\nprint(result)  # ['apple', 'banana', 'cherry']\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Define sum_all(*args) that returns the sum. Test with (1,2,3,4,5).\n\n# Step 2: Define print_info(**kwargs) that prints each key: value.\n# Call with name=\"Alice\", age=15.\n\n# Step 3: Create a lambda that doubles a number. Test with 7.\n\n# Step 4: Use map + lambda to square [1,2,3,4]. Print the result.\n\n# Step 5: Use filter + lambda to get even numbers from [1,2,3,4,5,6]. Print the result.\n\n# Step 6: Sort [\"banana\", \"fig\", \"cherry\"] by length using sorted + key. Print.\n",
+            "expectedOutput": "15\nname: Alice\nage: 15\n14\n[1, 4, 9, 16]\n[2, 4, 6]\n['fig', 'banana', 'cherry']",
+            "hint": "Step 1: def sum_all(*args): return sum(args); print(sum_all(1,2,3,4,5)). Step 2: def print_info(**kwargs): for k,v in kwargs.items(): print(f'{k}: {v}'). Step 3: double = lambda x: x*2; print(double(7)). Step 4: print(list(map(lambda x: x**2, [1,2,3,4]))). Step 5: print(list(filter(lambda x: x%2==0, [1,2,3,4,5,6]))). Step 6: print(sorted(['banana','fig','cherry'], key=lambda w: len(w)))."
+          },
+          "quizzes": [
+            {
+              "id": "m4-l2-q1",
+              "question": "What does *args capture in a function definition?",
+              "options": ["A single argument", "A tuple of positional arguments", "A dictionary of keyword arguments", "A list of all arguments"],
+              "correctAnswer": 1,
+              "explanation": "*args captures all extra positional arguments as a tuple."
+            },
+            {
+              "id": "m4-l2-q2",
+              "question": "What does filter(lambda x: x > 0, [-1, 0, 1, 2]) return (as list)?",
+              "options": ["[-1, 0, 1, 2]", "[0, 1, 2]", "[1, 2]", "[True, False, True, True]"],
+              "correctAnswer": 2,
+              "explanation": "filter keeps only elements where the lambda returns True. x > 0 is True for 1 and 2 only."
+            }
+          ]
+        },
+        {
+          "id": "m4-l3",
+          "title": "Scope & Modules",
+          "theory_en": "## Variable Scope\n\n### Local Scope\nVariables created inside a function are local:\n```python\ndef my_func():\n    x = 10  # local variable\n    print(x)\n\nmy_func()    # 10\n# print(x)  # Error! x not defined outside\n```\n\n### Global Scope\nVariables created outside functions are global:\n```python\ny = 20  # global variable\n\ndef my_func():\n    print(y)  # can READ global\n\nmy_func()  # 20\n```\n\n### The `global` Keyword\nTo MODIFY a global variable inside a function:\n```python\ncounter = 0\n\ndef increment():\n    global counter\n    counter += 1\n\nincrement()\nincrement()\nprint(counter)  # 2\n```\n\n## Modules\n\nModules are files containing Python code you can reuse:\n\n### Importing Modules\n```python\nimport math\nprint(math.sqrt(16))    # 4.0\nprint(math.pi)          # 3.14159...\n\nfrom math import sqrt, pi\nprint(sqrt(25))         # 5.0\n```\n\n### Common Built-in Modules\n- `math` — mathematical functions\n- `random` — random number generation\n- `datetime` — date and time\n- `json` — JSON encoding/decoding\n- `os` — operating system interface",
+          "theory_zh": "## 变量作用域\n\n### 局部作用域\n在函数内创建的变量是局部的：\n```python\ndef my_func():\n    x = 10  # 局部变量\n    print(x)\n\nmy_func()    # 10\n# print(x)  # 错误！x 在外部未定义\n```\n\n### 全局作用域\n在函数外创建的变量是全局的：\n```python\ny = 20  # 全局变量\n\ndef my_func():\n    print(y)  # 可以读取全局变量\n\nmy_func()  # 20\n```\n\n### `global` 关键字\n在函数内修改全局变量：\n```python\ncounter = 0\n\ndef increment():\n    global counter\n    counter += 1\n\nincrement()\nincrement()\nprint(counter)  # 2\n```\n\n## 模块（Modules）\n\n模块是包含可重用 Python 代码的文件：\n\n### 导入模块\n```python\nimport math\nprint(math.sqrt(16))    # 4.0\nprint(math.pi)          # 3.14159...\n\nfrom math import sqrt, pi\nprint(sqrt(25))         # 5.0\n```\n\n### 常用内置模块\n- `math` — 数学函数\n- `random` — 随机数生成\n- `datetime` — 日期和时间\n- `json` — JSON 编码/解码\n- `os` — 操作系统接口",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Demonstrate local scope - define a function that creates a local var and prints it\ndef show_local():\n    message = \"I am local\"\n    print(message)\nshow_local()\n\n# Step 2: Demonstrate global keyword\ncounter = 0\ndef increment():\n    global counter\n    counter += 1\n\nincrement()\nincrement()\nincrement()\nprint(counter)\n\n# Step 3: Import math and print sqrt(144) and floor of 3.7\nimport math\n\n# Step 4: Use math.pi to calculate and print area of circle with radius 5\n# Round to 2 decimal places\n",
+            "expectedOutput": "I am local\n3\n12.0\n3\n78.54",
+            "hint": "Step 3: print(math.sqrt(144)), print(math.floor(3.7)). Step 4: print(round(math.pi * 5**2, 2))."
+          },
+          "quizzes": [
+            {
+              "id": "m4-l3-q1",
+              "question": "What happens if you try to modify a global variable inside a function without using `global`?",
+              "options": ["It works fine", "UnboundLocalError is raised", "The global variable is unchanged", "A new local variable is created"],
+              "correctAnswer": 1,
+              "explanation": "Trying to modify (assign to) a global variable without 'global' keyword causes an UnboundLocalError because Python treats it as a local variable."
+            },
+            {
+              "id": "m4-l3-q2",
+              "question": "What does `from math import sqrt` allow you to do?",
+              "options": ["Import the entire math module", "Use sqrt() directly without math. prefix", "Import math as sqrt", "Create a local sqrt function"],
+              "correctAnswer": 1,
+              "explanation": "from math import sqrt lets you call sqrt() directly instead of math.sqrt()."
+            }
+          ]
+        },
+        {
+          "id": "m4-l4",
+          "title": "Classes & Objects",
+          "theory_en": "## Object-Oriented Programming (OOP)\n\nOOP organizes code into **objects** that contain data (attributes) and behavior (methods).\n\n### Defining a Class\n```python\nclass Dog:\n    def __init__(self, name, age):\n        self.name = name    # instance attribute\n        self.age = age\n    \n    def bark(self):\n        return f\"{self.name} says Woof!\"\n    \n    def __str__(self):\n        return f\"Dog({self.name}, {self.age})\"\n```\n\n### Creating Objects (Instances)\n```python\nmy_dog = Dog(\"Buddy\", 3)\nprint(my_dog.name)     # Buddy\nprint(my_dog.bark())   # Buddy says Woof!\nprint(my_dog)          # Dog(Buddy, 3)\n```\n\n### The `__init__` Method\n- Called automatically when creating an object\n- `self` refers to the instance being created\n- Used to initialize attributes\n\n### The `self` Parameter\n- Always the first parameter of instance methods\n- Refers to the current object\n- Not passed when calling the method\n\n### Class vs Instance Variables\n```python\nclass Student:\n    school = \"CAIP Academy\"  # class variable (shared)\n    \n    def __init__(self, name):\n        self.name = name     # instance variable (unique)\n```\n\n### The `__str__` Method\nDefines how the object is displayed when printed:\n```python\nprint(my_dog)  # calls __str__\n```",
+          "theory_zh": "## 面向对象编程（OOP）\n\nOOP 将代码组织成包含数据（属性）和行为（方法）的**对象**。\n\n### 定义类\n```python\nclass Dog:\n    def __init__(self, name, age):\n        self.name = name    # 实例属性\n        self.age = age\n    \n    def bark(self):\n        return f\"{self.name} says Woof!\"\n    \n    def __str__(self):\n        return f\"Dog({self.name}, {self.age})\"\n```\n\n### 创建对象（实例）\n```python\nmy_dog = Dog(\"Buddy\", 3)\nprint(my_dog.name)     # Buddy\nprint(my_dog.bark())   # Buddy says Woof!\nprint(my_dog)          # Dog(Buddy, 3)\n```\n\n### `__init__` 方法\n- 创建对象时自动调用\n- `self` 指向正在创建的实例\n- 用于初始化属性\n\n### `self` 参数\n- 始终是实例方法的第一个参数\n- 指向当前对象\n- 调用方法时不需要传递\n\n### 类变量 vs 实例变量\n```python\nclass Student:\n    school = \"CAIP Academy\"  # 类变量（共享）\n    \n    def __init__(self, name):\n        self.name = name     # 实例变量（独立）\n```\n\n### `__str__` 方法\n定义对象被 print 时的显示方式：\n```python\nprint(my_dog)  # 调用 __str__\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Define a Student class with __init__(self, name, grade)\n# Add a method introduce() that returns \"I'm {name}, grade {grade}\"\n# Add __str__ that returns \"Student({name})\"\n\n# Step 2: Create two students: Alice (grade A) and Bob (grade B)\n\n# Step 3: Print each student's introduce() result\n\n# Step 4: Print each student using print() (tests __str__)\n\n# Step 5: Add a class variable school = \"CAIP Academy\" and print it\n",
+            "expectedOutput": "I'm Alice, grade A\nI'm Bob, grade B\nStudent(Alice)\nStudent(Bob)\nCAIP Academy",
+            "hint": "class Student: school='CAIP Academy'; def __init__(self,name,grade): self.name=name; self.grade=grade; def introduce(self): return f\"I'm {self.name}, grade {self.grade}\"; def __str__(self): return f'Student({self.name})'. Create s1=Student('Alice','A'), s2=Student('Bob','B'). Print introduce(), print objects, print Student.school."
+          },
+          "quizzes": [
+            {
+              "id": "m4-l4-q1",
+              "question": "What is the purpose of `__init__` in a class?",
+              "options": ["To delete an object", "To initialize object attributes", "To print the object", "To define class methods"],
+              "correctAnswer": 1,
+              "explanation": "__init__ is the constructor method, called automatically when creating a new object to initialize its attributes."
+            },
+            {
+              "id": "m4-l4-q2",
+              "question": "What does `self` refer to in a class method?",
+              "options": ["The class itself", "The current instance", "The parent class", "The method name"],
+              "correctAnswer": 1,
+              "explanation": "self refers to the current instance of the class, allowing access to its attributes and methods."
+            }
+          ]
+        },
+        {
+          "id": "m4-l5",
+          "title": "Inheritance & Polymorphism",
+          "theory_en": "## Inheritance\n\nA child class can inherit attributes and methods from a parent class:\n```python\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        return \"...\"\n\nclass Dog(Animal):              # Dog inherits from Animal\n    def speak(self):             # Override parent method\n        return f\"{self.name} says Woof!\"\n\nclass Cat(Animal):\n    def speak(self):\n        return f\"{self.name} says Meow!\"\n```\n\n### Using `super()`\n```python\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name)   # call parent's __init__\n        self.breed = breed\n```\n\n## Polymorphism\n\nDifferent classes can have methods with the same name:\n```python\nanimals = [Dog(\"Buddy\"), Cat(\"Whiskers\")]\nfor animal in animals:\n    print(animal.speak())  # each calls its own version\n# Buddy says Woof!\n# Whiskers says Meow!\n```\n\n## `isinstance()` and `issubclass()`\n```python\ndog = Dog(\"Rex\")\nprint(isinstance(dog, Dog))     # True\nprint(isinstance(dog, Animal))  # True (Dog IS an Animal)\nprint(issubclass(Dog, Animal))  # True\n```",
+          "theory_zh": "## 继承\n\n子类可以继承父类的属性和方法：\n```python\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        return \"...\"\n\nclass Dog(Animal):              # Dog 继承自 Animal\n    def speak(self):             # 重写父类方法\n        return f\"{self.name} says Woof!\"\n\nclass Cat(Animal):\n    def speak(self):\n        return f\"{self.name} says Meow!\"\n```\n\n### 使用 `super()`\n```python\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name)   # 调用父类的 __init__\n        self.breed = breed\n```\n\n## 多态（Polymorphism）\n\n不同的类可以有同名的方法：\n```python\nanimals = [Dog(\"Buddy\"), Cat(\"Whiskers\")]\nfor animal in animals:\n    print(animal.speak())  # 各自调用自己的版本\n# Buddy says Woof!\n# Whiskers says Meow!\n```\n\n## `isinstance()` 和 `issubclass()`\n```python\ndog = Dog(\"Rex\")\nprint(isinstance(dog, Dog))     # True\nprint(isinstance(dog, Animal))  # True（Dog 是 Animal）\nprint(issubclass(Dog, Animal))  # True\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Define a base class Shape with __init__(self, name) and area() returning 0\nclass Shape:\n    def __init__(self, name):\n        self.name = name\n    def area(self):\n        return 0\n\n# Step 2: Define Rectangle(Shape) with width & height, override area()\n\n# Step 3: Define Circle(Shape) with radius, override area() (use 3.14159)\n\n# Step 4: Create a Rectangle(4, 5) and Circle(3)\n# Print each shape's name and area (round circle area to 2 decimals)\n\n# Step 5: Check isinstance of rectangle with Shape, print result\n",
+            "expectedOutput": "Rectangle: 20\nCircle: 28.27\nTrue",
+            "hint": "Step 2: class Rectangle(Shape): def __init__(self,w,h): super().__init__('Rectangle'); self.w=w; self.h=h; def area(self): return self.w*self.h. Step 3: class Circle(Shape): def __init__(self,r): super().__init__('Circle'); self.r=r; def area(self): return 3.14159*self.r**2. Step 4: r=Rectangle(4,5); c=Circle(3); print(f'{r.name}: {r.area()}'); print(f'{c.name}: {round(c.area(),2)}'). Step 5: print(isinstance(r, Shape))."
+          },
+          "quizzes": [
+            {
+              "id": "m4-l5-q1",
+              "question": "What does super().__init__() do?",
+              "options": ["Creates a new class", "Calls the parent class constructor", "Deletes the parent class", "Returns the parent class name"],
+              "correctAnswer": 1,
+              "explanation": "super().__init__() calls the parent class's __init__ method, allowing the child to initialize inherited attributes."
+            },
+            {
+              "id": "m4-l5-q2",
+              "question": "What is polymorphism?",
+              "options": ["Having multiple classes", "Different classes responding to the same method name in different ways", "A class with no methods", "Inheriting from multiple classes"],
+              "correctAnswer": 1,
+              "explanation": "Polymorphism means different classes can have methods with the same name but different implementations."
+            }
+          ]
+        },
+        {
+          "id": "m4-l6",
+          "title": "File Handling",
+          "theory_en": "## Opening Files\n\nPython can read and write files using `open()`:\n```python\nf = open(\"myfile.txt\", \"r\")  # open for reading\ncontent = f.read()\nf.close()\n```\n\n### File Modes\n| Mode | Description |\n|------|-------------|\n| `\"r\"` | Read (default, error if not exists) |\n| `\"w\"` | Write (creates or overwrites) |\n| `\"a\"` | Append (creates or adds to end) |\n| `\"x\"` | Create (error if exists) |\n\n### The `with` Statement (Recommended)\nAutomatically closes the file:\n```python\nwith open(\"myfile.txt\", \"r\") as f:\n    content = f.read()\n# file is automatically closed here\n```\n\n### Reading Files\n```python\n# Read entire content\ncontent = f.read()\n\n# Read one line\nline = f.readline()\n\n# Read all lines as list\nlines = f.readlines()\n\n# Loop through lines\nfor line in f:\n    print(line.strip())\n```\n\n### Writing Files\n```python\nwith open(\"output.txt\", \"w\") as f:\n    f.write(\"Hello, World!\\n\")\n    f.write(\"Second line\\n\")\n```\n\n### Appending to Files\n```python\nwith open(\"output.txt\", \"a\") as f:\n    f.write(\"New line added\\n\")\n```",
+          "theory_zh": "## 打开文件\n\nPython 使用 `open()` 读写文件：\n```python\nf = open(\"myfile.txt\", \"r\")  # 打开读取\ncontent = f.read()\nf.close()\n```\n\n### 文件模式\n| 模式 | 说明 |\n|------|-------------|\n| `\"r\"` | 读取（默认，文件不存在会报错）|\n| `\"w\"` | 写入（创建或覆盖）|\n| `\"a\"` | 追加（创建或添加到末尾）|\n| `\"x\"` | 创建（文件已存在会报错）|\n\n### `with` 语句（推荐方式）\n自动关闭文件：\n```python\nwith open(\"myfile.txt\", \"r\") as f:\n    content = f.read()\n# 文件在此自动关闭\n```\n\n### 读取文件\n```python\n# 读取全部内容\ncontent = f.read()\n\n# 读取一行\nline = f.readline()\n\n# 读取所有行为列表\nlines = f.readlines()\n\n# 逐行遍历\nfor line in f:\n    print(line.strip())\n```\n\n### 写入文件\n```python\nwith open(\"output.txt\", \"w\") as f:\n    f.write(\"Hello, World!\\n\")\n    f.write(\"Second line\\n\")\n```\n\n### 追加文件\n```python\nwith open(\"output.txt\", \"a\") as f:\n    f.write(\"New line added\\n\")\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Write 3 lines to a file \"test.txt\" using 'with' and 'w' mode\n\n# Step 2: Read the entire file content and print it\n\n# Step 3: Append a 4th line to the file\n\n# Step 4: Read all lines as a list and print the number of lines\n\n# Step 5: Read the file line by line and print each line (stripped)\n",
+            "expectedOutput": "Line 1: Hello\nLine 2: Python\nLine 3: CAIP\n4\nLine 1: Hello\nLine 2: Python\nLine 3: CAIP\nLine 4: Appended!",
+            "hint": "Step 1: with open('test.txt','w') as f: f.write('Line 1: Hello\\nLine 2: Python\\nLine 3: CAIP\\n'). Step 2: with open('test.txt','r') as f: print(f.read(), end=''). Step 3: with open('test.txt','a') as f: f.write('Line 4: Appended!\\n'). Step 4: with open('test.txt','r') as f: lines=f.readlines(); print(len(lines)). Step 5: with open('test.txt','r') as f: for line in f: print(line.strip())."
+          },
+          "quizzes": [
+            {
+              "id": "m4-l6-q1",
+              "question": "What is the advantage of using `with open()` over `open()`?",
+              "options": ["It's faster", "It automatically closes the file", "It can read larger files", "It supports more file types"],
+              "correctAnswer": 1,
+              "explanation": "The 'with' statement automatically closes the file when the block exits, even if an error occurs. This prevents resource leaks."
+            },
+            {
+              "id": "m4-l6-q2",
+              "question": "What does file mode 'a' do?",
+              "options": ["Reads the file", "Overwrites the file", "Appends to the end of the file", "Creates a new file only"],
+              "correctAnswer": 2,
+              "explanation": "Mode 'a' (append) adds content to the end of the file without overwriting existing content."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m5",
+      "title": "Data Structures & Algorithms",
+      "description": "Linked Lists, Stacks, Queues, Searching, Sorting & Big O",
+      "icon": "🔬",
+      "weight": "10%",
+      "lessons": [
+        {
+          "id": "m5-l1",
+          "title": "Arrays & Linked Lists",
+          "theory_en": "## Arrays (Python Lists)\n\nPython lists act as dynamic arrays:\n```python\narr = [10, 20, 30, 40, 50]\nprint(arr[2])      # O(1) - direct access\narr.append(60)     # O(1) - add to end\narr.insert(0, 5)   # O(n) - shift elements\narr.pop()          # O(1) - remove from end\n```\n\n## Linked Lists\n\nA linked list stores elements in **nodes**, where each node points to the next:\n\n```\n[10] -> [20] -> [30] -> None\n```\n\n### Implementing a Linked List\n```python\nclass Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None\n\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n    \n    def append(self, data):\n        new_node = Node(data)\n        if not self.head:\n            self.head = new_node\n            return\n        current = self.head\n        while current.next:\n            current = current.next\n        current.next = new_node\n    \n    def display(self):\n        elements = []\n        current = self.head\n        while current:\n            elements.append(str(current.data))\n            current = current.next\n        print(\" -> \".join(elements))\n```\n\n### Array vs Linked List\n| Operation | Array | Linked List |\n|-----------|-------|-------------|\n| Access | O(1) | O(n) |\n| Insert at start | O(n) | O(1) |\n| Insert at end | O(1)* | O(n) |\n| Search | O(n) | O(n) |",
+          "theory_zh": "## 数组（Python Lists）\n\nPython 列表作为动态数组：\n```python\narr = [10, 20, 30, 40, 50]\nprint(arr[2])      # O(1) - 直接访问\narr.append(60)     # O(1) - 添加到末尾\narr.insert(0, 5)   # O(n) - 移动元素\narr.pop()          # O(1) - 从末尾删除\n```\n\n## 链表（Linked Lists）\n\n链表将元素存储在**节点**中，每个节点指向下一个：\n\n```\n[10] -> [20] -> [30] -> None\n```\n\n### 实现链表\n```python\nclass Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None\n\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n    \n    def append(self, data):\n        new_node = Node(data)\n        if not self.head:\n            self.head = new_node\n            return\n        current = self.head\n        while current.next:\n            current = current.next\n        current.next = new_node\n    \n    def display(self):\n        elements = []\n        current = self.head\n        while current:\n            elements.append(str(current.data))\n            current = current.next\n        print(\" -> \".join(elements))\n```\n\n### 数组 vs 链表\n| 操作 | 数组 | 链表 |\n|-----------|-------|-------------|\n| 访问 | O(1) | O(n) |\n| 头部插入 | O(n) | O(1) |\n| 尾部插入 | O(1)* | O(n) |\n| 搜索 | O(n) | O(n) |",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Define Node class with data and next\nclass Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None\n\n# Step 2: Create 3 nodes: 10 -> 20 -> 30 and link them manually\n\n# Step 3: Traverse the linked list and print each value\n\n# Step 4: Compare with list: create arr = [10, 20, 30]\n# Print arr, print access by index arr[1]\n",
+            "expectedOutput": "10 -> 20 -> 30\n[10, 20, 30]\n20",
+            "hint": "Step 2: n1=Node(10); n2=Node(20); n3=Node(30); n1.next=n2; n2.next=n3. Step 3: parts=[]; current=n1; while current: parts.append(str(current.data)); current=current.next; print(' -> '.join(parts)). Step 4: arr=[10,20,30]; print(arr); print(arr[1])."
+          },
+          "quizzes": [
+            {
+              "id": "m5-l1-q1",
+              "question": "What is the time complexity of accessing an element by index in a linked list?",
+              "options": ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+              "correctAnswer": 2,
+              "explanation": "In a linked list, you must traverse from the head to reach any element, making access O(n)."
+            },
+            {
+              "id": "m5-l1-q2",
+              "question": "What is the advantage of a linked list over an array for insertion at the beginning?",
+              "options": ["No advantage", "O(1) vs O(n)", "O(n) vs O(1)", "Less memory usage"],
+              "correctAnswer": 1,
+              "explanation": "Inserting at the beginning of a linked list is O(1) — just change the head pointer. For an array, all elements must shift, which is O(n)."
+            }
+          ]
+        },
+        {
+          "id": "m5-l2",
+          "title": "Stacks & Queues",
+          "theory_en": "## Stack (LIFO — Last In, First Out)\n\nThink of a stack of plates — you can only add/remove from the **top**.\n\n### Operations\n- **Push**: Add to top\n- **Pop**: Remove from top\n- **Peek**: Look at top without removing\n\n### Implementation with List\n```python\nstack = []\nstack.append(10)    # push\nstack.append(20)\nstack.append(30)\nprint(stack[-1])    # peek → 30\nstack.pop()         # pop → 30\nprint(stack)        # [10, 20]\n```\n\n### Use Cases\n- Undo operations\n- Browser back button\n- Expression evaluation\n- DFS (Depth-First Search)\n\n## Queue (FIFO — First In, First Out)\n\nThink of a line at a store — first person in line is served first.\n\n### Operations\n- **Enqueue**: Add to back\n- **Dequeue**: Remove from front\n\n### Implementation with List\n```python\nqueue = []\nqueue.append(10)     # enqueue\nqueue.append(20)\nqueue.append(30)\nqueue.pop(0)         # dequeue → 10\nprint(queue)         # [20, 30]\n```\n\n> Note: `pop(0)` is O(n). For better performance, use `collections.deque`.\n\n### Use Cases\n- Print job scheduling\n- Task processing\n- BFS (Breadth-First Search)",
+          "theory_zh": "## 栈（LIFO — 后进先出）\n\n想象一叠盘子 — 只能从**顶部**添加/移除。\n\n### 操作\n- **Push**（入栈）：添加到顶部\n- **Pop**（出栈）：从顶部移除\n- **Peek**（查看）：查看顶部元素但不移除\n\n### 用列表实现\n```python\nstack = []\nstack.append(10)    # push\nstack.append(20)\nstack.append(30)\nprint(stack[-1])    # peek → 30\nstack.pop()         # pop → 30\nprint(stack)        # [10, 20]\n```\n\n### 使用场景\n- 撤销操作\n- 浏览器后退按钮\n- 表达式求值\n- DFS（深度优先搜索）\n\n## 队列（FIFO — 先进先出）\n\n想象商店排队 — 先排队的人先被服务。\n\n### 操作\n- **Enqueue**（入队）：添加到后端\n- **Dequeue**（出队）：从前端移除\n\n### 用列表实现\n```python\nqueue = []\nqueue.append(10)     # enqueue\nqueue.append(20)\nqueue.append(30)\nqueue.pop(0)         # dequeue → 10\nprint(queue)         # [20, 30]\n```\n\n> 注意：`pop(0)` 是 O(n)。更好的性能可以用 `collections.deque`。\n\n### 使用场景\n- 打印任务调度\n- 任务处理\n- BFS（广度优先搜索）",
+          "interactiveCode": {
+            "initialCode": "# === STACK ===\n# Step 1: Create a stack, push 10, 20, 30\nstack = []\n\n# Step 2: Print the top element (peek) without removing\n\n# Step 3: Pop the top element and print what was popped\n\n# Step 4: Print the remaining stack\n\n# === QUEUE ===\n# Step 5: Create a queue, enqueue \"A\", \"B\", \"C\"\nqueue = []\n\n# Step 6: Dequeue the first element and print it\n\n# Step 7: Print the remaining queue\n",
+            "expectedOutput": "30\n30\n[10, 20]\nA\n['B', 'C']",
+            "hint": "Step 1: stack.append(10); stack.append(20); stack.append(30). Step 2: print(stack[-1]). Step 3: print(stack.pop()). Step 4: print(stack). Step 5: queue.append('A'); queue.append('B'); queue.append('C'). Step 6: print(queue.pop(0)). Step 7: print(queue)."
+          },
+          "quizzes": [
+            {
+              "id": "m5-l2-q1",
+              "question": "If you push 1, 2, 3 onto a stack and then pop twice, what's left?",
+              "options": ["[1]", "[3]", "[1, 2]", "[2, 3]"],
+              "correctAnswer": 0,
+              "explanation": "Stack is LIFO. Push 1,2,3 → [1,2,3]. Pop → 3 removed. Pop → 2 removed. Left: [1]."
+            },
+            {
+              "id": "m5-l2-q2",
+              "question": "Which data structure is used for BFS (Breadth-First Search)?",
+              "options": ["Stack", "Queue", "Linked List", "Array"],
+              "correctAnswer": 1,
+              "explanation": "BFS uses a Queue (FIFO) to process nodes level by level. DFS uses a Stack."
+            }
+          ]
+        },
+        {
+          "id": "m5-l3",
+          "title": "Searching Algorithms",
+          "theory_en": "## Linear Search\n\nCheck each element one by one:\n```python\ndef linear_search(arr, target):\n    for i in range(len(arr)):\n        if arr[i] == target:\n            return i\n    return -1\n```\n\n- **Time Complexity**: O(n)\n- Works on **any** list (sorted or unsorted)\n\n## Binary Search\n\nEfficiently search a **sorted** list by dividing in half:\n```python\ndef binary_search(arr, target):\n    low, high = 0, len(arr) - 1\n    while low <= high:\n        mid = (low + high) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return -1\n```\n\n### How Binary Search Works\n```\nSearching for 7 in [1, 3, 5, 7, 9, 11]\n\nStep 1: mid=2, arr[2]=5, 5<7 → search right\nStep 2: mid=4, arr[4]=9, 9>7 → search left  \nStep 3: mid=3, arr[3]=7 ✓ Found at index 3!\n```\n\n- **Time Complexity**: O(log n)\n- **Requirement**: List must be **sorted**\n\n## Comparison\n| | Linear | Binary |\n|---|--------|--------|\n| Time | O(n) | O(log n) |\n| Sorted? | No requirement | Must be sorted |\n| 1000 items | ~1000 steps | ~10 steps |",
+          "theory_zh": "## 线性搜索\n\n逐个检查每个元素：\n```python\ndef linear_search(arr, target):\n    for i in range(len(arr)):\n        if arr[i] == target:\n            return i\n    return -1\n```\n\n- **时间复杂度**：O(n)\n- 适用于**任何**列表（有序或无序）\n\n## 二分搜索\n\n在**有序**列表中通过对半分高效搜索：\n```python\ndef binary_search(arr, target):\n    low, high = 0, len(arr) - 1\n    while low <= high:\n        mid = (low + high) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return -1\n```\n\n### 二分搜索工作原理\n```\n在 [1, 3, 5, 7, 9, 11] 中搜索 7\n\n步骤1: mid=2, arr[2]=5, 5<7 → 搜索右半\n步骤2: mid=4, arr[4]=9, 9>7 → 搜索左半\n步骤3: mid=3, arr[3]=7 ✓ 在索引 3 找到！\n```\n\n- **时间复杂度**：O(log n)\n- **要求**：列表必须**有序**\n\n## 对比\n| | 线性搜索 | 二分搜索 |\n|---|--------|--------|\n| 时间 | O(n) | O(log n) |\n| 需要排序？ | 不需要 | 必须排序 |\n| 1000 个元素 | ~1000 步 | ~10 步 |",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Implement linear_search(arr, target) that returns index or -1\n\n# Step 2: Implement binary_search(arr, target) that returns index or -1\n\n# Step 3: Test linear search on [4, 2, 7, 1, 9] for target 7\n\n# Step 4: Test binary search on [1, 3, 5, 7, 9, 11] for target 7\n\n# Step 5: Test binary search for target 6 (not found)\n",
+            "expectedOutput": "Linear: found 7 at index 2\nBinary: found 7 at index 3\nBinary: 6 not found",
+            "hint": "Step 1: def linear_search(arr,target): for i in range(len(arr)): if arr[i]==target: return i; return -1. Step 2: def binary_search(arr,target): low,high=0,len(arr)-1; while low<=high: mid=(low+high)//2; if arr[mid]==target: return mid; elif arr[mid]<target: low=mid+1; else: high=mid-1; return -1. Print formatted results."
+          },
+          "quizzes": [
+            {
+              "id": "m5-l3-q1",
+              "question": "What is the time complexity of binary search?",
+              "options": ["O(1)", "O(n)", "O(log n)", "O(n²)"],
+              "correctAnswer": 2,
+              "explanation": "Binary search halves the search space each step, giving O(log n) time complexity."
+            },
+            {
+              "id": "m5-l3-q2",
+              "question": "Can binary search work on an unsorted list?",
+              "options": ["Yes, it works on any list", "No, the list must be sorted", "Only if the list has unique elements", "Only for numbers, not strings"],
+              "correctAnswer": 1,
+              "explanation": "Binary search requires a sorted list because it relies on comparing the middle element to decide which half to search."
+            }
+          ]
+        },
+        {
+          "id": "m5-l4",
+          "title": "Sorting Algorithms",
+          "theory_en": "## Bubble Sort\n\nRepeatedly swap adjacent elements if they're in the wrong order:\n```python\ndef bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr\n```\n- **Time**: O(n²) | **Space**: O(1)\n\n## Selection Sort\n\nFind the minimum and place it at the beginning:\n```python\ndef selection_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        min_idx = i\n        for j in range(i+1, n):\n            if arr[j] < arr[min_idx]:\n                min_idx = j\n        arr[i], arr[min_idx] = arr[min_idx], arr[i]\n    return arr\n```\n- **Time**: O(n²) | **Space**: O(1)\n\n## Insertion Sort\n\nBuild sorted array one element at a time:\n```python\ndef insertion_sort(arr):\n    for i in range(1, len(arr)):\n        key = arr[i]\n        j = i - 1\n        while j >= 0 and arr[j] > key:\n            arr[j+1] = arr[j]\n            j -= 1\n        arr[j+1] = key\n    return arr\n```\n- **Time**: O(n²) average, O(n) best | **Space**: O(1)\n\n## Comparison\n| Algorithm | Best | Average | Worst | Stable |\n|-----------|------|---------|-------|--------|\n| Bubble | O(n) | O(n²) | O(n²) | Yes |\n| Selection | O(n²) | O(n²) | O(n²) | No |\n| Insertion | O(n) | O(n²) | O(n²) | Yes |",
+          "theory_zh": "## 冒泡排序\n\n反复交换相邻的逆序元素：\n```python\ndef bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr\n```\n- **时间**：O(n²) | **空间**：O(1)\n\n## 选择排序\n\n找到最小值放到开头：\n```python\ndef selection_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        min_idx = i\n        for j in range(i+1, n):\n            if arr[j] < arr[min_idx]:\n                min_idx = j\n        arr[i], arr[min_idx] = arr[min_idx], arr[i]\n    return arr\n```\n- **时间**：O(n²) | **空间**：O(1)\n\n## 插入排序\n\n逐个元素构建有序数组：\n```python\ndef insertion_sort(arr):\n    for i in range(1, len(arr)):\n        key = arr[i]\n        j = i - 1\n        while j >= 0 and arr[j] > key:\n            arr[j+1] = arr[j]\n            j -= 1\n        arr[j+1] = key\n    return arr\n```\n- **时间**：平均 O(n²)，最好 O(n) | **空间**：O(1)\n\n## 对比\n| 算法 | 最好 | 平均 | 最坏 | 稳定 |\n|-----------|------|---------|-------|--------|\n| 冒泡 | O(n) | O(n²) | O(n²) | 是 |\n| 选择 | O(n²) | O(n²) | O(n²) | 否 |\n| 插入 | O(n) | O(n²) | O(n²) | 是 |",
+          "interactiveCode": {
+            "initialCode": "# Step 1: Implement bubble_sort(arr) and test with [64, 34, 25, 12, 22]\n\n# Step 2: Implement selection_sort(arr) and test with [64, 25, 12, 22, 11]\n\n# Step 3: Implement insertion_sort(arr) and test with [12, 11, 13, 5, 6]\n\n# Print \"Original:\" and \"Sorted:\" for each algorithm\n",
+            "expectedOutput": "Bubble Sort: [12, 22, 25, 34, 64]\nSelection Sort: [11, 12, 22, 25, 64]\nInsertion Sort: [5, 6, 11, 12, 13]",
+            "hint": "Bubble: def bubble_sort(arr): n=len(arr); for i in range(n): for j in range(0,n-i-1): if arr[j]>arr[j+1]: arr[j],arr[j+1]=arr[j+1],arr[j]; return arr. Selection: find min_idx in unsorted portion, swap. Insertion: insert each element into correct position. Print f'Bubble Sort: {bubble_sort([64,34,25,12,22])}'."
+          },
+          "quizzes": [
+            {
+              "id": "m5-l4-q1",
+              "question": "Which sorting algorithm has the best-case time complexity of O(n)?",
+              "options": ["Selection Sort", "Bubble Sort", "Both Bubble and Insertion Sort", "None of them"],
+              "correctAnswer": 2,
+              "explanation": "Both Bubble Sort and Insertion Sort have O(n) best-case when the array is already sorted. Selection Sort is always O(n²)."
+            },
+            {
+              "id": "m5-l4-q2",
+              "question": "What does 'stable sort' mean?",
+              "options": ["The algorithm never crashes", "Equal elements maintain their relative order", "The algorithm uses constant space", "The algorithm is always fast"],
+              "correctAnswer": 1,
+              "explanation": "A stable sort preserves the relative order of elements with equal keys."
+            }
+          ]
+        },
+        {
+          "id": "m5-l5",
+          "title": "Efficiency & Big O",
+          "theory_en": "## What is Big O Notation?\n\nBig O describes how an algorithm's time or space grows as input size increases.\n\n### Common Time Complexities\n\n| Big O | Name | Example |\n|-------|------|--------|\n| O(1) | Constant | Access array element |\n| O(log n) | Logarithmic | Binary search |\n| O(n) | Linear | Linear search |\n| O(n log n) | Linearithmic | Merge sort, Quick sort |\n| O(n²) | Quadratic | Bubble sort, nested loops |\n| O(2ⁿ) | Exponential | Recursive Fibonacci |\n\n### How to Analyze\n\n**O(1) — Constant**\n```python\ndef get_first(arr):\n    return arr[0]  # always 1 operation\n```\n\n**O(n) — Linear**\n```python\ndef find_sum(arr):\n    total = 0\n    for x in arr:     # n iterations\n        total += x\n    return total\n```\n\n**O(n²) — Quadratic**\n```python\ndef print_pairs(arr):\n    for i in arr:         # n iterations\n        for j in arr:     # × n iterations\n            print(i, j)   # n² total\n```\n\n### Rules of Thumb\n1. Drop constants: O(2n) → O(n)\n2. Drop smaller terms: O(n² + n) → O(n²)\n3. Different inputs = different variables: O(a + b)\n\n### Space Complexity\n```python\ndef create_list(n):\n    return [0] * n  # O(n) space\n\ndef swap(a, b):\n    return b, a     # O(1) space\n```",
+          "theory_zh": "## 什么是 Big O 表示法？\n\nBig O 描述算法的时间或空间如何随输入规模增长。\n\n### 常见时间复杂度\n\n| Big O | 名称 | 示例 |\n|-------|------|--------|\n| O(1) | 常数 | 访问数组元素 |\n| O(log n) | 对数 | 二分搜索 |\n| O(n) | 线性 | 线性搜索 |\n| O(n log n) | 线性对数 | 归并排序、快排 |\n| O(n²) | 二次方 | 冒泡排序、嵌套循环 |\n| O(2ⁿ) | 指数 | 递归斐波那契 |\n\n### 如何分析\n\n**O(1) — 常数**\n```python\ndef get_first(arr):\n    return arr[0]  # 始终 1 次操作\n```\n\n**O(n) — 线性**\n```python\ndef find_sum(arr):\n    total = 0\n    for x in arr:     # n 次迭代\n        total += x\n    return total\n```\n\n**O(n²) — 二次方**\n```python\ndef print_pairs(arr):\n    for i in arr:         # n 次迭代\n        for j in arr:     # × n 次迭代\n            print(i, j)   # 共 n² 次\n```\n\n### 经验法则\n1. 去掉常数：O(2n) → O(n)\n2. 去掉较小项：O(n² + n) → O(n²)\n3. 不同输入 = 不同变量：O(a + b)\n\n### 空间复杂度\n```python\ndef create_list(n):\n    return [0] * n  # O(n) 空间\n\ndef swap(a, b):\n    return b, a     # O(1) 空间\n```",
+          "interactiveCode": {
+            "initialCode": "# Step 1: O(1) example - access first element of [10,20,30], print it and print \"O(1)\"\n\n# Step 2: O(n) example - count operations to sum a list of size 5\ncount = 0\ntotal = 0\nnums = [1, 2, 3, 4, 5]\nfor x in nums:\n    total += x\n    count += 1\nprint(f\"Sum={total}, Operations={count}, Complexity=O(n)\")\n\n# Step 3: O(n²) example - count operations for nested loop of size 4\ncount2 = 0\nfor i in range(4):\n    for j in range(4):\n        count2 += 1\nprint(f\"Nested loop operations={count2}, Complexity=O(n^2)\")\n\n# Step 4: Compare: if n=1000, print how many steps for O(n) and O(n²)\nn = 1000\n",
+            "expectedOutput": "10\nO(1)\nSum=15, Operations=5, Complexity=O(n)\nNested loop operations=16, Complexity=O(n^2)\nO(n): 1000 steps\nO(n^2): 1000000 steps",
+            "hint": "Step 1: arr=[10,20,30]; print(arr[0]); print('O(1)'). Steps 2-3 are already partially written. Step 4: print(f'O(n): {n} steps'); print(f'O(n^2): {n*n} steps')."
+          },
+          "quizzes": [
+            {
+              "id": "m5-l5-q1",
+              "question": "What is the time complexity of a function with two nested loops over the same array?",
+              "options": ["O(n)", "O(n log n)", "O(n²)", "O(2n)"],
+              "correctAnswer": 2,
+              "explanation": "Two nested loops over n elements results in n × n = n² iterations, giving O(n²)."
+            },
+            {
+              "id": "m5-l5-q2",
+              "question": "Which simplification rule applies to O(3n + 100)?",
+              "options": ["O(3n + 100) stays the same", "Simplifies to O(n)", "Simplifies to O(100)", "Simplifies to O(3n)"],
+              "correctAnswer": 1,
+              "explanation": "In Big O, we drop constants and lower-order terms. O(3n + 100) simplifies to O(n)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

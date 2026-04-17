@@ -1,0 +1,214 @@
+{
+  "challenges": {
+    "m1": [
+      {
+        "id": "m1-c1",
+        "title": "Module Challenge: Student ID Card Generator",
+        "description": "Build a `generate_id_card(name, age, gpa)` function that:\n1. Validates inputs: name must be a non-empty string, age must be an int between 6-100, gpa must be a number (int or float) between 0.0-4.0. Return None for invalid inputs.\n2. Determines honor status: gpa >= 3.5 is True, otherwise False.\n3. Returns a formatted string using f-string:\n   \"Name: XXXX | Age: XX | GPA: X.XX | Honors: True/False\"\n   - Name should be title-cased (e.g. \"alice\" → \"Alice\")\n   - GPA should show exactly 2 decimal places\n   - The entire string must match this exact format",
+        "startingCode": "def generate_id_card(name, age, gpa):\n    # Your code here\n    pass\n\n# Test your function:\nprint(generate_id_card(\"alice smith\", 16, 3.8))\nprint(generate_id_card(\"\", 16, 3.5))\nprint(generate_id_card(\"bob\", 200, 3.0))\nprint(generate_id_card(\"charlie\", 15, 2.5))\nprint(generate_id_card(\"diana\", 18, \"high\"))",
+        "testCases": [
+          {
+            "label": "Basic formatting & f-string",
+            "setupCode": "",
+            "assertionCode": "result = generate_id_card('alice smith', 16, 3.8)\nassert result == 'Name: Alice Smith | Age: 16 | GPA: 3.80 | Honors: True', f'Got: {result}'"
+          },
+          {
+            "label": "Integer GPA casting & honors=False",
+            "setupCode": "",
+            "assertionCode": "result = generate_id_card('bob jones', 14, 3)\nassert result == 'Name: Bob Jones | Age: 14 | GPA: 3.00 | Honors: False', f'Got: {result}'"
+          },
+          {
+            "label": "None for empty name (string validation)",
+            "setupCode": "",
+            "assertionCode": "assert generate_id_card('', 16, 3.5) is None"
+          },
+          {
+            "label": "None for invalid age (type/range check)",
+            "setupCode": "",
+            "assertionCode": "assert generate_id_card('test', 200, 3.0) is None\nassert generate_id_card('test', 5, 3.0) is None"
+          },
+          {
+            "label": "None for non-numeric GPA",
+            "setupCode": "",
+            "assertionCode": "assert generate_id_card('test', 15, 'high') is None"
+          },
+          {
+            "label": "Boolean honors boundary (3.5 exact)",
+            "setupCode": "",
+            "assertionCode": "r1 = generate_id_card('edge', 15, 3.5)\nassert 'Honors: True' in r1\nr2 = generate_id_card('edge', 15, 3.49)\nassert 'Honors: False' in r2"
+          },
+          {
+            "label": "Operators: GPA 0 and age boundary",
+            "setupCode": "",
+            "assertionCode": "result = generate_id_card('min', 6, 0)\nassert result == 'Name: Min | Age: 6 | GPA: 0.00 | Honors: False', f'Got: {result}'\nassert generate_id_card('max', 100, 4.0) is not None"
+          }
+        ],
+        "hint": "Use isinstance() to check types, title() for name casing, f\"{gpa:.2f}\" for 2 decimal places. Check boolean with >= 3.5. Return None early for any invalid input.",
+        "difficulty": "easy"
+      }
+    ],
+    "m2": [
+      {
+        "id": "m2-c1",
+        "title": "Module Challenge: Class Roster Analyzer",
+        "description": "Build a class roster analysis toolkit with these functions:\n\n1. `roster_stats(students)` — takes a list of (name, score) tuples. Returns a dict with keys: 'count', 'average' (float, rounded to 1 decimal), 'highest' (tuple), 'lowest' (tuple). Use tuple unpacking.\n\n2. `unique_skills(class_a, class_b)` — takes two sets of skill-strings. Returns a dict with: 'only_a' (set), 'only_b' (set), 'both' (set), 'all' (set sorted into a list).\n\n3. `build_report(students)` — takes the same list of tuples. Uses enumerate to build a dict mapping rank (1-based) to name, sorted by score descending. Also uses zip to pair each student with the next one, returning a list of \"X vs Y\" strings.\n\nExample: students = [('Alice', 90), ('Bob', 85)] → ranks = {1: 'Alice', 2: 'Bob'}, pairs = ['Alice vs Bob']",
+        "startingCode": "def roster_stats(students):\n    # Your code here\n    pass\n\ndef unique_skills(class_a, class_b):\n    # Your code here\n    pass\n\ndef build_report(students):\n    # Your code here\n    pass\n\n# Test:\nstudents = [('Alice', 90), ('Bob', 75), ('Charlie', 85)]\nprint(roster_stats(students))\n\nskills_a = {'python', 'math', 'writing'}\nskills_b = {'python', 'art', 'music'}\nprint(unique_skills(skills_a, skills_b))\n\nranks, pairs = build_report(students)\nprint(ranks)\nprint(pairs)",
+        "testCases": [
+          {
+            "label": "List + Tuple: roster_stats basic",
+            "setupCode": "",
+            "assertionCode": "r = roster_stats([('A', 90), ('B', 80), ('C', 70)])\nassert r['count'] == 3\nassert r['average'] == 80.0\nassert r['highest'] == ('A', 90)\nassert r['lowest'] == ('C', 70)"
+          },
+          {
+            "label": "Dict: roster_stats returns correct dict keys",
+            "setupCode": "",
+            "assertionCode": "r = roster_stats([('Solo', 100)])\nassert set(r.keys()) == {'count', 'average', 'highest', 'lowest'}\nassert r['highest'] == r['lowest'] == ('Solo', 100)"
+          },
+          {
+            "label": "Set operations: unique_skills",
+            "setupCode": "",
+            "assertionCode": "r = unique_skills({'a', 'b', 'c'}, {'b', 'c', 'd'})\nassert r['only_a'] == {'a'}\nassert r['only_b'] == {'d'}\nassert r['both'] == {'b', 'c'}\nassert r['all'] == ['a', 'b', 'c', 'd']"
+          },
+          {
+            "label": "Enumerate: build_report ranks",
+            "setupCode": "",
+            "assertionCode": "ranks, _ = build_report([('X', 70), ('Y', 90), ('Z', 80)])\nassert ranks == {1: 'Y', 2: 'Z', 3: 'X'}"
+          },
+          {
+            "label": "Zip: build_report pairs",
+            "setupCode": "",
+            "assertionCode": "_, pairs = build_report([('A', 90), ('B', 80), ('C', 70)])\nassert pairs == ['A vs B', 'B vs C']"
+          }
+        ],
+        "hint": "roster_stats: use max/min with key=lambda t: t[1]. unique_skills: use set operators (-, &, |), sorted() for 'all'. build_report: sort by score desc first, then enumerate(sorted, 1) for ranks, zip(names, names[1:]) for pairs.",
+        "difficulty": "medium"
+      }
+    ],
+    "m3": [
+      {
+        "id": "m3-c1",
+        "title": "Module Challenge: Password Strength Checker",
+        "description": "Build a comprehensive password validation system:\n\n1. `check_password(pw)` — returns a dict with: 'length_ok' (bool, >= 8 chars), 'has_upper' (bool), 'has_lower' (bool), 'has_digit' (bool), 'has_special' (bool, any char in \"!@#$%^&*\"), 'score' (int 0-5, count of True checks), 'rating' ('Strong' if 5, 'Medium' if 3-4, 'Weak' if <3). Use a for loop over characters to check each condition.\n\n2. `batch_check(passwords)` — takes a list of password strings. Returns a dict using dict comprehension: {pw: rating_string}. If any password is not a string, skip it (don't crash — use try/except or isinstance check).\n\n3. `generate_suggestions(pw)` — uses a while loop to build a list of suggestion strings for each failing check. E.g. if no digit, append 'Add at least one digit'. Returns the list. If password is already strong (score=5), return ['Password is strong!'].",
+        "startingCode": "def check_password(pw):\n    # Your code here\n    pass\n\ndef batch_check(passwords):\n    # Your code here\n    pass\n\ndef generate_suggestions(pw):\n    # Your code here\n    pass\n\n# Test:\nprint(check_password('Abc123!@'))\nprint(batch_check(['weak', 'Strong1!Pass', 123]))\nprint(generate_suggestions('weak'))",
+        "testCases": [
+          {
+            "label": "If/elif/else: rating levels",
+            "setupCode": "",
+            "assertionCode": "r = check_password('Abc123!@')\nassert r['rating'] == 'Strong' and r['score'] == 5\nr2 = check_password('Abc123xx')\nassert r2['rating'] == 'Medium'\nr3 = check_password('abc')\nassert r3['rating'] == 'Weak'"
+          },
+          {
+            "label": "For loop: character checks",
+            "setupCode": "",
+            "assertionCode": "r = check_password('abcdefgh')\nassert r['has_lower'] == True\nassert r['has_upper'] == False\nassert r['has_digit'] == False\nassert r['length_ok'] == True"
+          },
+          {
+            "label": "Dict comprehension: batch_check",
+            "setupCode": "",
+            "assertionCode": "result = batch_check(['Abc123!@', 'weak'])\nassert result['Abc123!@'] == 'Strong'\nassert result['weak'] == 'Weak'\nassert len(result) == 2"
+          },
+          {
+            "label": "Error handling: skip non-strings",
+            "setupCode": "",
+            "assertionCode": "result = batch_check(['ok', 123, None, 'Abc123!@'])\nassert len(result) == 2\nassert 'ok' in result"
+          },
+          {
+            "label": "While loop: generate_suggestions",
+            "setupCode": "",
+            "assertionCode": "s = generate_suggestions('abc')\nassert any('digit' in x.lower() for x in s)\nassert any('upper' in x.lower() for x in s)\nassert any('length' in x.lower() or '8' in x for x in s)\nassert any('special' in x.lower() for x in s)"
+          },
+          {
+            "label": "Strong password needs no suggestions",
+            "setupCode": "",
+            "assertionCode": "s = generate_suggestions('Abc123!@')\nassert len(s) == 1 and 'strong' in s[0].lower()"
+          }
+        ],
+        "hint": "Use a for loop to iterate chars with isupper(), islower(), isdigit(), and 'in' for special chars. Count True values for score. In batch_check, use isinstance(pw, str) to skip non-strings. generate_suggestions: build a list of checks and use while loop with an index to go through them.",
+        "difficulty": "medium"
+      }
+    ],
+    "m4": [
+      {
+        "id": "m4-c1",
+        "title": "Module Challenge: Task Manager System",
+        "description": "Build a task management system using OOP:\n\n1. `class Task` — __init__(self, title, priority=0). Properties: title, priority, done (bool, default False). Method: complete() sets done=True. __str__ returns '[X] title (P:N)' or '[ ] title (P:N)'.\n\n2. `class TaskManager` — manages a list of tasks. Methods:\n   - add(title, priority=0) — creates & stores a Task\n   - get_pending() — returns list of undone tasks sorted by priority descending\n   - complete_task(title) — marks a task as done, raises ValueError if not found\n   - summary() — returns dict with 'total', 'done', 'pending' counts\n\n3. `class TimedTaskManager(TaskManager)` — subclass that overrides add() to also store a timestamp string. Override summary() to call super().summary() and add 'last_added' key.\n\n4. Free functions:\n   - `filter_tasks(tasks, func)` — takes list + lambda/function, returns filtered list\n   - `apply_all(tasks, *funcs)` — takes list + variable number of functions, applies each function to each task in sequence, returns tasks",
+        "startingCode": "class Task:\n    def __init__(self, title, priority=0):\n        # Your code here\n        pass\n    \n    def complete(self):\n        pass\n    \n    def __str__(self):\n        pass\n\nclass TaskManager:\n    def __init__(self):\n        pass\n    \n    def add(self, title, priority=0):\n        pass\n    \n    def get_pending(self):\n        pass\n    \n    def complete_task(self, title):\n        pass\n    \n    def summary(self):\n        pass\n\nclass TimedTaskManager(TaskManager):\n    pass\n\ndef filter_tasks(tasks, func):\n    pass\n\ndef apply_all(tasks, *funcs):\n    pass\n\n# Test:\ntm = TaskManager()\ntm.add('Write code', 3)\ntm.add('Test code', 2)\ntm.add('Deploy', 1)\ntm.complete_task('Test code')\nprint(tm.summary())\nfor t in tm.get_pending():\n    print(t)",
+        "testCases": [
+          {
+            "label": "Class basics: Task creation & __str__",
+            "setupCode": "",
+            "assertionCode": "t = Task('Test', 3)\nassert str(t) == '[ ] Test (P:3)'\nt.complete()\nassert str(t) == '[X] Test (P:3)'\nassert t.done == True"
+          },
+          {
+            "label": "TaskManager: add, complete, summary",
+            "setupCode": "",
+            "assertionCode": "tm = TaskManager()\ntm.add('A', 1)\ntm.add('B', 2)\ntm.complete_task('A')\ns = tm.summary()\nassert s == {'total': 2, 'done': 1, 'pending': 1}"
+          },
+          {
+            "label": "Error handling: complete non-existent",
+            "setupCode": "",
+            "assertionCode": "tm = TaskManager()\ntm.add('A')\ntry:\n    tm.complete_task('Z')\n    assert False, 'Should raise ValueError'\nexcept ValueError:\n    pass"
+          },
+          {
+            "label": "Sorting: get_pending by priority desc",
+            "setupCode": "",
+            "assertionCode": "tm = TaskManager()\ntm.add('Low', 1)\ntm.add('High', 5)\ntm.add('Mid', 3)\npending = tm.get_pending()\nassert [t.priority for t in pending] == [5, 3, 1]"
+          },
+          {
+            "label": "Inheritance: TimedTaskManager + super()",
+            "setupCode": "",
+            "assertionCode": "ttm = TimedTaskManager()\nttm.add('Task1')\ns = ttm.summary()\nassert 'last_added' in s\nassert s['total'] == 1"
+          },
+          {
+            "label": "Lambda + *args: filter & apply_all",
+            "setupCode": "",
+            "assertionCode": "tasks = [Task('A', 5), Task('B', 1), Task('C', 3)]\nhigh = filter_tasks(tasks, lambda t: t.priority >= 3)\nassert len(high) == 2\nassert all(t.priority >= 3 for t in high)\n\ndef mark_done(t): t.complete(); return t\nresult = apply_all([Task('X'), Task('Y')], mark_done)\nassert all(t.done for t in result)"
+          }
+        ],
+        "hint": "Task: store title/priority/done in __init__. TaskManager: use self.tasks = []. get_pending: filter with list comp + sort with key=lambda t: t.priority, reverse=True. TimedTaskManager: override add() calling super().add() then store timestamp. filter_tasks: return [t for t in tasks if func(t)]. apply_all: loop through funcs, apply each to all tasks.",
+        "difficulty": "hard"
+      }
+    ],
+    "m5": [
+      {
+        "id": "m5-c1",
+        "title": "Module Challenge: Data Structure Toolkit",
+        "description": "Implement a toolkit covering core DSA concepts:\n\n1. `class Stack` — implement using a list. Methods: push(val), pop() (returns val or None if empty), peek() (returns top or None), is_empty(), size(). Use this to write `is_balanced(s)` — checks if parentheses/brackets in string s are balanced using your Stack.\n\n2. `class Queue` — implement using a list. Methods: enqueue(val), dequeue() (returns val or None if empty), front(), is_empty(), size().\n\n3. `binary_search(arr, target)` — returns index or -1. Must use O(log n) approach with two pointers.\n\n4. `insertion_sort(arr)` — returns a NEW sorted list (don't modify original). Must implement the algorithm manually (no built-in sort).\n\n5. `find_complexity(n)` — takes an int n, returns a dict with keys 'constant', 'linear', 'quadratic' containing the number of operations each algorithm would take. Constant=1, Linear=n, Quadratic=n*n.",
+        "startingCode": "class Stack:\n    def __init__(self):\n        pass\n    def push(self, val): pass\n    def pop(self): pass\n    def peek(self): pass\n    def is_empty(self): pass\n    def size(self): pass\n\ndef is_balanced(s):\n    # Use your Stack class\n    pass\n\nclass Queue:\n    def __init__(self):\n        pass\n    def enqueue(self, val): pass\n    def dequeue(self): pass\n    def front(self): pass\n    def is_empty(self): pass\n    def size(self): pass\n\ndef binary_search(arr, target):\n    pass\n\ndef insertion_sort(arr):\n    pass\n\ndef find_complexity(n):\n    pass\n\n# Test:\ns = Stack()\ns.push(1); s.push(2)\nprint(s.pop(), s.peek())\nprint(is_balanced('({[]})'))\nprint(binary_search([1,3,5,7,9], 5))\nprint(insertion_sort([5,3,1,4,2]))",
+        "testCases": [
+          {
+            "label": "Stack: push, pop, peek, is_empty",
+            "setupCode": "",
+            "assertionCode": "s = Stack()\nassert s.is_empty() == True\ns.push(10); s.push(20); s.push(30)\nassert s.size() == 3\nassert s.peek() == 30\nassert s.pop() == 30\nassert s.pop() == 20\nassert s.size() == 1\nassert s.pop() == 10\nassert s.pop() is None"
+          },
+          {
+            "label": "Stack application: is_balanced",
+            "setupCode": "",
+            "assertionCode": "assert is_balanced('({[]})') == True\nassert is_balanced('([)]') == False\nassert is_balanced('((') == False\nassert is_balanced('') == True\nassert is_balanced('{[()]}') == True"
+          },
+          {
+            "label": "Queue: enqueue, dequeue, front",
+            "setupCode": "",
+            "assertionCode": "q = Queue()\nassert q.is_empty() == True\nq.enqueue('a'); q.enqueue('b'); q.enqueue('c')\nassert q.size() == 3\nassert q.front() == 'a'\nassert q.dequeue() == 'a'\nassert q.dequeue() == 'b'\nassert q.size() == 1\nassert q.dequeue() == 'c'\nassert q.dequeue() is None"
+          },
+          {
+            "label": "Binary search: found, not found, edges",
+            "setupCode": "",
+            "assertionCode": "assert binary_search([1,3,5,7,9,11], 7) == 3\nassert binary_search([1,3,5,7,9,11], 4) == -1\nassert binary_search([1,3,5,7,9], 1) == 0\nassert binary_search([1,3,5,7,9], 9) == 4\nassert binary_search([], 1) == -1"
+          },
+          {
+            "label": "Insertion sort: correctness + no mutation",
+            "setupCode": "",
+            "assertionCode": "original = [5, 3, 1, 4, 2]\nresult = insertion_sort(original)\nassert result == [1, 2, 3, 4, 5]\nassert original == [5, 3, 1, 4, 2], 'Must not modify original'\nassert insertion_sort([]) == []\nassert insertion_sort([42]) == [42]"
+          },
+          {
+            "label": "Big O: find_complexity",
+            "setupCode": "",
+            "assertionCode": "r = find_complexity(100)\nassert r == {'constant': 1, 'linear': 100, 'quadratic': 10000}\nr2 = find_complexity(1)\nassert r2 == {'constant': 1, 'linear': 1, 'quadratic': 1}"
+          }
+        ],
+        "hint": "Stack: use self.items = []. push=append, pop=pop(-1) with empty check. is_balanced: push opening brackets, pop on closing and check match. Queue: use list, enqueue=append, dequeue=pop(0). binary_search: low=0, high=len-1, while low<=high with mid=(low+high)//2. insertion_sort: copy list, then shift elements left to their correct position.",
+        "difficulty": "hard"
+      }
+    ]
+  }
+}

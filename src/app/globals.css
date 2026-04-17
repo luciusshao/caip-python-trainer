@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  /* USAII CAIP Brand Colors - from PDF */
+  --color-brand-purple-deep: #3B0764;
+  --color-brand-purple: #6B21A8;
+  --color-brand-magenta: #A21CAF;
+  --color-brand-gold: #F5A623;
+  --color-brand-gold-light: #FCD34D;
+  --color-brand-white: #F8FAFC;
+  --color-brand-dark: #0F172A;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1e1b4b;
+}
+::-webkit-scrollbar-thumb {
+  background: #6B21A8;
+  border-radius: 3px;
+}
+
+/* Code blocks in markdown */
+.prose pre {
+  background: #1e1b4b !important;
+  border: 1px solid #6B21A8;
+  border-radius: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+  font-size: 0.8em;
+}
+.prose pre code {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+/* Make scrollbar visible inside code blocks */
+.prose pre::-webkit-scrollbar {
+  height: 6px;
+}
+.prose pre::-webkit-scrollbar-track {
+  background: #1e1b4b;
+  border-radius: 3px;
+}
+.prose pre::-webkit-scrollbar-thumb {
+  background: #6B21A8;
+  border-radius: 3px;
+}
+.prose code {
+  color: #FCD34D;
+  font-size: 0.85em;
+}
+.prose p code,
+.prose li code {
+  background: #1e1b4b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  word-break: break-word;
+}
+
+/* Markdown table styling */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.prose th {
+  background: #3B0764;
+  color: #FCD34D;
+  padding: 8px 12px;
+  text-align: left;
+}
+.prose td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #4c1d95;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(245,166,35,0.1) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(245, 166, 35, 0); }
+}
+
+.pulse-gold {
+  animation: pulse-gold 2s infinite;
+}
