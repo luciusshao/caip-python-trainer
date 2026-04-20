@@ -45,6 +45,7 @@ model Student {
   practiceAttempts PracticeAttempt[]
   streak           Streak?
   mockExamScores   MockExamScore[]
+  tokenUsages      TokenUsage[]
 
   @@index([teacherId])
 }
@@ -115,6 +116,22 @@ model MockExamScore {
   createdAt DateTime @default(now())
 
   @@index([studentId])
+}
+
+// ─── Token Usage Tracking ──────────────────────────────
+
+model TokenUsage {
+  id               String   @id @default(cuid())
+  studentId        String
+  student          Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  model            String
+  promptTokens     Int
+  completionTokens Int
+  totalTokens      Int
+  createdAt        DateTime @default(now())
+
+  @@index([studentId])
+  @@index([createdAt])
 }
 
 // ─── Course Management (placeholder for Phase 5) ──────

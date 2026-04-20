@@ -7,6 +7,8 @@ const NAV_ITEMS = [
   { href: "/teacher", icon: "📊", label: "总览" },
   { href: "/teacher/students", icon: "👥", label: "学生管理" },
   { href: "/teacher/courses", icon: "📚", label: "课程管理" },
+  { href: "/teacher/token-usage", icon: "🔥", label: "Token 消耗" },
+  { href: "/teacher/settings", icon: "⚙️", label: "设置" },
 ];
 
 export default function TeacherSidebar() {
