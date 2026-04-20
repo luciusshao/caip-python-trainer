@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useAppStore } from "@/store/useAppStore";
 import syllabus from "@/content/syllabus.json";
 
@@ -62,6 +63,13 @@ export default function Header() {
             <p className="text-xs text-gray-400">modules</p>
           </div>
         </div>
+        <Link
+          href="/profile"
+          className="text-xs text-gray-400 hover:text-brand-gold transition-colors px-2 py-1 rounded-md hover:bg-brand-purple/20"
+          title="个人资料"
+        >
+          👤
+        </Link>
       </div>
     </header>
   );
