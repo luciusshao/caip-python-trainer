@@ -99,3 +99,11 @@
 .pulse-gold {
   animation: pulse-gold 2s infinite;
 }
+
+/* Lamp login page variables */
+:root {
+  --lamp-on: 0;
+  --shade-hue: 280;
+  --lamp-color: hsl(280, 70%, 50%);
+  --lamp-glow: hsl(280, 70%, 50%, 0.3);
+}

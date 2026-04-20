@@ -61,6 +61,9 @@ All lessons/modules are freely accessible — `isLessonUnlocked` and `isModuleUn
 ### Python Runtime
 `src/lib/usePyodide.ts` — singleton loader (loads once from CDN `cdn.jsdelivr.net/pyodide/v0.26.4`). Captures stdout/stderr via Python's `io.StringIO`. Used by both `CodePane` (single run) and `PracticePane` (sequential test case assertions).
 
+### test
+- use playwright CLI mode，not MCP
+
 ## Key Constraints
 
 - **Monaco Editor** must be imported via `next/dynamic` with `{ ssr: false }` — it's a browser-only module.
@@ -68,3 +71,5 @@ All lessons/modules are freely accessible — `isLessonUnlocked` and `isModuleUn
 - **Import paths**: challenges import as `@/content/challenges.json` (not from `config/` — that's outside `src/` and can't be aliased).
 - **Tailwind v4** syntax: theme variables defined in `globals.css` under `@theme {}`, not `tailwind.config.js`. Brand colors are `brand-purple-deep`, `brand-purple`, `brand-magenta`, `brand-gold`, `brand-gold-light`.
 - **Bilingual layout**: TheoryPane `grid-cols-2` children need `min-w-0 overflow-hidden` to prevent code block overflow.
+
+
