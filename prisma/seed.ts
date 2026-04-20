@@ -11,40 +11,40 @@ const prisma = new PrismaClient({ adapter }) as unknown as InstanceType<typeof P
 
 /**
  * Seed creates three development accounts under the unified User model:
- *   1. admin  (TEACHER)   — admin@caip-trainer.local / admin123
+ *   1. admin  (ADMIN)    — admin@caip-trainer.local / admin123   (sees all students)
  *   2. student01 (STUDENT) — student01@caip-trainer.local / test123
  *   3. (optional) root admin for future  — not seeded here
  *
  * OAuth-only users (Google/GitHub) are created on-the-fly by NextAuth.
  */
 async function main() {
-  // ── Admin Teacher ───────────────────────────────────
+  // ── Admin ───────────────────────────────────────────
   const adminHash = await bcrypt.hash("admin123", 10);
   const adminUser = await prisma.user.upsert({
     where: { email: "admin@caip-trainer.local" },
-    update: {},
+    update: { role: "ADMIN" },
     create: {
       email: "admin@caip-trainer.local",
       emailVerified: new Date(), // pre-verified for dev convenience
-      name: "Admin Teacher",
-      role: "TEACHER",
+      name: "Admin",
+      role: "ADMIN",
       passwordHash: adminHash,
       teacherProfile: {
         create: {
           username: "admin",
-          displayName: "Admin Teacher",
+          displayName: "Admin",
         },
       },
     },
     include: { teacherProfile: true },
   });
   console.log(
-    "Seeded teacher:",
+    "Seeded admin:",
     adminUser.email,
-    "(username: admin, password: admin123)"
+    "(username: admin, password: admin123, role: ADMIN)"
   );
 
-  if (!adminUser.teacherProfile) throw new Error("Teacher profile missing");
+  if (!adminUser.teacherProfile) throw new Error("Admin teacher profile missing");
 
   // ── Test Student ────────────────────────────────────
   const studentHash = await bcrypt.hash("test123", 10);

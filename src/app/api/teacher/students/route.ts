@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, generatePassword } from "@/lib/password";
 import { getTeacherProfileId } from "@/lib/session";
+import { auth } from "@/auth";
 
-// GET: List all students for this teacher
+// GET: List students.
+//   - ADMIN → sees all students
+//   - TEACHER → sees only their own students
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
+    const role = session?.user?.role;
     const teacherId = await getTeacherProfileId();
-    if (!teacherId) {
+
+    if (!teacherId && role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -16,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     const students = await prisma.studentProfile.findMany({
       where: {
-        teacherId,
+        ...(role === "ADMIN" ? {} : { teacherId: teacherId! }),
         user: { isActive: true },
         ...(query && {
           OR: [
