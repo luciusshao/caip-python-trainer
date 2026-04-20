@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import aiConfig from "../../../../config/ai_model.json";
 import { prisma } from "@/lib/prisma";
 import { getStudentProfileId } from "@/lib/session";
+import { limitChat } from "@/lib/ratelimit";
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -60,6 +61,27 @@ export async function POST(req: NextRequest) {
 
   // Resolve StudentProfile.id for token usage tracking.
   const studentId = await getStudentProfileId();
+
+  // Rate limit: 20 requests / 60s per studentId (or IP fallback).
+  const rateKey =
+    studentId ||
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    "anonymous";
+  const rate = await limitChat(rateKey);
+  if (!rate.success) {
+    return new Response(
+      JSON.stringify({
+        error: "请求过于频繁，请稍后再试（每分钟最多 20 次）",
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "Retry-After": "60",
+        },
+      }
+    );
+  }
 
   const systemPrompt = buildSystemPrompt(context);
   const fullMessages: ChatMessage[] = [

@@ -4,6 +4,8 @@ import { useState, useCallback, useMemo, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { motion, type PanInfo } from "framer-motion";
+import { TurnstileWidget } from "@/components/auth/TurnstileWidget";
+import { clientEnv, clientFeatures } from "@/lib/client-env";
 
 // ─── Web Audio: synthesize a "click" sound ───────────────────────
 function playClickSound() {
@@ -63,6 +65,7 @@ function LoginContent() {
   // Auth state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [loginError, setLoginError] = useState(urlError ? "登录失败，请重试" : "");
   const [loginLoading, setLoginLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -384,12 +387,17 @@ function LoginContent() {
             onSubmit={async (e) => {
               e.preventDefault();
               if (!email || !password || loginLoading) return;
+              if (clientFeatures.turnstile && !turnstileToken) {
+                setLoginError("请完成人机验证");
+                return;
+              }
               setLoginError("");
               setLoginLoading(true);
               try {
                 const res = await signIn("credentials", {
                   email,
                   password,
+                  turnstileToken,
                   redirect: false,
                 });
                 if (res?.error) {
@@ -470,6 +478,15 @@ function LoginContent() {
           {loginError && (
             <div className="mb-4 rounded-lg bg-red-900/30 border border-red-700/30 p-2.5">
               <p className="text-xs text-red-400 text-center">{loginError}</p>
+            </div>
+          )}
+
+          {clientFeatures.turnstile && (
+            <div className="mb-4">
+              <TurnstileWidget
+                siteKey={clientEnv.turnstileSiteKey}
+                onToken={setTurnstileToken}
+              />
             </div>
           )}
 
