@@ -1,28 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 // GET: Fetch student profile
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
+    const session = await auth();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const student = await prisma.student.findUnique({
-      where: { id: userId },
+    const profile = await prisma.studentProfile.findUnique({
+      where: { userId: session.user.id },
       select: {
         username: true,
         displayName: true,
-        email: true,
+        user: { select: { email: true } },
       },
     });
 
-    if (!student) {
+    if (!profile) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(student);
+    return NextResponse.json({
+      username: profile.username,
+      displayName: profile.displayName,
+      email: profile.user.email,
+    });
   } catch (error) {
     console.error("GET profile error:", error);
     return NextResponse.json(
@@ -35,28 +40,43 @@ export async function GET(request: NextRequest) {
 // PUT: Update student profile
 export async function PUT(request: NextRequest) {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
+    const session = await auth();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
     const { displayName, email } = body;
 
-    const updated = await prisma.student.update({
-      where: { id: userId },
+    const updated = await prisma.studentProfile.update({
+      where: { userId: session.user.id },
       data: {
         ...(displayName !== undefined && { displayName }),
-        ...(email !== undefined && { email }),
       },
       select: {
         username: true,
         displayName: true,
-        email: true,
       },
     });
 
-    return NextResponse.json(updated);
+    // Email lives on User, not StudentProfile
+    if (email !== undefined) {
+      await prisma.user.update({
+        where: { id: session.user.id },
+        data: { email },
+      });
+    }
+
+    const userEmail = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { email: true },
+    });
+
+    return NextResponse.json({
+      username: updated.username,
+      displayName: updated.displayName,
+      email: userEmail?.email,
+    });
   } catch (error) {
     console.error("PUT profile error:", error);
     return NextResponse.json(

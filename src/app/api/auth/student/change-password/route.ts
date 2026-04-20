@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import {
-  verifyPassword,
-  hashPassword,
-  signToken,
-  setAuthCookie,
-} from "@/lib/auth";
+import { verifyPassword, hashPassword } from "@/lib/password";
+import { auth } from "@/auth";
 
+/**
+ * Change password for the current student (session-based).
+ * Student and teacher share the same underlying logic since auth is unified;
+ * /api/auth/teacher/change-password does the same thing with a role check.
+ */
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
+    const session = await auth();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -31,45 +32,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const student = await prisma.student.findUnique({
-      where: { id: userId },
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
     });
-
-    if (!student) {
-      return NextResponse.json({ error: "用户不存在" }, { status: 404 });
-    }
-
-    const valid = await verifyPassword(currentPassword, student.passwordHash);
-    if (!valid) {
+    if (!user || !user.passwordHash) {
       return NextResponse.json(
-        { error: "当前密码不正确" },
-        { status: 401 }
+        { error: "该账号未设置密码（OAuth 账号请使用第三方登录修改密码）" },
+        { status: 400 }
       );
     }
 
-    // Update password and clear mustChangePassword flag
+    const valid = await verifyPassword(currentPassword, user.passwordHash);
+    if (!valid) {
+      return NextResponse.json({ error: "当前密码不正确" }, { status: 401 });
+    }
+
     const newHash = await hashPassword(newPassword);
-    await prisma.student.update({
-      where: { id: userId },
-      data: {
-        passwordHash: newHash,
-        mustChangePassword: false,
-      },
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { passwordHash: newHash },
     });
 
-    // Re-sign JWT with updated mustChangePassword
-    const token = await signToken(
-      {
-        userId: student.id,
-        role: "student",
-        mustChangePassword: false,
-      },
-      "student"
-    );
-
-    const response = NextResponse.json({ success: true });
-    setAuthCookie(response, token, "student");
-    return response;
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Change password error:", error);
     return NextResponse.json(

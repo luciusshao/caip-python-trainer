@@ -1,4 +1,4 @@
-// CAIP Python Trainer — Multi-user schema
+// CAIP Python Trainer — Unified auth schema (NextAuth v5 compatible)
 // DB: Neon PostgreSQL (serverless)
 
 generator client {
@@ -10,110 +10,185 @@ datasource db {
   provider = "postgresql"
 }
 
-// ─── Users ─────────────────────────────────────────────
+// ─── NextAuth Core Tables ──────────────────────────────
+// Conforms to @auth/prisma-adapter v2 data model.
 
-model Teacher {
-  id           String   @id @default(cuid())
-  username     String   @unique
-  passwordHash String
-  displayName  String
-  email        String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
 
-  students Student[]
-  courses  Course[]
+  // Custom fields
+  role         Role    @default(STUDENT)
+  isActive     Boolean @default(true)
+  passwordHash String? // null for OAuth-only users
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // NextAuth relations
+  accounts Account[]
+  sessions Session[]
+
+  // Business profiles (1:1 optional — exactly one should be set based on role)
+  studentProfile StudentProfile?
+  teacherProfile TeacherProfile?
 }
 
-model Student {
-  id                 String    @id @default(cuid())
-  username           String    @unique
-  passwordHash       String
-  displayName        String
-  email              String?
-  mustChangePassword Boolean   @default(true)
-  isActive           Boolean   @default(true)
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  lastLoginAt        DateTime?
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
 
-  teacherId String
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String // "google" | "github" | "credentials"
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String // email
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Business Profiles ─────────────────────────────────
+
+model StudentProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  username    String? @unique // optional display/login alias (legacy/internal users)
+  displayName String
+  lastLoginAt DateTime?
+
+  // Optional teacher relationship (public users may have no teacher)
+  teacherId String?
+  teacher   TeacherProfile? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+
+  // Learning data
   progress         LearningProgress?
+  streak           Streak?
   quizAttempts     QuizAttempt[]
   practiceAttempts PracticeAttempt[]
-  streak           Streak?
   mockExamScores   MockExamScore[]
   tokenUsages      TokenUsage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([teacherId])
 }
 
-// ─── Learning Progress ─────────────────────────────────
+model TeacherProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  username    String? @unique // optional legacy username
+  displayName String
+
+  students StudentProfile[]
+  courses  Course[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Learning Progress (student-only) ─────────────────
 
 model LearningProgress {
-  id              String  @id @default(cuid())
-  studentId       String  @unique
-  student         Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  currentModuleId  String   @default("m1")
-  currentLessonId  String   @default("m1-l1")
-  currentStep      String   @default("theory")
-  theoryLang       String   @default("both")
+  id               String         @id @default(cuid())
+  studentId        String         @unique
+  student          StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  currentModuleId  String         @default("m1")
+  currentLessonId  String         @default("m1-l1")
+  currentStep      String         @default("theory")
+  theoryLang       String         @default("both")
 
   /// JSON: { "m1-l1": { theoryRead, codeCompleted, quizPassed, quizAttempts[] } }
-  lessonProgress   Json     @default("{}")
+  lessonProgress   Json           @default("{}")
 
-  completedModules String[] @default([])
-  mockExamUnlocked Boolean  @default(false)
+  completedModules String[]       @default([])
+  mockExamUnlocked Boolean        @default(false)
 
   updatedAt DateTime @updatedAt
 }
 
 model QuizAttempt {
-  id             String   @id @default(cuid())
+  id             String         @id @default(cuid())
   studentId      String
-  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student        StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
   lessonId       String
   quizId         String
   selectedAnswer Int
   correct        Boolean
-  createdAt      DateTime @default(now())
+  createdAt      DateTime       @default(now())
 
   @@index([studentId, lessonId])
 }
 
 model PracticeAttempt {
-  id        String   @id @default(cuid())
+  id        String         @id @default(cuid())
   studentId String
-  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
   moduleId  String
-  completed Boolean  @default(false)
-  attempts  Int      @default(0)
-  updatedAt DateTime @updatedAt
+  completed Boolean        @default(false)
+  attempts  Int            @default(0)
+  updatedAt DateTime       @updatedAt
 
   @@unique([studentId, moduleId])
   @@index([studentId])
 }
 
 model Streak {
-  id             String   @id @default(cuid())
-  studentId      String   @unique
-  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  currentStreak  Int      @default(0)
-  longestStreak  Int      @default(0)
+  id             String         @id @default(cuid())
+  studentId      String         @unique
+  student        StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  currentStreak  Int            @default(0)
+  longestStreak  Int            @default(0)
   lastActiveDate String?
-  activeDays     String[] @default([])
+  activeDays     String[]       @default([])
 }
 
 model MockExamScore {
-  id        String   @id @default(cuid())
+  id        String         @id @default(cuid())
   studentId String
-  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
   score     Int
   total     Int
-  createdAt DateTime @default(now())
+  createdAt DateTime       @default(now())
 
   @@index([studentId])
 }
@@ -121,31 +196,31 @@ model MockExamScore {
 // ─── Token Usage Tracking ──────────────────────────────
 
 model TokenUsage {
-  id               String   @id @default(cuid())
+  id               String         @id @default(cuid())
   studentId        String
-  student          Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student          StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
   model            String
   promptTokens     Int
   completionTokens Int
   totalTokens      Int
-  createdAt        DateTime @default(now())
+  createdAt        DateTime       @default(now())
 
   @@index([studentId])
   @@index([createdAt])
 }
 
-// ─── Course Management (placeholder for Phase 5) ──────
+// ─── Course Management ─────────────────────────────────
 
 model Course {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   teacherId   String
-  teacher     Teacher  @relation(fields: [teacherId], references: [id])
+  teacher     TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   name        String
   description String?
-  syllabusKey String   @default("default")
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  syllabusKey String         @default("default")
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   @@index([teacherId])
 }

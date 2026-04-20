@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import aiConfig from "../../../../config/ai_model.json";
 import { prisma } from "@/lib/prisma";
+import { getStudentProfileId } from "@/lib/session";
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -57,8 +58,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Get student ID from middleware-injected header
-  const userId = req.headers.get("x-user-id");
+  // Resolve StudentProfile.id for token usage tracking.
+  const studentId = await getStudentProfileId();
 
   const systemPrompt = buildSystemPrompt(context);
   const fullMessages: ChatMessage[] = [
@@ -149,10 +150,10 @@ export async function POST(req: NextRequest) {
           controller.close();
 
           // Async write token usage to DB (fire-and-forget)
-          if (usage && userId) {
+          if (usage && studentId) {
             prisma.tokenUsage.create({
               data: {
-                studentId: userId,
+                studentId,
                 model: aiConfig.modelName,
                 promptTokens: usage.prompt_tokens || 0,
                 completionTokens: usage.completion_tokens || 0,

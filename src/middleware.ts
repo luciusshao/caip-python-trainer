@@ -1,134 +1,58 @@
-import { NextRequest, NextResponse } from "next/server";
-import { verifyToken, getCookieName } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { NextResponse } from "next/server";
+import authConfig from "./auth.config";
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+/**
+ * Edge-runtime middleware.
+ *
+ * Uses the lightweight `auth.config.ts` (no Prisma, no Node APIs) — the
+ * full `auth.ts` with the Prisma adapter is Node-only and cannot run here.
+ *
+ * Downstream server-side code should still import `{ auth } from "@/auth"`
+ * to get the full session with role, since role lives in the JWT claim.
+ */
+const { auth } = NextAuth(authConfig);
 
-  // ─── Public routes — no auth needed ────────────────────
-  // Note: change-password endpoints require auth (need x-user-id)
-  const isPublicAuth =
-    pathname.startsWith("/api/auth/") &&
-    !pathname.includes("/change-password");
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
 
-  if (pathname === "/login" || pathname === "/teacher/login" || isPublicAuth) {
+  if (pathname.startsWith("/api/auth/")) return NextResponse.next();
+
+  const publicPages = [
+    "/login",
+    "/register",
+    "/verify-email",
+    "/forgot-password",
+    "/reset-password",
+  ];
+  if (publicPages.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     return NextResponse.next();
   }
 
-  // ─── Student change-password API — needs student token ──
-  if (pathname === "/api/auth/student/change-password") {
-    const token = request.cookies.get(getCookieName("student"))?.value;
-    if (!token) {
+  const session = req.auth;
+
+  if (!session) {
+    if (pathname.startsWith("/api/")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const decoded = await verifyToken(token, "student");
-    if (!decoded) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    const response = NextResponse.next();
-    response.headers.set("x-user-id", decoded.userId);
-    response.headers.set("x-user-role", "student");
-    return response;
+    const loginUrl = new URL("/login", req.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  // ─── Teacher change-password API — needs teacher token ──
-  if (pathname === "/api/auth/teacher/change-password") {
-    const token = request.cookies.get(getCookieName("teacher"))?.value;
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const role = session.user?.role;
+
+  const isTeacherRoute =
+    pathname.startsWith("/teacher") || pathname.startsWith("/api/teacher");
+  if (isTeacherRoute && role !== "TEACHER" && role !== "ADMIN") {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
-    const decoded = await verifyToken(token, "teacher");
-    if (!decoded) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    const response = NextResponse.next();
-    response.headers.set("x-user-id", decoded.userId);
-    response.headers.set("x-user-role", "teacher");
-    return response;
-  }
-
-  // ─── Static / internal — skip ──────────────────────────
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/favicon") ||
-    pathname.match(/\.(png|jpg|svg|ico|css|js)$/)
-  ) {
-    return NextResponse.next();
-  }
-
-  // ─── Teacher routes ────────────────────────────────────
-  if (pathname.startsWith("/teacher") || pathname.startsWith("/api/teacher")) {
-    const token = request.cookies.get(getCookieName("teacher"))?.value;
-    if (!token) {
-      if (pathname.startsWith("/api/")) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      }
-      return NextResponse.redirect(new URL("/teacher/login", request.url));
-    }
-
-    const decoded = await verifyToken(token, "teacher");
-    if (!decoded) {
-      if (pathname.startsWith("/api/")) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      }
-      return NextResponse.redirect(new URL("/teacher/login", request.url));
-    }
-
-    // Inject user info into request headers for API routes
-    const response = NextResponse.next();
-    response.headers.set("x-user-id", decoded.userId);
-    response.headers.set("x-user-role", "teacher");
-    return response;
-  }
-
-  // ─── Student API routes ────────────────────────────────
-  if (pathname.startsWith("/api/student") || pathname === "/api/chat") {
-    const token = request.cookies.get(getCookieName("student"))?.value;
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const decoded = await verifyToken(token, "student");
-    if (!decoded) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const response = NextResponse.next();
-    response.headers.set("x-user-id", decoded.userId);
-    response.headers.set("x-user-role", "student");
-    return response;
-  }
-
-  // ─── Student page routes (/, /profile, /change-password) ──
-  const studentPages = ["/", "/profile", "/change-password"];
-  const isStudentPage =
-    studentPages.includes(pathname) || pathname.startsWith("/profile");
-
-  if (isStudentPage) {
-    const token = request.cookies.get(getCookieName("student"))?.value;
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    const decoded = await verifyToken(token, "student");
-    if (!decoded) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    // Force password change on first login
-    if (decoded.mustChangePassword && pathname !== "/change-password") {
-      return NextResponse.redirect(
-        new URL("/change-password", request.url)
-      );
-    }
-
-    const response = NextResponse.next();
-    response.headers.set("x-user-id", decoded.userId);
-    response.headers.set("x-user-role", "student");
-    return response;
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],

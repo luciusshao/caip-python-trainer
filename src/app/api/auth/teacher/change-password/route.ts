@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import {
-  verifyPassword,
-  hashPassword,
-  signToken,
-  setAuthCookie,
-} from "@/lib/auth";
+import { verifyPassword, hashPassword } from "@/lib/password";
+import { auth } from "@/auth";
 
+/**
+ * Change password for the current teacher (session-based).
+ * Middleware enforces that only teachers reach this endpoint.
+ */
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
+    const session = await auth();
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if (session.user.role !== "TEACHER" && session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const body = await request.json();
@@ -23,7 +26,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
     if (newPassword.length < 6) {
       return NextResponse.json(
         { error: "新密码至少需要 6 个字符" },
@@ -31,37 +33,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const teacher = await prisma.teacher.findUnique({
-      where: { id: userId },
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
     });
-
-    if (!teacher) {
-      return NextResponse.json({ error: "用户不存在" }, { status: 404 });
-    }
-
-    const valid = await verifyPassword(currentPassword, teacher.passwordHash);
-    if (!valid) {
+    if (!user || !user.passwordHash) {
       return NextResponse.json(
-        { error: "当前密码不正确" },
-        { status: 401 }
+        { error: "该账号未设置密码（OAuth 账号请使用第三方登录修改密码）" },
+        { status: 400 }
       );
     }
 
+    const valid = await verifyPassword(currentPassword, user.passwordHash);
+    if (!valid) {
+      return NextResponse.json({ error: "当前密码不正确" }, { status: 401 });
+    }
+
     const newHash = await hashPassword(newPassword);
-    await prisma.teacher.update({
-      where: { id: userId },
+    await prisma.user.update({
+      where: { id: user.id },
       data: { passwordHash: newHash },
     });
 
-    // Re-sign JWT
-    const token = await signToken(
-      { userId: teacher.id, role: "teacher" },
-      "teacher"
-    );
-
-    const response = NextResponse.json({ success: true });
-    setAuthCookie(response, token, "teacher");
-    return response;
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Teacher change password error:", error);
     return NextResponse.json(

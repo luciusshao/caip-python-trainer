@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getTeacherProfileId } from "@/lib/session";
 
 export async function GET(request: NextRequest) {
   try {
-    const teacherId = request.headers.get("x-user-id");
+    const teacherId = await getTeacherProfileId();
     if (!teacherId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -21,9 +22,9 @@ export async function GET(request: NextRequest) {
     }
     // "all" → no date filter
 
-    // Get this teacher's student IDs
-    const students = await prisma.student.findMany({
-      where: { teacherId, isActive: true },
+    // Get this teacher's student profile IDs
+    const students = await prisma.studentProfile.findMany({
+      where: { teacherId, user: { isActive: true } },
       select: { id: true, displayName: true, username: true },
     });
     const studentIds = students.map((s) => s.id);

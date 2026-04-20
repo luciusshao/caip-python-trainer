@@ -1,39 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getStudentProfileId } from "@/lib/session";
 
 // GET: Fetch student's learning progress
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
+    const studentId = await getStudentProfileId();
+    if (!studentId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Find or create learning progress
     let progress = await prisma.learningProgress.findUnique({
-      where: { studentId: userId },
+      where: { studentId },
     });
-
     if (!progress) {
       progress = await prisma.learningProgress.create({
-        data: { studentId: userId },
+        data: { studentId },
       });
     }
 
-    // Also fetch streak
-    let streak = await prisma.streak.findUnique({
-      where: { studentId: userId },
-    });
-
+    let streak = await prisma.streak.findUnique({ where: { studentId } });
     if (!streak) {
-      streak = await prisma.streak.create({
-        data: { studentId: userId },
-      });
+      streak = await prisma.streak.create({ data: { studentId } });
     }
 
-    // Fetch practice progress
     const practiceAttempts = await prisma.practiceAttempt.findMany({
-      where: { studentId: userId },
+      where: { studentId },
     });
 
     const practiceProgress: Record<
@@ -75,16 +68,15 @@ export async function GET(request: NextRequest) {
 // PUT: Update student's learning progress
 export async function PUT(request: NextRequest) {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
+    const studentId = await getStudentProfileId();
+    if (!studentId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
 
-    // Update learning progress
     await prisma.learningProgress.upsert({
-      where: { studentId: userId },
+      where: { studentId },
       update: {
         currentModuleId: body.currentModuleId,
         currentLessonId: body.currentLessonId,
@@ -95,7 +87,7 @@ export async function PUT(request: NextRequest) {
         mockExamUnlocked: body.mockExamUnlocked ?? false,
       },
       create: {
-        studentId: userId,
+        studentId,
         currentModuleId: body.currentModuleId ?? "m1",
         currentLessonId: body.currentLessonId ?? "m1-l1",
         currentStep: body.currentStep ?? "theory",
@@ -106,10 +98,9 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    // Update streak if provided
     if (body.streak) {
       await prisma.streak.upsert({
-        where: { studentId: userId },
+        where: { studentId },
         update: {
           currentStreak: body.streak.currentStreak ?? 0,
           longestStreak: body.streak.longestStreak ?? 0,
@@ -117,7 +108,7 @@ export async function PUT(request: NextRequest) {
           activeDays: body.streak.activeDays ?? [],
         },
         create: {
-          studentId: userId,
+          studentId,
           currentStreak: body.streak.currentStreak ?? 0,
           longestStreak: body.streak.longestStreak ?? 0,
           lastActiveDate: body.streak.lastActiveDate ?? null,
@@ -126,20 +117,14 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    // Update practice progress if provided
     if (body.practiceProgress) {
       for (const [moduleId, data] of Object.entries(body.practiceProgress)) {
         const pd = data as { completed: boolean; attempts: number };
         await prisma.practiceAttempt.upsert({
-          where: {
-            studentId_moduleId: { studentId: userId, moduleId },
-          },
-          update: {
-            completed: pd.completed,
-            attempts: pd.attempts,
-          },
+          where: { studentId_moduleId: { studentId, moduleId } },
+          update: { completed: pd.completed, attempts: pd.attempts },
           create: {
-            studentId: userId,
+            studentId,
             moduleId,
             completed: pd.completed,
             attempts: pd.attempts,

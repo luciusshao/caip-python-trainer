@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthSessionProvider } from "@/components/AuthSessionProvider";
 
 export const metadata: Metadata = {
   title: "CAIP Python Trainer | USAII Certification Prep",
@@ -20,7 +21,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans bg-brand-dark text-white antialiased">
-        {children}
+        <AuthSessionProvider>{children}</AuthSessionProvider>
       </body>
     </html>
   );

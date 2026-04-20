@@ -1,47 +1,45 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getTeacherProfileId } from "@/lib/session";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const teacherId = request.headers.get("x-user-id");
+    const teacherId = await getTeacherProfileId();
     if (!teacherId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const today = new Date().toISOString().split("T")[0];
 
-    // Total students
-    const totalStudents = await prisma.student.count({
-      where: { teacherId, isActive: true },
+    const totalStudents = await prisma.studentProfile.count({
+      where: { teacherId, user: { isActive: true } },
     });
 
-    // Active today
     const todayStart = new Date(today + "T00:00:00.000Z");
     const todayEnd = new Date(today + "T23:59:59.999Z");
-    const activeToday = await prisma.student.count({
+    const activeToday = await prisma.studentProfile.count({
       where: {
         teacherId,
-        isActive: true,
+        user: { isActive: true },
         lastLoginAt: { gte: todayStart, lte: todayEnd },
       },
     });
 
-    // Average streak
     const streaks = await prisma.streak.findMany({
-      where: { student: { teacherId, isActive: true } },
+      where: { student: { teacherId, user: { isActive: true } } },
       select: { currentStreak: true },
     });
     const avgStreak =
       streaks.length > 0
         ? Math.round(
-            streaks.reduce((sum, s) => sum + s.currentStreak, 0) /
-              streaks.length * 10
+            (streaks.reduce((sum, s) => sum + s.currentStreak, 0) /
+              streaks.length) *
+              10
           ) / 10
         : 0;
 
-    // Average completion (% of lessons with quizPassed)
     const progresses = await prisma.learningProgress.findMany({
-      where: { student: { teacherId, isActive: true } },
+      where: { student: { teacherId, user: { isActive: true } } },
       select: { completedModules: true },
     });
     const totalModules = 5;
@@ -57,9 +55,12 @@ export async function GET(request: NextRequest) {
           )
         : 0;
 
-    // Recent active students
-    const recentStudents = await prisma.student.findMany({
-      where: { teacherId, isActive: true, lastLoginAt: { not: null } },
+    const recentStudents = await prisma.studentProfile.findMany({
+      where: {
+        teacherId,
+        user: { isActive: true },
+        lastLoginAt: { not: null },
+      },
       orderBy: { lastLoginAt: "desc" },
       take: 5,
       select: {

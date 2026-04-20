@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 const NAV_ITEMS = [
   { href: "/teacher", icon: "📊", label: "总览" },
@@ -16,8 +17,8 @@ export default function TeacherSidebar() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("/api/auth/teacher/logout", { method: "POST" });
-    router.push("/teacher/login");
+    await signOut({ redirect: false });
+    router.push("/login");
   };
 
   return (

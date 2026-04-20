@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    await fetch("/api/auth/student/logout", { method: "POST" });
+    await signOut({ redirect: false });
     router.push("/login");
   };
 

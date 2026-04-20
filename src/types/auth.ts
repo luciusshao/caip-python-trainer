@@ -1,14 +1,9 @@
-export type UserRole = "student" | "teacher";
+/**
+ * Auth-related shared types.
+ *
+ * NextAuth Session / User types are augmented via `declare module "next-auth"`
+ * in `src/auth.ts`. Import `{ Session } from "next-auth"` anywhere you need
+ * session types.
+ */
 
-export interface TokenPayload {
-  userId: string;
-  role: UserRole;
-  mustChangePassword?: boolean; // student only
-  iat?: number;
-  exp?: number;
-}
-
-export interface AuthUser {
-  userId: string;
-  role: UserRole;
-}
+export type { Role } from "@/generated/prisma/client";

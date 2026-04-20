@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { hashPassword, generatePassword } from "@/lib/auth";
+import { hashPassword, generatePassword } from "@/lib/password";
+import { getTeacherProfileId } from "@/lib/session";
 
 // GET: List all students for this teacher
 export async function GET(request: NextRequest) {
   try {
-    const teacherId = request.headers.get("x-user-id");
+    const teacherId = await getTeacherProfileId();
     if (!teacherId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -13,10 +14,10 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("q") || "";
 
-    const students = await prisma.student.findMany({
+    const students = await prisma.studentProfile.findMany({
       where: {
         teacherId,
-        isActive: true,
+        user: { isActive: true },
         ...(query && {
           OR: [
             { displayName: { contains: query, mode: "insensitive" } },
@@ -29,10 +30,9 @@ export async function GET(request: NextRequest) {
         id: true,
         username: true,
         displayName: true,
-        email: true,
         lastLoginAt: true,
-        mustChangePassword: true,
         createdAt: true,
+        user: { select: { email: true, emailVerified: true } },
         progress: {
           select: { completedModules: true, lessonProgress: true },
         },
@@ -53,9 +53,10 @@ export async function GET(request: NextRequest) {
         id: s.id,
         username: s.username,
         displayName: s.displayName,
-        email: s.email,
+        email: s.user.email,
         lastLoginAt: s.lastLoginAt,
-        mustChangePassword: s.mustChangePassword,
+        mustChangePassword: false, // legacy field; new auth uses emailVerified
+        emailVerified: s.user.emailVerified !== null,
         createdAt: s.createdAt,
         completedModules: s.progress?.completedModules.length ?? 0,
         completionPercent:
@@ -75,10 +76,10 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST: Create a new student
+// POST: Create a new student (teacher-provisioned account)
 export async function POST(request: NextRequest) {
   try {
-    const teacherId = request.headers.get("x-user-id");
+    const teacherId = await getTeacherProfileId();
     if (!teacherId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -93,44 +94,59 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check username uniqueness
-    const existing = await prisma.student.findUnique({
+    // Generate a synthetic email so the User row has a unique identifier.
+    // Teacher-provisioned students can update to a real email later.
+    const syntheticEmail = `${username}@caip-trainer.local`.toLowerCase();
+
+    // Check username / email uniqueness
+    const existingProfile = await prisma.studentProfile.findUnique({
       where: { username },
     });
-    if (existing) {
-      return NextResponse.json(
-        { error: "该账号已存在" },
-        { status: 409 }
-      );
+    if (existingProfile) {
+      return NextResponse.json({ error: "该账号已存在" }, { status: 409 });
+    }
+    const existingUser = await prisma.user.findUnique({
+      where: { email: syntheticEmail },
+    });
+    if (existingUser) {
+      return NextResponse.json({ error: "该账号已存在" }, { status: 409 });
     }
 
     const initialPassword = generatePassword(8);
     const passwordHash = await hashPassword(initialPassword);
 
-    const student = await prisma.student.create({
-      data: {
-        username,
-        displayName,
-        passwordHash,
-        mustChangePassword: true,
-        teacherId,
-      },
-    });
+    // Create User + StudentProfile + related records in a transaction
+    const studentProfile = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          email: syntheticEmail,
+          emailVerified: new Date(), // teacher-provisioned; skip email verification
+          name: displayName,
+          role: "STUDENT",
+          passwordHash,
+        },
+      });
 
-    // Create related records
-    await prisma.learningProgress.create({
-      data: { studentId: student.id },
-    });
+      const profile = await tx.studentProfile.create({
+        data: {
+          userId: user.id,
+          username,
+          displayName,
+          teacherId,
+        },
+      });
 
-    await prisma.streak.create({
-      data: { studentId: student.id },
+      await tx.learningProgress.create({ data: { studentId: profile.id } });
+      await tx.streak.create({ data: { studentId: profile.id } });
+
+      return profile;
     });
 
     return NextResponse.json({
-      id: student.id,
-      username: student.username,
-      displayName: student.displayName,
-      initialPassword, // Only returned once!
+      id: studentProfile.id,
+      username: studentProfile.username,
+      displayName: studentProfile.displayName,
+      initialPassword, // shown only once
     });
   } catch (error) {
     console.error("POST student error:", error);
