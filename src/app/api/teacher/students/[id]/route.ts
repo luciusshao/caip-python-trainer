@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getTeacherProfileId } from "@/lib/session";
+import { auth } from "@/auth";
 
-// GET: Student detail with progress
+// GET: Student detail with progress.
+//   - ADMIN → any student
+//   - TEACHER → only students under their own teacherId
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    const role = session?.user?.role;
     const teacherId = await getTeacherProfileId();
-    if (!teacherId) {
+    if (!teacherId && role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -25,8 +30,11 @@ export async function GET(
       },
     });
 
-    if (!student || student.teacherId !== teacherId) {
+    if (!student) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 });
+    }
+    if (role !== "ADMIN" && student.teacherId !== teacherId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     return NextResponse.json({

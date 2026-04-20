@@ -15,7 +15,7 @@ export async function GET() {
       select: {
         username: true,
         displayName: true,
-        user: { select: { email: true } },
+        user: { select: { email: true, passwordHash: true } },
       },
     });
 
@@ -27,6 +27,7 @@ export async function GET() {
       username: profile.username,
       displayName: profile.displayName,
       email: profile.user.email,
+      hasPassword: !!profile.user.passwordHash,
     });
   } catch (error) {
     console.error("GET profile error:", error);
@@ -59,12 +60,19 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    // Email lives on User, not StudentProfile
+    // Only allow email updates for password-auth users. OAuth users get
+    // their email from the provider and must not be able to change it here.
     if (email !== undefined) {
-      await prisma.user.update({
+      const current = await prisma.user.findUnique({
         where: { id: session.user.id },
-        data: { email },
+        select: { passwordHash: true },
       });
+      if (current?.passwordHash) {
+        await prisma.user.update({
+          where: { id: session.user.id },
+          data: { email },
+        });
+      }
     }
 
     const userEmail = await prisma.user.findUnique({

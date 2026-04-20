@@ -9,6 +9,7 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [hasPassword, setHasPassword] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,7 @@ export default function ProfilePage() {
         setDisplayName(data.displayName || "");
         setUsername(data.username || "");
         setEmail(data.email || "");
+        setHasPassword(!!data.hasPassword);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -70,17 +72,19 @@ export default function ProfilePage() {
           </div>
 
           <form onSubmit={handleSave} className="space-y-5">
-            <div>
-              <label className="block text-xs text-gray-400 mb-1.5">
-                用户名（不可修改）
-              </label>
-              <input
-                type="text"
-                value={username}
-                disabled
-                className="w-full bg-white/5 border border-brand-purple/20 rounded-lg px-4 py-3 text-sm text-gray-500 cursor-not-allowed"
-              />
-            </div>
+            {username && (
+              <div>
+                <label className="block text-xs text-gray-400 mb-1.5">
+                  用户名（不可修改）
+                </label>
+                <input
+                  type="text"
+                  value={username}
+                  disabled
+                  className="w-full bg-white/5 border border-brand-purple/20 rounded-lg px-4 py-3 text-sm text-gray-500 cursor-not-allowed"
+                />
+              </div>
+            )}
 
             <div>
               <label className="block text-xs text-gray-400 mb-1.5">
@@ -96,14 +100,19 @@ export default function ProfilePage() {
 
             <div>
               <label className="block text-xs text-gray-400 mb-1.5">
-                邮箱（用于密码重置）
+                {hasPassword ? "邮箱" : "邮箱（由第三方登录提供，不可修改）"}
               </label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => hasPassword && setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full bg-white/5 border border-brand-purple/30 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-gold/50 transition-colors"
+                disabled={!hasPassword}
+                className={`w-full bg-white/5 border border-brand-purple/30 rounded-lg px-4 py-3 text-sm outline-none transition-colors ${
+                  hasPassword
+                    ? "text-white placeholder-gray-500 focus:border-brand-gold/50"
+                    : "text-gray-500 cursor-not-allowed"
+                }`}
               />
             </div>
 
@@ -127,12 +136,14 @@ export default function ProfilePage() {
           </form>
 
           <div className="mt-6 pt-6 border-t border-brand-purple/20 space-y-3">
-            <button
-              onClick={() => router.push("/change-password")}
-              className="w-full py-2.5 text-sm text-gray-400 hover:text-white border border-brand-purple/30 rounded-lg transition-colors"
-            >
-              修改密码
-            </button>
+            {hasPassword && (
+              <button
+                onClick={() => router.push("/change-password")}
+                className="w-full py-2.5 text-sm text-gray-400 hover:text-white border border-brand-purple/30 rounded-lg transition-colors"
+              >
+                修改密码
+              </button>
+            )}
             <button
               onClick={() => router.push("/")}
               className="w-full py-2.5 text-sm text-gray-400 hover:text-white border border-brand-purple/30 rounded-lg transition-colors"

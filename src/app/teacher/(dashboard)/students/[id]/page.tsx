@@ -47,8 +47,13 @@ export default function StudentDetailPage() {
 
   useEffect(() => {
     fetch(`/api/teacher/students/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => {
+      .then(async (res) => {
+        if (!res.ok) {
+          setStudent(null);
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
         setStudent(data);
         setLoading(false);
       })
@@ -85,7 +90,7 @@ export default function StudentDetailPage() {
       {/* Back */}
       <button
         onClick={() => router.push("/teacher/students")}
-        className="text-xs text-gray-500 hover:text-white mb-6 flex items-center gap-1"
+        className="text-xs text-gray-500 hover:text-white mb-6 flex items-center gap-1 cursor-pointer"
       >
         ← 返回学生列表
       </button>
@@ -153,7 +158,7 @@ export default function StudentDetailPage() {
             const passedInModule = moduleLessons.filter(
               (l) => lessonProgress[l.id]?.quizPassed
             ).length;
-            const practice = student.practiceAttempts.find(
+            const practice = student.practiceAttempts?.find(
               (pa) => pa.moduleId === mod.id
             );
 
