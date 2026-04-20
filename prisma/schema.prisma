@@ -1,0 +1,151 @@
+// CAIP Python Trainer — Multi-user schema
+// DB: Neon PostgreSQL (serverless)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Users ─────────────────────────────────────────────
+
+model Teacher {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  displayName  String
+  email        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  students Student[]
+  courses  Course[]
+}
+
+model Student {
+  id                 String    @id @default(cuid())
+  username           String    @unique
+  passwordHash       String
+  displayName        String
+  email              String?
+  mustChangePassword Boolean   @default(true)
+  isActive           Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  lastLoginAt        DateTime?
+
+  teacherId String
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+
+  progress         LearningProgress?
+  quizAttempts     QuizAttempt[]
+  practiceAttempts PracticeAttempt[]
+  streak           Streak?
+  mockExamScores   MockExamScore[]
+  tokenUsages      TokenUsage[]
+
+  @@index([teacherId])
+}
+
+// ─── Learning Progress ─────────────────────────────────
+
+model LearningProgress {
+  id              String  @id @default(cuid())
+  studentId       String  @unique
+  student         Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  currentModuleId  String   @default("m1")
+  currentLessonId  String   @default("m1-l1")
+  currentStep      String   @default("theory")
+  theoryLang       String   @default("both")
+
+  /// JSON: { "m1-l1": { theoryRead, codeCompleted, quizPassed, quizAttempts[] } }
+  lessonProgress   Json     @default("{}")
+
+  completedModules String[] @default([])
+  mockExamUnlocked Boolean  @default(false)
+
+  updatedAt DateTime @updatedAt
+}
+
+model QuizAttempt {
+  id             String   @id @default(cuid())
+  studentId      String
+  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lessonId       String
+  quizId         String
+  selectedAnswer Int
+  correct        Boolean
+  createdAt      DateTime @default(now())
+
+  @@index([studentId, lessonId])
+}
+
+model PracticeAttempt {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  moduleId  String
+  completed Boolean  @default(false)
+  attempts  Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, moduleId])
+  @@index([studentId])
+}
+
+model Streak {
+  id             String   @id @default(cuid())
+  studentId      String   @unique
+  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  currentStreak  Int      @default(0)
+  longestStreak  Int      @default(0)
+  lastActiveDate String?
+  activeDays     String[] @default([])
+}
+
+model MockExamScore {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  score     Int
+  total     Int
+  createdAt DateTime @default(now())
+
+  @@index([studentId])
+}
+
+// ─── Token Usage Tracking ──────────────────────────────
+
+model TokenUsage {
+  id               String   @id @default(cuid())
+  studentId        String
+  student          Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  model            String
+  promptTokens     Int
+  completionTokens Int
+  totalTokens      Int
+  createdAt        DateTime @default(now())
+
+  @@index([studentId])
+  @@index([createdAt])
+}
+
+// ─── Course Management (placeholder for Phase 5) ──────
+
+model Course {
+  id          String   @id @default(cuid())
+  teacherId   String
+  teacher     Teacher  @relation(fields: [teacherId], references: [id])
+  name        String
+  description String?
+  syllabusKey String   @default("default")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([teacherId])
+}

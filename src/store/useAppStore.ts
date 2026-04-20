@@ -64,6 +64,23 @@ interface AppState {
   markPracticeCompleted: (moduleId: string) => void;
   incrementPracticeAttempt: (moduleId: string) => void;
   resetProgress: () => void;
+
+  // Server sync actions
+  hydrateFromServer: (data: ServerProgressData) => void;
+  getProgressSnapshot: () => ServerProgressData;
+}
+
+// Shape matching what the server returns/accepts
+export interface ServerProgressData {
+  currentModuleId: string;
+  currentLessonId: string;
+  currentStep: string;
+  theoryLang: string;
+  lessonProgress: Record<string, LessonProgress>;
+  completedModules: string[];
+  mockExamUnlocked: boolean;
+  streak: DailyStreak;
+  practiceProgress: Record<string, { completed: boolean; attempts: number }>;
 }
 
 const getToday = () => new Date().toISOString().split('T')[0];
@@ -249,6 +266,74 @@ export const useAppStore = create<AppState>()(
           currentLessonId: 'm1-l1',
           currentStep: 'theory',
         }),
+
+      // ─── Server sync ─────────────────────────────────────
+      hydrateFromServer: (data: ServerProgressData) => {
+        const current = get();
+        // Merge: completion states use OR (never lose progress)
+        const mergedLessonProgress = { ...data.lessonProgress };
+        for (const [key, local] of Object.entries(current.lessonProgress)) {
+          const server = mergedLessonProgress[key];
+          if (server) {
+            mergedLessonProgress[key] = {
+              ...server,
+              theoryRead: server.theoryRead || local.theoryRead,
+              codeCompleted: server.codeCompleted || local.codeCompleted,
+              quizPassed: server.quizPassed || local.quizPassed,
+              quizAttempts: server.quizAttempts.length >= local.quizAttempts.length
+                ? server.quizAttempts : local.quizAttempts,
+            };
+          } else {
+            mergedLessonProgress[key] = local;
+          }
+        }
+
+        // Merge completedModules: union
+        const mergedModules = [
+          ...new Set([...data.completedModules, ...current.completedModules]),
+        ];
+
+        // Merge practice: OR completed, max attempts
+        const mergedPractice = { ...data.practiceProgress };
+        for (const [key, local] of Object.entries(current.practiceProgress)) {
+          const server = mergedPractice[key];
+          if (server) {
+            mergedPractice[key] = {
+              completed: server.completed || local.completed,
+              attempts: Math.max(server.attempts, local.attempts),
+            };
+          } else {
+            mergedPractice[key] = local;
+          }
+        }
+
+        set({
+          currentModuleId: data.currentModuleId,
+          currentLessonId: data.currentLessonId,
+          currentStep: data.currentStep as 'theory' | 'code' | 'quiz' | 'practice',
+          theoryLang: data.theoryLang as 'en' | 'zh' | 'both',
+          lessonProgress: mergedLessonProgress,
+          completedModules: mergedModules,
+          mockExamUnlocked: data.mockExamUnlocked || current.mockExamUnlocked,
+          streak: data.streak,
+          practiceProgress: mergedPractice,
+        });
+      },
+
+      getProgressSnapshot: (): ServerProgressData => {
+        const s = get();
+        return {
+          currentModuleId: s.currentModuleId,
+          currentLessonId: s.currentLessonId,
+          currentStep: s.currentStep,
+          theoryLang: s.theoryLang,
+          lessonProgress: s.lessonProgress,
+          completedModules: s.completedModules,
+          mockExamUnlocked: s.mockExamUnlocked,
+          streak: s.streak,
+          practiceProgress: s.practiceProgress,
+        };
+      },
     }),
     {
       name: 'caip-trainer-progress',

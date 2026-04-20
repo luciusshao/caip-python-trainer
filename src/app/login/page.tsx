@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, type PanInfo } from "framer-motion";
 
 // ─── Web Audio: synthesize a "click" sound ───────────────────────
@@ -48,10 +49,18 @@ function playClickSound() {
 
 // ─── Main Page ───────────────────────────────────────────────────
 export default function LoginPage() {
+  const router = useRouter();
   const [isOn, setIsOn] = useState(false);
   const [shadeHue, setShadeHue] = useState(280);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
+
+  // Auth state
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Derived colors
   const lampColor = useMemo(() => `hsl(${shadeHue}, 70%, 50%)`, [shadeHue]);
@@ -366,12 +375,39 @@ export default function LoginPage() {
             欢迎回来
           </h2>
 
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (!username || !password || loginLoading) return;
+              setLoginError("");
+              setLoginLoading(true);
+              try {
+                const res = await fetch("/api/auth/student/login", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ username, password }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                  router.push(data.mustChangePassword ? "/change-password" : "/");
+                } else {
+                  setLoginError(data.error || "登录失败");
+                }
+              } catch {
+                setLoginError("网络错误，请重试");
+              } finally {
+                setLoginLoading(false);
+              }
+            }}
+          >
           <label className="mb-1.5 block text-xs font-medium text-gray-400">
             账号
           </label>
           <motion.input
             type="text"
             placeholder="请输入账号"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="mb-4 w-full rounded-lg bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none"
             onFocus={() => setFocusedField("user")}
             onBlur={() => setFocusedField(null)}
@@ -387,10 +423,13 @@ export default function LoginPage() {
           <label className="mb-1.5 block text-xs font-medium text-gray-400">
             密码
           </label>
+          <div className="relative mb-6">
           <motion.input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="请输入密码"
-            className="mb-6 w-full rounded-lg bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-lg bg-white/5 px-4 py-2.5 pr-12 text-sm text-white placeholder-gray-500 outline-none"
             onFocus={() => setFocusedField("pass")}
             onBlur={() => setFocusedField(null)}
             animate={{
@@ -401,14 +440,36 @@ export default function LoginPage() {
             }}
             transition={{ duration: 0.25 }}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+            tabIndex={-1}
+          >
+            {showPassword ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" /><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+            )}
+          </button>
+          </div>
+
+          {loginError && (
+            <div className="mb-4 rounded-lg bg-red-900/30 border border-red-700/30 p-2.5">
+              <p className="text-xs text-red-400 text-center">{loginError}</p>
+            </div>
+          )}
 
           <motion.button
-            className="w-full rounded-lg bg-gradient-to-r from-brand-gold to-brand-gold-light py-2.5 text-sm font-semibold text-brand-dark"
+            type="submit"
+            disabled={loginLoading || !username || !password}
+            className="w-full rounded-lg bg-gradient-to-r from-brand-gold to-brand-gold-light py-2.5 text-sm font-semibold text-brand-dark disabled:opacity-50 disabled:cursor-not-allowed"
             whileHover={{ scale: 1.02, boxShadow: `0 0 24px ${lampGlow}` }}
             whileTap={{ scale: 0.97 }}
           >
-            登录
+            {loginLoading ? "登录中..." : "登录"}
           </motion.button>
+          </form>
 
           <div className="mt-4 text-center">
             <a

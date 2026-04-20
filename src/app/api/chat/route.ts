@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import aiConfig from "../../../../config/ai_model.json";
+import { prisma } from "@/lib/prisma";
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -13,6 +14,12 @@ interface ChatRequestBody {
     studentCode?: string;
     errorMsg?: string;
   };
+}
+
+interface TokenUsageData {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
 }
 
 function buildSystemPrompt(context?: ChatRequestBody["context"]): string {
@@ -50,6 +57,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Get student ID from middleware-injected header
+  const userId = req.headers.get("x-user-id");
+
   const systemPrompt = buildSystemPrompt(context);
   const fullMessages: ChatMessage[] = [
     { role: "system", content: systemPrompt },
@@ -68,6 +78,7 @@ export async function POST(req: NextRequest) {
         messages: fullMessages,
         temperature: aiConfig.temperature,
         stream: true,
+        stream_options: { include_usage: true },
       }),
     });
 
@@ -92,6 +103,7 @@ export async function POST(req: NextRequest) {
         }
 
         let buffer = "";
+        let usage: TokenUsageData | null = null;
 
         try {
           while (true) {
@@ -114,6 +126,12 @@ export async function POST(req: NextRequest) {
 
               try {
                 const parsed = JSON.parse(data);
+
+                // Extract token usage from stream (usually in the last chunk)
+                if (parsed.usage) {
+                  usage = parsed.usage as TokenUsageData;
+                }
+
                 const content = parsed.choices?.[0]?.delta?.content;
                 if (content) {
                   controller.enqueue(
@@ -129,6 +147,21 @@ export async function POST(req: NextRequest) {
           controller.error(err);
         } finally {
           controller.close();
+
+          // Async write token usage to DB (fire-and-forget)
+          if (usage && userId) {
+            prisma.tokenUsage.create({
+              data: {
+                studentId: userId,
+                model: aiConfig.modelName,
+                promptTokens: usage.prompt_tokens || 0,
+                completionTokens: usage.completion_tokens || 0,
+                totalTokens: usage.total_tokens || 0,
+              },
+            }).catch((err: unknown) => {
+              console.error("Failed to save token usage:", err);
+            });
+          }
         }
       },
     });
