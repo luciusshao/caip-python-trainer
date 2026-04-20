@@ -142,7 +142,7 @@ export default function PracticePane({ practicalTask, moduleId }: PracticePanePr
                     : "bg-brand-purple/30 text-gray-300 hover:bg-brand-purple/50"
                 }`}
               >
-                🤖 AI Tutor
+                <img src="/ai-tutor-icon.png" alt="AI" className="w-4 h-4" /> AI Tutor
               </button>
               <button
                 onClick={runTests}

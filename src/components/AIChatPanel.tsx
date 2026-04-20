@@ -63,7 +63,7 @@ export default function AIChatPanel({
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-brand-purple/20 bg-brand-purple-deep/50">
         <div className="flex items-center gap-2">
-          <span className="text-lg">🤖</span>
+          <img src="/ai-tutor-icon.png" alt="AI" className="w-6 h-6" />
           <span className="text-sm font-semibold text-white">AI Tutor</span>
           {context?.errorMsg && (
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-900/50 text-red-400">

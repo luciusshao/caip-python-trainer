@@ -61,8 +61,9 @@ All lessons/modules are freely accessible — `isLessonUnlocked` and `isModuleUn
 ### Python Runtime
 `src/lib/usePyodide.ts` — singleton loader (loads once from CDN `cdn.jsdelivr.net/pyodide/v0.26.4`). Captures stdout/stderr via Python's `io.StringIO`. Used by both `CodePane` (single run) and `PracticePane` (sequential test case assertions).
 
-### test
-- use playwright CLI mode，not MCP
+### Rules
+- use playwright CLI mode，not MCP，when testing
+- write doc and checklist before coding while doing big requirements change
 
 ## Key Constraints
 

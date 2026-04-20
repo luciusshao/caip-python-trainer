@@ -58,7 +58,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <span className="text-2xl">🏆</span>
           <div>
-            <p className="text-sm font-bold text-brand-gold-light">{completedModules.length}/3</p>
+            <p className="text-sm font-bold text-brand-gold-light">{completedModules.length}/{syllabus.modules.length}</p>
             <p className="text-xs text-gray-400">modules</p>
           </div>
         </div>
