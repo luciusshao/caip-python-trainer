@@ -60,6 +60,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Derived colors
   const lampColor = useMemo(() => `hsl(${shadeHue}, 70%, 50%)`, [shadeHue]);
@@ -422,12 +423,13 @@ export default function LoginPage() {
           <label className="mb-1.5 block text-xs font-medium text-gray-400">
             密码
           </label>
+          <div className="relative mb-6">
           <motion.input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="请输入密码"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mb-6 w-full rounded-lg bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none"
+            className="w-full rounded-lg bg-white/5 px-4 py-2.5 pr-12 text-sm text-white placeholder-gray-500 outline-none"
             onFocus={() => setFocusedField("pass")}
             onBlur={() => setFocusedField(null)}
             animate={{
@@ -438,6 +440,15 @@ export default function LoginPage() {
             }}
             transition={{ duration: 0.25 }}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors text-sm"
+            tabIndex={-1}
+          >
+            {showPassword ? "🙈" : "👁"}
+          </button>
+          </div>
 
           {loginError && (
             <div className="mb-4 rounded-lg bg-red-900/30 border border-red-700/30 p-2.5">

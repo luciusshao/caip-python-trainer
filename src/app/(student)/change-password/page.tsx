@@ -3,6 +3,43 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+function PasswordInput({
+  value,
+  onChange,
+  placeholder,
+  required,
+  minLength,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  required?: boolean;
+  minLength?: number;
+}) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative">
+      <input
+        type={show ? "text" : "password"}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="w-full bg-white/5 border border-brand-purple/30 rounded-lg px-4 py-3 pr-12 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-gold/50 transition-colors"
+        required={required}
+        minLength={minLength}
+      />
+      <button
+        type="button"
+        onClick={() => setShow(!show)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors text-sm"
+        tabIndex={-1}
+      >
+        {show ? "🙈" : "👁"}
+      </button>
+    </div>
+  );
+}
+
 export default function ChangePasswordPage() {
   const router = useRouter();
   const [currentPassword, setCurrentPassword] = useState("");
@@ -63,12 +100,10 @@ export default function ChangePasswordPage() {
               <label className="block text-xs text-gray-400 mb-1.5">
                 当前密码
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="请输入当前密码"
-                className="w-full bg-white/5 border border-brand-purple/30 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-gold/50 transition-colors"
                 required
               />
             </div>
@@ -77,12 +112,10 @@ export default function ChangePasswordPage() {
               <label className="block text-xs text-gray-400 mb-1.5">
                 新密码
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="至少 6 个字符"
-                className="w-full bg-white/5 border border-brand-purple/30 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-gold/50 transition-colors"
                 required
                 minLength={6}
               />
@@ -92,12 +125,10 @@ export default function ChangePasswordPage() {
               <label className="block text-xs text-gray-400 mb-1.5">
                 确认新密码
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="再次输入新密码"
-                className="w-full bg-white/5 border border-brand-purple/30 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-gold/50 transition-colors"
                 required
                 minLength={6}
               />

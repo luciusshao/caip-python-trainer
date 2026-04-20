@@ -5,12 +5,29 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ─── Public routes — no auth needed ────────────────────
-  if (
-    pathname === "/login" ||
-    pathname === "/teacher/login" ||
-    pathname.startsWith("/api/auth/")
-  ) {
+  // Note: /api/auth/student/change-password requires auth (needs x-user-id)
+  const isPublicAuth =
+    pathname.startsWith("/api/auth/") &&
+    !pathname.includes("/change-password");
+
+  if (pathname === "/login" || pathname === "/teacher/login" || isPublicAuth) {
     return NextResponse.next();
+  }
+
+  // ─── Student change-password API — needs student token ──
+  if (pathname === "/api/auth/student/change-password") {
+    const token = request.cookies.get(getCookieName("student"))?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const decoded = await verifyToken(token, "student");
+    if (!decoded) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const response = NextResponse.next();
+    response.headers.set("x-user-id", decoded.userId);
+    response.headers.set("x-user-role", "student");
+    return response;
   }
 
   // ─── Static / internal — skip ──────────────────────────
