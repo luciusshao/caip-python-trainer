@@ -66,7 +66,7 @@ export default function Header() {
         <Link
           href="/profile"
           className="text-xs text-gray-400 hover:text-brand-gold transition-colors px-2 py-1 rounded-md hover:bg-brand-purple/20"
-          title="个人资料"
+          title="Profile"
         >
           👤
         </Link>

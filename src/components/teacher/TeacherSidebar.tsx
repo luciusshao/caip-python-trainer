@@ -5,11 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 const NAV_ITEMS = [
-  { href: "/teacher", icon: "📊", label: "总览" },
-  { href: "/teacher/students", icon: "👥", label: "学生管理" },
-  { href: "/teacher/courses", icon: "📚", label: "课程管理" },
-  { href: "/teacher/token-usage", icon: "🔥", label: "Token 消耗" },
-  { href: "/teacher/settings", icon: "⚙️", label: "设置" },
+  { href: "/teacher", icon: "📊", label: "Overview" },
+  { href: "/teacher/students", icon: "👥", label: "Students" },
+  { href: "/teacher/courses", icon: "📚", label: "Courses" },
+  { href: "/teacher/token-usage", icon: "🔥", label: "Token Usage" },
+  { href: "/teacher/settings", icon: "⚙️", label: "Settings" },
 ];
 
 export default function TeacherSidebar() {
@@ -29,7 +29,7 @@ export default function TeacherSidebar() {
           <span className="text-xl">🎓</span>
           <div>
             <p className="text-sm font-bold text-white">CAIP Trainer</p>
-            <p className="text-[10px] text-gray-500">教师管理端</p>
+            <p className="text-[10px] text-gray-500">Teacher Portal</p>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@ export default function TeacherSidebar() {
           onClick={handleLogout}
           className="w-full px-3 py-2 text-xs text-gray-500 hover:text-red-400 rounded-lg hover:bg-red-900/20 transition-all text-left flex items-center gap-2"
         >
-          <span>🚪</span> 退出登录
+          <span>🚪</span> Logout
         </button>
       </div>
     </aside>
