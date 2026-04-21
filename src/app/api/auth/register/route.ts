@@ -92,12 +92,20 @@ export async function POST(request: NextRequest) {
     const token = await createVerifyEmailToken(email);
     const link = `${getBaseUrl()}/verify-email?token=${token}&email=${encodeURIComponent(email)}`;
     const tpl = verifyEmailTemplate(link);
-    await sendEmail({ to: email, ...tpl });
+    const sendResult = await sendEmail({ to: email, ...tpl });
+    const emailSent = sendResult.ok;
+    if (!emailSent) {
+      console.error(
+        `[register] verification email failed for ${email}:`,
+        sendResult
+      );
+    }
 
     return NextResponse.json({
       success: true,
       userId: user.id,
       requiresEmailVerification: features.email,
+      emailSent,
     });
   } catch (error) {
     console.error("Register error:", error);

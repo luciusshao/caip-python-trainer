@@ -11,16 +11,38 @@ export interface SendEmailParams {
 }
 
 /**
+ * Result of a send attempt.
+ * - ok: true            → email accepted by provider (or logged in dev)
+ * - reason: not_configured → Resend not set up, mail only logged to console
+ * - reason: provider_error → Resend returned an error (rejected, quota, etc.)
+ *
+ * Callers should NEVER forward the raw error to clients — it may leak
+ * account info. Use `reason` for business-level branching; server logs
+ * retain the original error for debugging.
+ */
+export type SendEmailResult =
+  | { ok: true; dev?: boolean }
+  | { ok: false; reason: "not_configured" | "provider_error" };
+
+/**
  * Send an email via Resend. In dev, if RESEND_API_KEY / EMAIL_FROM are not set,
  * the email is logged to console instead (so local flows still complete).
  */
-export async function sendEmail({ to, subject, html, text }: SendEmailParams) {
+export async function sendEmail({
+  to,
+  subject,
+  html,
+  text,
+}: SendEmailParams): Promise<SendEmailResult> {
   if (!resend) {
     console.log("─── [DEV email, no Resend configured] ───");
     console.log(`To: ${to}`);
     console.log(`Subject: ${subject}`);
     console.log(text || html.replace(/<[^>]+>/g, ""));
     console.log("──────────────────────────────────────────");
+    // Dev fallback: treat as "sent" so flows like register/forgot-password
+    // can surface a link in the console. If you want to exercise the
+    // failure path locally, set RESEND_API_KEY to an invalid value.
     return { ok: true, dev: true };
   }
 
@@ -34,12 +56,12 @@ export async function sendEmail({ to, subject, html, text }: SendEmailParams) {
     });
     if (error) {
       console.error("[email] Resend error:", error);
-      return { ok: false, error };
+      return { ok: false, reason: "provider_error" };
     }
     return { ok: true };
   } catch (err) {
     console.error("[email] send failed:", err);
-    return { ok: false, error: err };
+    return { ok: false, reason: "provider_error" };
   }
 }
 

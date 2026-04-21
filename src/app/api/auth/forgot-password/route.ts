@@ -47,7 +47,19 @@ export async function POST(request: NextRequest) {
       const token = await createResetPasswordToken(email);
       const link = `${getBaseUrl()}/reset-password?token=${token}&email=${encodeURIComponent(email)}`;
       const tpl = resetPasswordTemplate(link);
-      await sendEmail({ to: email, ...tpl });
+      const sendResult = await sendEmail({ to: email, ...tpl });
+      if (!sendResult.ok) {
+        // Mail provider rejected the send. Surface a generic service-unavailable
+        // message — never include raw provider error (may leak account info).
+        console.error(
+          `[forgot-password] email send failed for ${email}:`,
+          sendResult
+        );
+        return NextResponse.json(
+          { error: "邮件服务暂时不可用，请稍后重试" },
+          { status: 503 }
+        );
+      }
     } else if (user && !user.passwordHash) {
       // OAuth-only user — no password to reset. Silently do nothing.
       console.log(`[forgot-password] ${email} is OAuth-only; no email sent`);

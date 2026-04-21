@@ -15,7 +15,9 @@ export default function RegisterPage() {
   const [turnstileToken, setTurnstileToken] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState<null | { requiresVerification: boolean }>(null);
+  const [success, setSuccess] = useState<
+    null | { requiresVerification: boolean; emailSent: boolean }
+  >(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +45,10 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        setSuccess({ requiresVerification: data.requiresEmailVerification });
+        setSuccess({
+          requiresVerification: data.requiresEmailVerification,
+          emailSent: data.emailSent ?? true,
+        });
       } else {
         setError(data.error || "注册失败");
       }
@@ -55,20 +60,33 @@ export default function RegisterPage() {
   };
 
   if (success) {
+    const emailFailed = success.requiresVerification && !success.emailSent;
     return (
       <div className="min-h-screen flex items-center justify-center bg-brand-dark p-4">
         <div className="max-w-md w-full bg-brand-purple-deep/60 border border-brand-purple/30 rounded-2xl p-8 text-center">
-          <div className="text-4xl mb-4">✉️</div>
+          <div className="text-4xl mb-4">{emailFailed ? "⚠️" : "✉️"}</div>
           <h1 className="text-xl font-bold text-white mb-2">注册成功</h1>
           {success.requiresVerification ? (
-            <>
-              <p className="text-sm text-gray-400 mb-4">
-                我们已发送验证邮件到 <span className="text-brand-gold">{email}</span>
-              </p>
-              <p className="text-xs text-gray-500 mb-6">
-                请查收邮件并点击链接完成验证后即可登录。
-              </p>
-            </>
+            emailFailed ? (
+              <>
+                <p className="text-sm text-gray-300 mb-2">
+                  账号 <span className="text-brand-gold">{email}</span> 已创建，
+                  但验证邮件暂时发送失败。
+                </p>
+                <p className="text-xs text-gray-400 mb-6">
+                  请稍后通过&ldquo;忘记密码&rdquo;重新触发邮件，或联系管理员协助验证。
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-gray-400 mb-4">
+                  我们已发送验证邮件到 <span className="text-brand-gold">{email}</span>
+                </p>
+                <p className="text-xs text-gray-500 mb-6">
+                  请查收邮件并点击链接完成验证后即可登录。
+                </p>
+              </>
+            )
           ) : (
             <p className="text-sm text-gray-400 mb-6">
               你可以直接登录使用账号（当前开发环境未启用邮件验证）。
